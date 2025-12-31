@@ -13,7 +13,7 @@ Ini adalah standar alur kerja pengembangan software berbasis **AI Agent** (GitHu
 - 🧠 **Mengambil keputusan** berdasarkan context dan error feedback
 - 📝 **Membuat dokumentasi** otomatis dari perubahan yang dilakukan
 
-Dalam workflow ini, kita menggunakan **5 AI Agent persona** yang bekerja secara terspesialisasi (mirip tim development sesungguhnya).
+Dalam workflow ini, kita menggunakan **6 AI Agent persona** yang bekerja secara terspesialisasi (mirip tim development sesungguhnya).
 
 ---
 
@@ -36,6 +36,7 @@ root/
 │       ├── initiator.prompt.md      # Agent: Project Initiator
 │       ├── analyst.prompt.md        # Agent: System Analyst
 │       ├── developer.prompt.md      # Agent: Software Developer
+│       ├── fixer.prompt.md          # Agent: Bug Fixer & Debugger
 │       ├── tester.prompt.md         # Agent: QA Tester
 │       └── document.prompt.md       # Agent: Technical Writer
 │
@@ -204,7 +205,58 @@ untuk admin."
 
 ---
 
-### 5. **Document Agent** (`/document`)
+### 5. **Fixer Agent** (`/fixer`)
+**Role:** Bug Hunter & Debugging Specialist
+
+**Capabilities:**
+- ✅ Menganalisis error messages (compile errors, runtime errors, test failures)
+- ✅ Membaca stack trace dan pinpoint root cause
+- ✅ Memperbaiki bugs dengan minimal side effects
+- ✅ Membuat fixing log (`logs/fixing/fixing_*.md`)
+- ✅ Validasi fix dengan menjalankan tests
+- ✅ Regression testing (pastikan fix tidak break fitur lain)
+
+**When to Use:**
+- Setelah Developer Agent bikin code tapi ada errors
+- Setelah Tester Agent report bugs
+- Production bugs yang perlu hotfix
+- Build failures di CI/CD
+
+**Input Example:**
+```
+/fixer
+
+"Ada bug di create booking: DP amount tidak ter-kalkulasi.
+Error: Cannot read property 'totalPrice' of undefined
+File: app/api/backoffice/bookings/route.ts:45
+
+Error terjadi saat user submit booking form dengan pax > 10"
+```
+
+**Output:**
+- Fixed code di `codes/`
+- `logs/fixing/fixing_003_booking_dp_calculation.md` (detailed analysis + solution)
+- Test execution result (verify fix works)
+
+**👤 Human Task:**
+- Verify fix logic (apakah benar-benar solve root cause?)
+- Check for side effects (fitur lain masih jalan?)
+- Manual testing dengan scenario yang sama
+- Approve atau minta alternative solution
+
+**Workflow Integration:**
+```
+Developer creates code → Error found
+  ↓
+Fixer analyzes → Fix bug → Run tests
+  ↓
+All green? → Done ✅
+Not green? → Iterate fix
+```
+
+---
+
+### 6. **Document Agent** (`/document`)
 **Role:** Technical Writer
 
 **Capabilities:**
@@ -237,6 +289,7 @@ untuk admin."
 | **Initiator** | `/initiator` | Project kickoff & overview | `project_overview.md` | ⚠️ **CRITICAL** |
 | **Analyst** | `/analyst` | Technical specifications | `specifications/*.md` | ⚠️ **HIGH** |
 | **Developer** | `/developer` | Code implementation | `codes/*`, `logs/development/` | ⚠️ **HIGH** |
+| **Fixer** | `/fixer` | Bug fixing & debugging | `codes/*`, `logs/fixing/` | ⚠️ **HIGH** |
 | **Tester** | `/tester` | Test automation & QA | `tests/*`, `logs/testing/` | ✅ **MEDIUM** |
 | **Document** | `/document` | Final documentation | `documentation/*.md` | ✅ **LOW** |
 
@@ -452,13 +505,31 @@ Ulangi siklus ini untuk **setiap fitur**:
 
 **If bugs found:**
 ```bash
-/developer
+/fixer
 
 "Ada bug di create booking: DP amount tidak ter-kalkulasi.
-Error: totalPrice is undefined di line 45"
+Error: totalPrice is undefined di line 45
+Stack trace: [paste error dari terminal]
+
+Reproduce steps:
+1. Buka form create booking
+2. Isi pax = 15
+3. Click Submit
+4. Error muncul"
 ```
 
-Agent akan fix dan update log di `logs/fixing/`
+**🤖 Fixer Agent akan:**
+1. Analyze error & stack trace
+2. Read related code files
+3. Identify root cause
+4. Apply fix
+5. Run tests untuk verify fix
+6. Create fixing log di `logs/fixing/fixing_003_booking_dp_bug.md`
+
+**👤 Human verify:**
+- [ ] Bug fix works? (test manually)
+- [ ] No side effects? (test related features)
+- [ ] Root cause addressed? (bukan just symptom fix)
 
 #### **Step 3.3: Testing (Tester)**
 
@@ -595,7 +666,7 @@ AI Agent **TIDAK DAPAT** dan **TIDAK BOLEH** mengambil keputusan untuk hal-hal b
 ### **Development Cycle** 🔄
 
 ```
-[Analyst] → [👤 Review] → [Developer] → [👤 Test] → [Tester] → [👤 Approve]
+[Analyst] → [👤 Review] → [Developer] → [👤 Test] → [Fixer (if bugs)] → [Tester] → [👤 Approve]
 ```
 
 **Per Feature (2-4 hours):**
@@ -603,8 +674,9 @@ AI Agent **TIDAK DAPAT** dan **TIDAK BOLEH** mengambil keputusan untuk hal-hal b
 2. **👤 Human:** Review & approve spec (15 min)
 3. **Developer:** Implement code (1-2 hours)
 4. **👤 Human:** Code review + manual test (30 min)
-5. **Tester:** Create & run tests (30 min)
-6. **👤 Human:** Verify test results (15 min)
+5. **Fixer:** Fix bugs if found (15-30 min) ← **OPTIONAL**
+6. **Tester:** Create & run tests (30 min)
+7. **👤 Human:** Verify test results (15 min)
 
 **Repeat** untuk fitur berikutnya
 
@@ -677,6 +749,46 @@ tambahkan test untuk edge cases:
 - Booking dengan pax > 22
 - Booking dengan tanggal di masa lalu"
 ```
+
+---
+
+### **5. Bugs di Production** 🐛
+**Symptom:** User report bug di production, perlu hotfix cepat
+
+**Fix:**
+```bash
+/fixer
+
+"URGENT: Production bug reported.
+
+Issue: User tidak bisa cancel booking yang sudah DP_PAID
+Error: 500 Internal Server Error
+Endpoint: POST /api/backoffice/bookings/:id/cancel
+
+Expected: Booking bisa di-cancel dengan refund policy
+Actual: Server error, booking tidak ter-cancel
+
+Reproduce:
+1. Login as admin
+2. Open booking detail (status: DP_PAID)
+3. Click Cancel button
+4. Error 500 muncul
+
+Logs: [paste error logs dari production]"
+```
+
+**Fixer Agent akan:**
+1. Analyze production logs
+2. Reproduce locally
+3. Fix bug dengan minimal changes (hotfix approach)
+4. Run regression tests
+5. Create fixing log dengan deployment notes
+
+**👤 Human:**
+- [ ] Test fix di staging
+- [ ] Approve deployment ke production
+- [ ] Monitor production logs setelah deploy
+- [ ] Notify users bug sudah fixed
 
 ---
 
@@ -764,6 +876,7 @@ Jika ingin mengubah cara kerja Agent (misal: Developer pakai TDD strict, atau An
 ├── initiator.prompt.md      # Aturan buat project_overview.md
 ├── analyst.prompt.md        # Aturan buat specifications
 ├── developer.prompt.md      # Coding standards & logging format
+├── fixer.prompt.md          # Bug fixing strategy & debugging approach
 ├── tester.prompt.md         # Testing strategy & coverage requirements
 └── document.prompt.md       # Documentation format
 ```
@@ -787,6 +900,29 @@ Jika ingin mengubah cara kerja Agent (misal: Developer pakai TDD strict, atau An
 ```
 
 **Effect:** Developer Agent akan selalu bikin test dulu sebelum coding
+
+---
+
+**File:** `.github/prompts/fixer.prompt.md`
+
+**Customize:**
+```markdown
+**BUG FIXING PRIORITY:**
+1. Security vulnerabilities (CRITICAL - fix within 2 hours)
+2. Data loss bugs (HIGH - fix within 4 hours)
+3. Payment/financial bugs (HIGH - fix within 4 hours)
+4. UI/UX bugs (MEDIUM - fix within 24 hours)
+5. Performance issues (LOW - fix within 1 week)
+
+**DEBUGGING APPROACH:**
+- Always reproduce bug locally first
+- Use git bisect to find regression commit
+- Write test case that fails before fix
+- Verify test passes after fix
+- Check for similar bugs in codebase
+```
+
+**Effect:** Fixer Agent akan prioritize bugs berdasarkan severity
 
 ---
 
@@ -834,16 +970,29 @@ Setiap spec harus punya:
 
 **Solution:**
 ```bash
-/tester
+/fixer
 
 "Tests di test_003_booking.test.ts gagal setelah perubahan API.
-Error: 'bookingNumber' field not found.
 
-Analyze code changes di logs/development/dev_003_*.md,
-lalu fix tests agar sesuai dengan API schema terbaru"
+Error: 'bookingNumber' field not found.
+Expected: 'BK-20251231-001'
+Received: undefined
+
+Test yang fail:
+- test_003_booking.test.ts:45 (create booking)
+- test_003_booking.test.ts:78 (get booking detail)
+
+Code changes di: logs/development/dev_003_booking_management.md
+
+Fix tests agar sesuai dengan API schema terbaru"
 ```
 
-Agent akan self-heal tests
+**Fixer Agent akan:**
+1. Read development log untuk understand changes
+2. Analyze test failures
+3. Fix test code (bukan revert API changes)
+4. Verify all tests pass
+5. Update fixing log
 
 ---
 
@@ -867,14 +1016,24 @@ docker-compose up
 
 **Ask Agent for Help:**
 ```bash
-/developer
+/fixer
 
 "Docker container 'vas_vibe_app' exit dengan code 1.
 Logs menunjukkan error: 'Cannot find module prisma/client'.
 
+Full error logs:
+[paste docker logs]
+
 Analyze docker-compose.yml dan Dockerfile, 
 fix missing build steps"
 ```
+
+**Fixer Agent akan:**
+1. Analyze Docker configuration
+2. Check Dockerfile build stages
+3. Fix missing dependencies or build steps
+4. Test Docker build locally
+5. Provide solution di fixing log
 
 ---
 
