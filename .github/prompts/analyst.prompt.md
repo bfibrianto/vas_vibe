@@ -34,5 +34,14 @@
     - **API Contract (Draft)**
     - **Acceptance Criteria**
 
+7.  **PRINSIP UTAMA (ATOMICITY):**
+    - **Satu File = Satu User Story.**
+    - Jangan pernah menggabungkan beberapa User Story dalam satu file spesifikasi.
+    - Jika permintaan user mengandung banyak fitur (misal: "Buat fitur Otentikasi"), Anda harus memecahnya menjadi file terpisah (misal: Login sendiri, Register sendiri, Lupa Password sendiri) atau tanya user mana yang harus dikerjakan duluan.
+
+8.  **Review & Finalize:**
+    - Pastikan spesifikasi lengkap, jelas, dan sesuai standar dokumentasi.
+    - Simpan file di `specification/` dengan format penamaan yang benar.
+
 **INPUT SAYA:**
 "[INPUT USER DISINI]"
