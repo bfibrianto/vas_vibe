@@ -22,6 +22,13 @@
 3. **TASK IDENTIFICATION:**
    - Identifikasi semua spesifikasi yang sudah dibuat (mulai dari `000_spec_environment_setup.md`).
    - Untuk setiap spesifikasi, buat task entry di task list.
+   - **Tentukan layer yang terdampak** pada setiap task — satu spesifikasi bisa menghasilkan lebih dari satu task jika menyentuh beberapa layer:
+     - `api-gateway` — Kong routing/plugin
+     - `api-go` — Go Services (transaksional)
+     - `api-node` — Node Services (non-transaksional)
+     - `web` — Web Dashboard (Next.js)
+     - `mobile` — Mobile App (Flutter)
+   - Setiap task **hanya boleh mencakup satu layer**. Jika satu spesifikasi menyentuh beberapa layer, **BUAT TASK TERPISAH** per layer dengan suffix layer di ID-nya (contoh: `TASK-001-api-node`, `TASK-001-web`, `TASK-001-mobile`).
    - Tentukan prioritas berdasarkan:
      - **P0 (Critical):** Environment setup, authentication, core infrastructure.
      - **P1 (High):** Fitur utama yang menjadi MVP (Minimum Viable Product).
@@ -31,6 +38,8 @@
 4. **TASK LIST STRUCTURE:**
    File `task/task_list.md` harus mengikuti format berikut:
 
+   > **ATURAN ANTI-CONFLICT:** Setiap task dimiliki tepat satu layer. Tim API, Web, dan Mobile bekerja di section masing-masing secara independen. Agent tidak boleh menulis task di section layer lain.
+
    ```markdown
    # TASK LIST - [Nama Project]
    **Last Updated:** [YYYY-MM-DD HH:MM]
@@ -39,49 +48,110 @@
 
    ---
 
-   ## Priority 0 (Critical)
+   <!-- ════════════════════════════════════════════════════════
+        LAYER: API (Gateway · Go Services · Node Services)
+        Owner: Backend Team / API Developer Agent
+        ════════════════════════════════════════════════════════ -->
 
-   ### [TASK-000] Environment Setup
-   - **Spec:** `specification/000_spec_environment_setup.md`
-   - **Status:** `not_started`
-   - **Assigned To:** Developer Agent
-   - **Dependencies:** None
-   - **Description:** Setup development environment dengan Docker containers
-   - **Last Updated:** [YYYY-MM-DD HH:MM]
-   - **Notes:** -
+   ## 🔌 API Layer
 
-   ---
+   ### Priority 0 (Critical) — API
 
-   ## Priority 1 (High)
-
-   ### [TASK-001] User Authentication - Login
-   - **Spec:** `specification/001_spec_login.md`
-   - **Status:** `not_started`
-   - **Assigned To:** Developer Agent
-   - **Dependencies:** TASK-000
-   - **Description:** Implementasi fitur login user
-   - **Last Updated:** [YYYY-MM-DD HH:MM]
-   - **Notes:** -
-
-   ---
-
-   ## Priority 2 (Medium)
-
-   ### [TASK-XXX] [Nama Task]
-   - **Spec:** `specification/XXX_spec_...md`
+   #### [TASK-000-api] Environment Setup — API
+   - **Spec:** `specifications/000_spec_environment_setup.md`
+   - **Layer:** `api-node` | `api-go` | `api-gateway`  ← pilih salah satu
    - **Status:** `not_started`
    - **Assigned To:** -
-   - **Dependencies:** TASK-XXX
-   - **Description:** [Deskripsi singkat]
+   - **Dependencies:** None
+   - **Description:** Setup Docker, database, migration untuk layer API
+   - **Last Updated:** [YYYY-MM-DD HH:MM]
+   - **Notes:** -
+
+   ### Priority 1 (High) — API
+
+   #### [TASK-001-api-node] Login — API Node (auth-admin-service)
+   - **Spec:** `specifications/001_spec_login_admin_web.md`
+   - **Layer:** `api-node`
+   - **Status:** `not_started`
+   - **Assigned To:** -
+   - **Dependencies:** TASK-000-api
+   - **Description:** Endpoint POST /auth/login, JWT, validasi kredensial admin
    - **Last Updated:** [YYYY-MM-DD HH:MM]
    - **Notes:** -
 
    ---
 
-   ## Blocked Tasks
+   <!-- ════════════════════════════════════════════════════════
+        LAYER: WEB DASHBOARD
+        Owner: Frontend Web Team / Web Developer Agent
+        ════════════════════════════════════════════════════════ -->
 
-   ### [TASK-XXX] [Nama Task]
-   - **Spec:** `specification/XXX_spec_...md`
+   ## 🖥️ Web Layer
+
+   ### Priority 0 (Critical) — Web
+
+   #### [TASK-000-web] Environment Setup — Web
+   - **Spec:** `specifications/000_spec_environment_setup.md`
+   - **Layer:** `web`
+   - **Status:** `not_started`
+   - **Assigned To:** -
+   - **Dependencies:** None
+   - **Description:** Setup Next.js app, env vars, Docker untuk web dashboard
+   - **Last Updated:** [YYYY-MM-DD HH:MM]
+   - **Notes:** -
+
+   ### Priority 1 (High) — Web
+
+   #### [TASK-001-web] Login — Web Dashboard
+   - **Spec:** `specifications/001_spec_login_admin_web.md`
+   - **Layer:** `web`
+   - **Status:** `not_started`
+   - **Assigned To:** -
+   - **Dependencies:** TASK-000-web, TASK-001-api-node
+   - **Description:** Halaman login admin, form RHF+Zod, redirect dashboard
+   - **Last Updated:** [YYYY-MM-DD HH:MM]
+   - **Notes:** -
+
+   ---
+
+   <!-- ════════════════════════════════════════════════════════
+        LAYER: MOBILE APP
+        Owner: Mobile Team / Mobile Developer Agent
+        ════════════════════════════════════════════════════════ -->
+
+   ## 📱 Mobile Layer
+
+   ### Priority 0 (Critical) — Mobile
+
+   #### [TASK-000-mobile] Environment Setup — Mobile
+   - **Spec:** `specifications/000_spec_environment_setup.md`
+   - **Layer:** `mobile`
+   - **Status:** `not_started`
+   - **Assigned To:** -
+   - **Dependencies:** None
+   - **Description:** Setup Flutter app, env, flavor config
+   - **Last Updated:** [YYYY-MM-DD HH:MM]
+   - **Notes:** -
+
+   ### Priority 1 (High) — Mobile
+
+   #### [TASK-009-mobile] Login — Mobile Merchant
+   - **Spec:** `specifications/009_spec_login_mobile_merchant.md`
+   - **Layer:** `mobile`
+   - **Status:** `not_started`
+   - **Assigned To:** -
+   - **Dependencies:** TASK-000-mobile, TASK-009-api-node
+   - **Description:** Screen login mobile merchant, Riverpod, validasi STD-VAL-INPT
+   - **Last Updated:** [YYYY-MM-DD HH:MM]
+   - **Notes:** -
+
+   ---
+
+   ## 🚫 Blocked Tasks
+
+   #### [TASK-XXX-layer] [Nama Task]
+   - **Spec:** `specifications/XXX_spec_...md`
+   - **Layer:** `api-node` | `api-go` | `web` | `mobile`
    - **Status:** `blocked`
    - **Assigned To:** -
    - **Dependencies:** TASK-XXX
@@ -92,10 +162,11 @@
 
    ---
 
-   ## Completed Tasks
+   ## ✅ Completed Tasks
 
-   ### [TASK-XXX] [Nama Task]
-   - **Spec:** `specification/XXX_spec_...md`
+   #### [TASK-XXX-layer] [Nama Task]
+   - **Spec:** `specifications/XXX_spec_...md`
+   - **Layer:** `api-node` | `api-go` | `web` | `mobile`
    - **Status:** `human_validated`
    - **Assigned To:** Developer Agent
    - **Dependencies:** TASK-XXX
@@ -161,6 +232,15 @@
    - **Fixer Agent:** Akan update status dari `failed` → `fixing` → `ready_to_test`.
    - **Tester Agent:** Akan update status dari `ready_to_test` → `testing_ready` → `testing` → `passed`/`failed`.
    - **Your Role:** Memastikan task list selalu up-to-date dan terorganisir dengan baik.
+
+   **ATURAN ANTI-CONFLICT ANTAR TIM:**
+   - Setiap agent hanya boleh **membaca dan mengupdate task di section layer-nya sendiri**.
+     - API Developer Agent → section `🔌 API Layer` saja.
+     - Web Developer Agent → section `🖥️ Web Layer` saja.
+     - Mobile Developer Agent → section `📱 Mobile Layer` saja.
+   - **Cross-layer dependency** (misal Web butuh API selesai dulu) **HANYA dicatat** di field `Dependencies`, bukan dengan mengubah task di section lain.
+   - Jika satu spesifikasi menghasilkan task di beberapa layer, PM Agent yang **membuat semua task-nya**, lalu masing-masing tim hanya mengerjakan task di section-nya.
+   - PM Agent adalah satu-satunya yang boleh **membuat, memindahkan, atau menghapus** task lintas section.
 
 10. **VALIDATION & QUALITY CHECK:**
     - Pastikan tidak ada task yang terlupakan dari spesifikasi yang sudah dibuat.
