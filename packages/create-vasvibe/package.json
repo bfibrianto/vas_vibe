@@ -1,0 +1,45 @@
+{
+  "name": "create-vasvibe",
+  "version": "0.1.0",
+  "description": "Scaffold a new project with VasVibe agents, prompts, and workflows preconfigured (Claude, OpenCode, GitHub Copilot).",
+  "type": "module",
+  "bin": {
+    "create-vasvibe": "./bin/cli.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "template",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "sync-template": "node scripts/sync-template.mjs",
+    "prepublishOnly": "node scripts/sync-template.mjs",
+    "test:scaffold": "node bin/cli.mjs /tmp/test-vasvibe-scaffold --yes"
+  },
+  "dependencies": {
+    "picocolors": "^1.1.1",
+    "prompts": "^2.4.2"
+  },
+  "keywords": [
+    "scaffold",
+    "create",
+    "vasvibe",
+    "agents",
+    "opencode",
+    "claude",
+    "ai",
+    "starter",
+    "template"
+  ],
+  "license": "MIT",
+  "author": "VasVibe Team",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anomalyco/vas_vibe.git",
+    "directory": "packages/create-vasvibe"
+  }
+}

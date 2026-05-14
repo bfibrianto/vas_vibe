@@ -1,0 +1,15 @@
+node_modules
+.DS_Store
+*.log
+test-output/
+.tmp/
+scripts/
+
+# Python build artifacts that may live inside skill scripts
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Editor / OS noise
+.idea/
+.vscode/

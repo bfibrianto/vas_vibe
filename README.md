@@ -3,6 +3,31 @@
 Selamat datang di ekosistem **Vibe Coding**.
 Ini adalah standar alur kerja pengembangan software berbasis **AI Agent** (GitHub Copilot + Claude Sonnet) yang mengutamakan struktur, dokumentasi otomatis, dan validasi berjenjang.
 
+---
+
+## ⚡ Quick start (untuk tim baru)
+
+Scaffold project baru lengkap dengan semua agent prompts, skills, dan struktur folder kerja standar tim:
+
+```bash
+npx create-vasvibe my-new-project
+cd my-new-project
+```
+
+Yang akan ter-scaffold otomatis:
+- `.agents/`, `.claude/`, `.opencode/`, `.github/prompts/`, `agent/workflows/` — semua agent prompts & skills
+- `codes/`, `specifications/`, `tests/` — folder kerja dengan `.gitignore` rules
+- `project_overview_example.md`, `GIT_STRUCTURE_GUIDE.md`, `README.md`, `skills-lock.json`
+
+Flag yang tersedia:
+- `--yes` skip semua prompt
+- `--no-git` skip git init
+- `--no-claude` / `--no-opencode` / `--no-github` / `--no-workflows` untuk exclude toolchain tertentu
+
+Source CLI: [`packages/create-vasvibe/`](./packages/create-vasvibe).
+
+---
+
 ## 🤖 Tentang AI Agent
 
 **AI Agent** adalah sistem cerdas berbasis Large Language Model (LLM) yang dapat mengeksekusi tugas-tugas kompleks secara mandiri dengan menggunakan **tools** (function calling). Berbeda dengan chatbot biasa yang hanya menjawab pertanyaan, AI Agent dapat:
