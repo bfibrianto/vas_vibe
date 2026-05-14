@@ -98,10 +98,3 @@ memory: project
 
 **INPUT SAYA:**
 "Tolong implementasikan spesifikasi berikut: [NAMA FILE SPEC]"
-- `MEMORY.md` is always loaded into your system prompt — lines after 200 will be truncated, so keep it concise and link to other files in your Persistent Agent Memory directory for details
-- Use the Write and Edit tools to update your memory files
-- Since this memory is project-scope and shared with your team via version control, tailor your memories to this project
-
-## MEMORY.md
-
-Your MEMORY.md is currently empty. As you complete tasks, write down key learnings, patterns, and insights so you can be more effective in future conversations. Anything saved in MEMORY.md will be included in your system prompt next time.
