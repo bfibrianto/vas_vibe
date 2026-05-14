@@ -13,7 +13,6 @@ const TEMPLATE_DIR = path.resolve(PKG_DIR, 'template');
 
 // Static files that ship from the package (not synced from root).
 const STATIC_FILES = new Set([
-  'README.md',
   '_gitignore',
   'PROJECT_README.example.md',
   'codes/.gitkeep',
@@ -53,6 +52,7 @@ const SOURCES = [
   { src: 'project_overview_example.md', dest: 'project_overview_example.md' },
   { src: 'skills-lock.json', dest: 'skills-lock.json' },
   { src: 'GIT_STRUCTURE_GUIDE.md', dest: 'GIT_STRUCTURE_GUIDE.md' },
+  { src: 'README.md', dest: 'README.md', transform: 'readme' },
 ];
 
 async function pathExists(p) {
@@ -86,6 +86,49 @@ async function copyRecursive(src, dest, filter) {
     await fs.mkdir(path.dirname(dest), { recursive: true });
     await fs.copyFile(src, dest);
   }
+}
+
+/**
+ * Copy README from repo root to the template, swapping VasVibe-specific
+ * brand and domain references for placeholders so the docs read as a
+ * generic starter, not as the VasVibe product README.
+ */
+async function syncReadme(srcPath, destPath) {
+  let content = await fs.readFile(srcPath, 'utf8');
+
+  // Brand name variants → {{projectName}} placeholder (replaced at scaffold).
+  // We deliberately do NOT touch "create-vasvibe" (the npm package name)
+  // or "vasvibe.com" (handled separately below).
+  const brandPatterns = [
+    /VasVibe/g,
+    /VAS Vibe/g,
+    /vas_vibe/g,
+    // lowercase "vasvibe", but not when preceded by "create-" (package name)
+    // and not when followed by ".com" (domain).
+    /(?<!create-)vasvibe(?!\.com)/g,
+  ];
+  for (const re of brandPatterns) {
+    content = content.replace(re, '{{projectName}}');
+  }
+
+  // Domain → generic example domain.
+  content = content.replace(/vasvibe\.com/g, 'example.com');
+
+  // Add a short banner up top so users know this README came from a starter.
+  const banner =
+    '> _This README ships from the [`create-vasvibe`](https://www.npmjs.com/package/create-vasvibe) starter. ' +
+    'Examples reference a boat tour booking project (Labuan Bajo) for illustration. ' +
+    'Replace examples with your own context as needed._\n\n';
+  // Insert after the H1 line.
+  const lines = content.split('\n');
+  const h1Idx = lines.findIndex((l) => /^# /.test(l));
+  if (h1Idx >= 0) {
+    lines.splice(h1Idx + 1, 0, '', banner.trimEnd());
+    content = lines.join('\n');
+  }
+
+  await fs.mkdir(path.dirname(destPath), { recursive: true });
+  await fs.writeFile(destPath, content, 'utf8');
 }
 
 async function cleanTemplateExceptStatic() {
@@ -128,14 +171,18 @@ async function main() {
 
   await cleanTemplateExceptStatic();
 
-  for (const { src, dest, filter } of SOURCES) {
+  for (const { src, dest, filter, transform } of SOURCES) {
     const srcPath = path.join(REPO_ROOT, src);
     const destPath = path.join(TEMPLATE_DIR, dest);
     if (!(await pathExists(srcPath))) {
       console.warn(`  skip (missing): ${src}`);
       continue;
     }
-    await copyRecursive(srcPath, destPath, filter);
+    if (transform === 'readme') {
+      await syncReadme(srcPath, destPath);
+    } else {
+      await copyRecursive(srcPath, destPath, filter);
+    }
     console.log(`  synced: ${src}`);
   }
 
