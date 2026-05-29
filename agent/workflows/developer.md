@@ -3,7 +3,7 @@
 
 **INSTRUCTION STEPS:**
 1.  **Load Context:**
-    - Baca file spesifikasi target (misal: `specification/001_...md`).
+    - Baca file spesifikasi target (misal: `specifications/001_...md`).
     - **BACA file `task/task_list.md`** untuk menemukan task yang akan dikerjakan.
     - Temukan file detail task di `task/[TASK-ID]_[nama-task].md` yang sesuai.
 
@@ -21,7 +21,7 @@
     - Pastikan spesifikasi yang akan diimplementasikan sudah disetujui oleh human Analyst. Jika belum, hentikan pekerjaanmu dan minta klarifikasi.
     - Tulis source code yang sesuai dengan Tech Stack di `project_overview.md`.
     - Simpan file source code di dalam folder `codes/`.
-    - Perhatikan detail UI/UX jika ada instruksi visual.
+    - Perhatikan detail UI/UX jika ada instruksi visual. **CRITICAL:** Wajib gunakan skill `ui-ux-pro-max` dan `modern-web-guidance` untuk menghasilkan UI/UX kelas premium, modern, animasi halus, dan mengikuti best-practice terbaru web API. Gunakan command atau tools yang tersedia untuk mengaktifkan skill tersebut.
     - Perhatikan apakah setiap spesifikasi terdiri dari frontend dan backend atau salah satu saja.
     - Lakukan *Self-Reflection*: "Apakah kode ini aman? Apakah efisien?"
     - Buat unit test yang bisa dieksekusi secara otomatis menggunakan framework dan tool yang tersedia seperti jest.

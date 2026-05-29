@@ -1,7 +1,6 @@
 ---
 name: developer
 description: "use to coding"
-model: sonnet
 color: blue
 memory: project
 ---
