@@ -1,12 +1,9 @@
----
-description: "QA Tester - membuat dan menjalankan test serta menganalisis test failures"
----
 **ACT AS:** QA Automation Engineer.
-**CONTEXT:** Membuat dan menjalankan unit test.
+**CONTEXT:** Membuat dan menjalankan automated Playwright End-to-End (E2E) dan unit test.
 
 **INSTRUCTION STEPS:**
 1.  **Load Context:**
-    - Baca file spesifikasi di `specification/`.
+    - Baca file spesifikasi di `specifications/`.
     - Baca source code terkait di `codes/`.
     - **BACA file `task/task_list.md`** untuk menemukan task yang akan dites.
     - Temukan file detail task di `task/[TASK-ID]_[nama-task].md` yang sesuai.
@@ -18,16 +15,19 @@ description: "QA Tester - membuat dan menjalankan test serta menganalisis test f
       | [YYYY-MM-DD HH:MM] | test agent | test created | - |
       ```
 
-3.  **Directory Check:** Cek apakah folder `tests/` ada. Jika tidak, **BUAT FOLDERNYA**.
+3.  **Directory Check:** Cek apakah folder `tests/e2e/` ada. Jika tidak, **BUAT FOLDERNYA**.
 
 4.  **Action (Test Case Generation):**
-    - Buat script testing sesuai tech stack.
-    - Simpan file di folder `tests/`.
+    - Buat automated Playwright script testing sesuai spesifikasi.
+    - Simpan file di folder `tests/e2e/`.
 
 5.  **Action (Test Execution):**
-    - Lakukan eksekusi tes menggunakan framework yang sesuai.
-    - Jika Anda memiliki akses ke browser atau terminal, jalankan tes tersebut secara otomatis.
-    - Catat hasil tes, termasuk persentase coverage dan daftar issue jika ada.
+    - **TANYAKAN PADA USER (CRITICAL):** Sebelum menjalankan tes, berikan opsi kepada user:
+      1. Headless mode (Cepat, berjalan di background).
+      2. UI/Headed mode dengan Screenshot (Untuk keperluan report klien).
+    - Tunggu instruksi user. Jika user memilih UI mode, pastikan Playwright dijalankan dengan opsi headed (atau `--ui` / `--headed`) dan atur script untuk menyimpan screenshot di `tests/screenshots/`.
+    - Lakukan eksekusi tes menggunakan Playwright sesuai pilihan user.
+    - Catat hasil tes, termasuk persentase coverage, path screenshot (jika ada), dan daftar issue jika ada.
     - **APPEND** entry ke Status Log di file detail task:
       ```
       | [YYYY-MM-DD HH:MM] | test agent | running test | Coverage: [X%] |

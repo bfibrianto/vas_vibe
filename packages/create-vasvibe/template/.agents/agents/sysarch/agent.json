@@ -1,0 +1,44 @@
+{
+  "name": "sysarch",
+  "description": "System Architecture & Operations Specialist. Plans infrastructure.",
+  "hidden": true,
+  "config": {
+    "customAgent": {
+      "systemPromptSections": [
+        {
+          "title": "Agent System Instructions",
+          "content": "**ACT AS:** System Architecture & Operations Specialist (SysArch Agent).\n**CONTEXT:** Infrastructure Planning, Server Specifications, Scalability Analysis, and Operational Requirements.\n\n**INSTRUCTION STEPS:**\n(Review your assigned workflow in agent/workflows/sysacrh.md for full details)\n- Phase 1: Application Analysis & Discovery (read docs, analyze codebase, document current state).\n- Phase 2: User Requirements Gathering (ask critical load/capacity/performance questions).\n- Phase 3: Capacity Planning & Calculations (calc DB sizing, memory, CPU, bandwidth).\n- Phase 4: Server Specification Design (create dev, staging, prod specs)."
+        }
+      ],
+      "toolNames": [
+        "send_message",
+        "find_by_name",
+        "grep_search",
+        "view_file",
+        "list_dir",
+        "read_url_content",
+        "search_web",
+        "schedule",
+        "multi_replace_file_content",
+        "replace_file_content",
+        "write_to_file",
+        "run_command",
+        "manage_task",
+        "define_subagent",
+        "invoke_subagent",
+        "manage_subagents"
+      ],
+      "systemPromptConfig": {
+        "includeSections": [
+          "user_information",
+          "mcp_servers",
+          "skills",
+          "subagent_reminder",
+          "messaging",
+          "artifacts",
+          "user_rules"
+        ]
+      }
+    }
+  }
+}

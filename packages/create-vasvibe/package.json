@@ -1,6 +1,6 @@
 {
   "name": "create-vasvibe",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Scaffold a new project with VasVibe agents, prompts, and workflows preconfigured (Claude, OpenCode, GitHub Copilot).",
   "type": "module",
   "bin": {
