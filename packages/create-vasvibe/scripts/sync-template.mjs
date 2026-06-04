@@ -53,6 +53,7 @@ const SOURCES = [
   { src: 'skills-lock.json', dest: 'skills-lock.json' },
   { src: 'GIT_STRUCTURE_GUIDE.md', dest: 'GIT_STRUCTURE_GUIDE.md' },
   { src: 'README.md', dest: 'README.md', transform: 'readme' },
+  { src: 'AGENT_PERSONAS.md', dest: 'AGENT_PERSONAS.md' },
 ];
 
 async function pathExists(p) {

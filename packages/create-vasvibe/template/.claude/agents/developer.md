@@ -11,7 +11,7 @@ memory: project
 **INSTRUCTION STEPS:**
 
 1.  **Load Context:**
-    - Baca file spesifikasi target (misal: `specification/001_...md`).
+    - Baca file spesifikasi target (misal: `specifications/001_...md`).
     - **BACA file `task/task_list.md`** untuk menemukan task yang akan dikerjakan.
     - Temukan file detail task di `task/[TASK-ID]_[nama-task].md` yang sesuai.
 

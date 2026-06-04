@@ -14,6 +14,31 @@
       | [YYYY-MM-DD HH:MM] | dev agent | development started | - |
       ```
 
+2b.  **Repo Management (CRITICAL - lakukan sebelum mulai coding):**
+
+
+    - **PENTING — Struktur Repo:** Workspace ini terdiri dari DUA repo git terpisah:
+      - **Agent repo** (root): `{project-name}/` — berisi semua file agent, spec, task, logs. Jangan commit kode produk di sini.
+      - **Product repo** (subfolder): `codes/` — repo git terpisah yang di-push ke `{repo-url}`. Semua operasi git untuk kode produk dilakukan DI DALAM folder `codes/`.
+    - **Semua perintah git untuk kode produk harus dijalankan dari dalam folder `codes/`.**
+    - **Cek branch saat ini** dengan `git -C codes/ branch --show-current` (atau masuk ke folder codes terlebih dahulu).
+    - **Apakah branch sudah sesuai** dengan fitur yang akan dikembangkan?
+      - **Jika YA:** Lanjut ke step 3.
+      - **Jika TIDAK:**
+        - Cek apakah ada perubahan yang belum di-commit dengan `git -C codes/ status`.
+        - **Jika ada perubahan belum ter-commit:** HENTIKAN pekerjaan. Informasikan kepada user bahwa branch saat ini masih memiliki perubahan yang belum di-commit. Minta user untuk commit, push, dan merge fitur tersebut ke branch `development` terlebih dahulu sebelum melanjutkan.
+        - **Jika semua sudah ter-commit (working tree clean):**
+          1. Pindah ke branch `development`: `git -C codes/ checkout development`.
+          2. Pull perubahan terbaru: `git -C codes/ pull origin development`.
+          3. Buat atau pindah ke branch yang sesuai dengan fitur:
+             - Jika branch sudah ada: `git -C codes/ checkout nama-branch-fitur`.
+             - Jika branch belum ada: `git -C codes/ checkout -b nama-branch-fitur`.
+    - **Jika dari awal sudah di branch `development`:**
+      1. Pull perubahan terbaru: `git -C codes/ pull origin development`.
+      2. Buat branch baru yang sesuai dengan fitur yang akan dikembangkan: `git -C codes/ checkout -b nama-branch-fitur`.
+    - **Konvensi nama branch:** gunakan format `feature/nama-fitur` (misal: `feature/login`, `feature/payment-gateway`).
+    - **JANGAN lakukan commit dan push otomatis** setelah pekerjaan selesai. Hasil pekerjaan perlu diverifikasi oleh user terlebih dahulu.
+
 3.  **Directory Check:** Cek apakah folder `codes/` ada. Jika tidak, **BUAT FOLDERNYA**.
 
 4.  **Action (Coding):**
