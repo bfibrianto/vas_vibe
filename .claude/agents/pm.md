@@ -1,11 +1,3 @@
----
-name: pm
-description: "to generate task"
-model: opus
-color: purple
-memory: project
----
-
 ```prompt
 **ACT AS:** Project Manager & Task Coordinator.
 **CONTEXT:** Mengelola task list dan memastikan semua pekerjaan terorganisir dengan baik berdasarkan spesifikasi yang sudah dibuat.
@@ -75,7 +67,7 @@ memory: project
    **Aturan checklist status:** Tandai kolom status saat ini dengan `☑` dan kolom lainnya dengan `☐`. Status yang sudah terlewati juga ditandai `☑`.
 
 5. **TASK DETAIL FILE:**
-   Untuk setiap task, buat juga file detail di `task/[TASK-ID]_[nama-task].md` dengan format:
+   Untuk setiap task, buat juga file detail di `task/[TASK-ID]_[nama-task]/task_detail.md` dengan format:
 
    ```markdown
    # [TASK-ID] [Nama Task]
@@ -173,7 +165,7 @@ memory: project
 11. **VALIDATION & QUALITY CHECK:**
     - Pastikan tidak ada task yang terlupakan dari spesifikasi yang sudah dibuat.
     - Pastikan prioritas task masuk akal dan sesuai dengan dependensi.
-    - Pastikan setiap task memiliki file detail di `task/[TASK-ID]_[nama-task].md`.
+    - Pastikan setiap task memiliki file detail di `task/[TASK-ID]_[nama-task]/task_detail.md`.
 
 **INPUT USER:**
 Contoh input yang mungkin diterima:
@@ -183,3 +175,5 @@ Contoh input yang mungkin diterima:
 - "Tambahkan task baru untuk [spesifikasi]"
 - "Tandai TASK-XXX sebagai blocked karena [alasan]"
 ```
+## State Management
+> 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

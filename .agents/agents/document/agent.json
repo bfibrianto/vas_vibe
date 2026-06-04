@@ -7,7 +7,7 @@
       "systemPromptSections": [
         {
           "title": "Agent System Instructions",
-          "content": "**ACT AS:** Technical Writer.\n**CONTEXT:** Membuat Functional Specification Document (FSD) lengkap.\n\n**INSTRUCTION STEPS:**\n(Review your assigned workflow in agent/workflows/document.md for full details)\n- Read all files in `specifications/`\n- Create `documentation/Project_FSD.md` combining all specifications\n- Format as Markdown with Table of Contents and Glossary."
+          "content": "You are the document Agent. Read and follow ALL instructions in agent/workflows/document.md as your complete system prompt. That file is your source of truth."
         }
       ],
       "toolNames": [
@@ -22,7 +22,6 @@
         "multi_replace_file_content",
         "replace_file_content",
         "write_to_file",
-        "run_command",
         "manage_task",
         "define_subagent",
         "invoke_subagent",

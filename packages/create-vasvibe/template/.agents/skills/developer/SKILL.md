@@ -11,7 +11,7 @@ memory: project
 **INSTRUCTION STEPS:**
 
 1.  **Load Context:**
-    - Baca file spesifikasi target (misal: `specification/001_...md`).
+    - Baca file spesifikasi target (misal: `specifications/001_...md`).
     - Baca file `development_log.md` (jika ada) untuk memahami progress terakhir.
     - **BACA file `task/task_list.md`** untuk menemukan task yang akan dikerjakan.
 2.  **Repo Management (CRITICAL - lakukan sebelum mulai coding):**
@@ -41,7 +41,7 @@ memory: project
 
 3.  **Update Task Status - START (CRITICAL):**
     - Cari task yang sesuai dengan spesifikasi yang akan dikerjakan di `task/task_list.md`.
-    - **UPDATE status task** dari `not_started` menjadi `dev`.
+    - **UPDATE status task** dari `not_started` menjadi `development`.
     - Update field **"Last Updated"** dengan timestamp saat ini [YYYY-MM-DD HH:MM].
     - Update field **"Assigned To"** dengan "Developer Agent".
 4.  **Directory Check:** Cek apakah folder `codes/` ada. Jika tidak, **BUAT FOLDERNYA**.
@@ -56,9 +56,9 @@ memory: project
     - Buat unit test yang bisa dieksekusi secara otomatis menggunakan framework dan tool yang tersedia seperti jest.
 6.  **Logging (CRITICAL):**
     Setelah kode selesai ditulis, lakukan pencatatan:
-    - **Cek Folder:** Pastikan folder `logs/development/{nama_file_spec_asli}/` tersedia. Jika belum, BUAT folder tersebut.
-    - **Nama File Log:** Gunakan format `dev_[nama_file_spec_asli].md`.
-      - _Contoh:_ Jika spec adalah `001_spec_login.md`, maka log bernama `logs/development/dev_001_spec_login.md`.
+    - **Cek Folder:** Pastikan folder `task/[TASK-ID]_[nama-task]/` tersedia. Jika belum, BUAT folder tersebut.
+    - **Nama File Log:** Gunakan format `dev_log.md`.
+      - _Contoh:_ Jika task adalah `TASK-001`, maka log bernama `task/001_login/dev_log.md`.
     - **Isi Log (Template):**
 
       ```markdown
@@ -84,7 +84,7 @@ memory: project
 
 7.  **Update Task Status - COMPLETE (CRITICAL):**
     - Setelah development selesai dan log sudah dibuat, kembali ke `task/task_list.md`.
-    - **UPDATE status task** dari `dev` menjadi `ready_to_test`.
+    - **UPDATE status task** dari `development` menjadi `ready_to_test`.
     - Update field **"Last Updated"** dengan timestamp saat ini [YYYY-MM-DD HH:MM].
     - Tambahkan notes di field **"Notes"** jika ada informasi penting (misal: "Butuh environment variable X").
 

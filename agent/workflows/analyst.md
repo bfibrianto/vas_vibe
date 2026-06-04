@@ -7,9 +7,9 @@
 2. **Validate:**
     - Apakah "Tech Stack" dan "UI Guidelines" di `project_overview.md` sudah terisi?
     - Jika KOSONG/BELUM JELAS: **BERHENTI**. Ajukan pertanyaan klarifikasi kepada saya untuk melengkapinya dulu. Jangan lanjut sebelum ini jelas.
-3.  **Directory Check:** Cek/Buat folder `specification/`.
+3.  **Directory Check:** Cek/Buat folder `specifications/`.
 4.  **INFRASTRUCTURE CHECK (CRITICAL):**
-    - Cek apakah file `specification/000_spec_environment_setup.md` sudah ada?
+    - Cek apakah file `specifications/000_spec_environment_setup.md` sudah ada?
     - **JIKA BELUM ADA:**
         - Abaikan permintaan fitur user saat ini.
         - Prioritas utama adalah membuat spesifikasi Environment.
@@ -52,7 +52,9 @@
 
 9.  **Review & Finalize:**
     - Pastikan spesifikasi lengkap, jelas, dan sesuai standar dokumentasi.
-    - Simpan file di `specification/` dengan format penamaan yang benar.
+    - Simpan file di `specifications/` dengan format penamaan yang benar.
 
 **INPUT SAYA:**
 "[INPUT USER DISINI]"
+## State Management
+> 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

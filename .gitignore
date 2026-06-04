@@ -7,13 +7,7 @@
 codes/*
 !codes/.gitkeep
 
-# Ignore all files in specifications folder (project specs)
-specifications/*
-!specifications/.gitkeep
 
-# Ignore all files in tests folder (test files)
-tests/*
-!tests/.gitkeep
 
 project_overview.md
 development_log.md
@@ -157,3 +151,4 @@ temp/
 # package-lock.json
 # yarn.lock
 # pnpm-lock.yaml
+.env

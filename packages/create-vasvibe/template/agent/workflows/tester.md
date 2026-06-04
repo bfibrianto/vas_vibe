@@ -6,39 +6,17 @@
     - Baca file spesifikasi di `specifications/`.
     - Baca source code terkait di `codes/`.
     - **BACA file `task/task_list.md`** untuk menemukan task yang akan dites.
-    - Temukan file detail task di `task/[TASK-ID]_[nama-task].md` yang sesuai.
+    - Temukan file detail task di `task/[TASK-ID]_[nama-task]/task_detail.md` yang sesuai.
 
 2.  **Update Task Status - START (CRITICAL):**
     - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `testing` dengan `☑`.
-    - Di file detail task `task/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
+    - Di file detail task `task/[TASK-ID]_[nama-task]/task_detail.md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | test agent | test created | - |
       ```
 
-2b.  **Repo Management (CRITICAL - lakukan sebelum mulai coding):**
-
-
-    - **PENTING — Struktur Repo:** Workspace ini terdiri dari DUA repo git terpisah:
-      - **Agent repo** (root): `{project-name}/` — berisi semua file agent, spec, task, logs. Jangan commit kode produk di sini.
-      - **Product repo** (subfolder): `codes/` — repo git terpisah yang di-push ke `{repo-url}`. Semua operasi git untuk kode produk dilakukan DI DALAM folder `codes/`.
-    - **Semua perintah git untuk kode produk harus dijalankan dari dalam folder `codes/`.**
-    - **Cek branch saat ini** dengan `git -C codes/ branch --show-current` (atau masuk ke folder codes terlebih dahulu).
-    - **Apakah branch sudah sesuai** dengan fitur yang akan dikembangkan?
-      - **Jika YA:** Lanjut ke step 3.
-      - **Jika TIDAK:**
-        - Cek apakah ada perubahan yang belum di-commit dengan `git -C codes/ status`.
-        - **Jika ada perubahan belum ter-commit:** HENTIKAN pekerjaan. Informasikan kepada user bahwa branch saat ini masih memiliki perubahan yang belum di-commit. Minta user untuk commit, push, dan merge fitur tersebut ke branch `development` terlebih dahulu sebelum melanjutkan.
-        - **Jika semua sudah ter-commit (working tree clean):**
-          1. Pindah ke branch `development`: `git -C codes/ checkout development`.
-          2. Pull perubahan terbaru: `git -C codes/ pull origin development`.
-          3. Buat atau pindah ke branch yang sesuai dengan fitur:
-             - Jika branch sudah ada: `git -C codes/ checkout nama-branch-fitur`.
-             - Jika branch belum ada: `git -C codes/ checkout -b nama-branch-fitur`.
-    - **Jika dari awal sudah di branch `development`:**
-      1. Pull perubahan terbaru: `git -C codes/ pull origin development`.
-      2. Buat branch baru yang sesuai dengan fitur yang akan dikembangkan: `git -C codes/ checkout -b nama-branch-fitur`.
-    - **Konvensi nama branch:** gunakan format `feature/nama-fitur` (misal: `feature/login`, `feature/payment-gateway`).
-    - **JANGAN lakukan commit dan push otomatis** setelah pekerjaan selesai. Hasil pekerjaan perlu diverifikasi oleh user terlebih dahulu.
+2b.  **Repo Management (CRITICAL - lakukan sebelum mulai testing):**
+    > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/git-branch-management.md` untuk aturan git branch dan folder struktur.
 
 3.  **Directory Check:** Cek apakah folder `tests/e2e/` ada. Jika tidak, **BUAT FOLDERNYA**.
 
@@ -106,3 +84,5 @@
 
 **INPUT SAYA:**
 "Buat dan jalankan tes untuk file code: [NAMA FILE CODE]"
+## State Management
+> 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

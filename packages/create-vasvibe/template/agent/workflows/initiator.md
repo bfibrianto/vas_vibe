@@ -53,3 +53,5 @@
 
 ## 6. Constraints & Compliance
 [Isi jika ada, atau tulis "Standard Web Security Practices"]
+## State Management
+> 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

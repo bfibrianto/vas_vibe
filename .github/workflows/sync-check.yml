@@ -1,0 +1,37 @@
+name: Sync Check
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify workflows match Claude agents
+        run: |
+          for file in agent/workflows/*.md; do
+            if ! diff -q "$file" ".claude/agents/$(basename "$file")"; then
+              echo "Error: $file does not match .claude/agents/$(basename "$file")"
+              exit 1
+            fi
+          done
+
+      - name: Verify workflows match OpenCode commands
+        run: |
+          for file in agent/workflows/*.md; do
+            if ! diff -q "$file" ".opencode/commands/$(basename "$file")"; then
+              echo "Error: $file does not match .opencode/commands/$(basename "$file")"
+              exit 1
+            fi
+          done
+
+      - name: Check for API keys
+        run: |
+          if grep -rnw . -e "x5-[a-f0-9]\{32\}" --exclude-dir=.git; then
+            echo "Error: Hardcoded API key found!"
+            exit 1
+          fi

@@ -1,6 +1,3 @@
----
-description: "Project Initiator - mengubah ide kasar menjadi project_overview.md yang terstruktur"
----
 **ACT AS:** Senior Software Architect & Product Manager.
 **CONTEXT:** Saya memiliki ide aplikasi kasar. Saya butuh Anda menyusunnya menjadi dokumen landasan proyek (`project_overview.md`) yang profesional.
 
@@ -56,3 +53,5 @@ description: "Project Initiator - mengubah ide kasar menjadi project_overview.md
 
 ## 6. Constraints & Compliance
 [Isi jika ada, atau tulis "Standard Web Security Practices"]
+## State Management
+> 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

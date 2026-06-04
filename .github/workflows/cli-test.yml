@@ -1,0 +1,49 @@
+name: CLI Tests
+on:
+  push:
+    paths:
+      - 'packages/create-vasvibe/**'
+  pull_request:
+    paths:
+      - 'packages/create-vasvibe/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: packages/create-vasvibe
+        run: npm ci || npm install
+
+      - name: Test Scaffold Execution
+        working-directory: packages/create-vasvibe
+        run: node bin/cli.mjs /tmp/test-project --yes
+
+      - name: Verify scaffolded structure
+        run: |
+          if [ ! -d "/tmp/test-project/agent/workflows" ]; then
+            echo "Error: workflows directory missing"
+            exit 1
+          fi
+          if [ ! -f "/tmp/test-project/package.json" ]; then
+            echo "Error: package.json missing"
+            exit 1
+          fi
+
+      - name: Verify placeholder replacement
+        run: |
+          if grep -q "{{projectName}}" /tmp/test-project/README.md; then
+            echo "Error: Placeholder not replaced in README.md"
+            exit 1
+          fi
+          if ! grep -q "test-project" /tmp/test-project/README.md; then
+            echo "Error: Project name not injected in README.md"
+            exit 1
+          fi

@@ -17,6 +17,7 @@ ${pc.bold('Usage:')}
 
 ${pc.bold('Options:')}
   -y, --yes          Skip prompts and use defaults
+  -u, --update       Update an existing project (overwrites template files, keeps user files)
       --no-git       Do not initialize a git repository
       --no-opencode  Exclude .opencode/ (commands, skills)
       --no-claude    Exclude .claude/ and .agents/
@@ -35,6 +36,7 @@ function parseArgs(argv) {
   const args = argv.slice(2);
   const flags = {
     yes: false,
+    update: false,
     git: true,
     opencode: true,
     claude: true,
@@ -50,6 +52,10 @@ function parseArgs(argv) {
       case '-y':
       case '--yes':
         flags.yes = true;
+        break;
+      case '-u':
+      case '--update':
+        flags.update = true;
         break;
       case '--no-git':
         flags.git = false;
@@ -125,10 +131,10 @@ export async function main(argv) {
     ? path.resolve(process.cwd(), argInput)
     : path.resolve(process.cwd(), projectName);
 
-  // Safety: target must not exist or must be empty.
-  if (await pathExists(targetDir)) {
+  // Safety: target must not exist or must be empty, unless --update is passed.
+  if (!flags.update && await pathExists(targetDir)) {
     if (!(await isDirEmpty(targetDir))) {
-      log.error(`Target directory "${projectName}" already exists and is not empty.`);
+      log.error(`Target directory "${projectName}" already exists and is not empty. Use --update to overwrite agent files.`);
       process.exit(1);
     }
   }

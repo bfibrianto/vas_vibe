@@ -13,11 +13,11 @@
     - Mengapa? Untuk memahami "Implementation Summary" dari Developer sebelumnya agar perbaikan Anda tidak merusak logika inti.
     - Baca source code saat ini di folder `codes/`.
     - **BACA file `task/task_list.md`** untuk menemukan task yang akan diperbaiki.
-    - Temukan file detail task di `task/[TASK-ID]_[nama-task].md` yang sesuai.
+    - Temukan file detail task di `task/[TASK-ID]_[nama-task]/task_detail.md` yang sesuai.
 
 2.  **Update Task Status - START (CRITICAL):**
     - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `fixing` dengan `☑`.
-    - Di file detail task `task/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
+    - Di file detail task `task/[TASK-ID]_[nama-task]/task_detail.md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | fixer agent | fixing started | Issues: [ringkasan issue] |
       ```
@@ -80,7 +80,7 @@
 
 5.  **Update Task Status - COMPLETE (CRITICAL):**
     - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `ready_to_test` dengan `☑`, hapus tanda `fixing`.
-    - Di file detail task `task/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
+    - Di file detail task `task/[TASK-ID]_[nama-task]/task_detail.md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | fixer agent | fix complete, ready to test | [ringkasan perbaikan] |
       ```

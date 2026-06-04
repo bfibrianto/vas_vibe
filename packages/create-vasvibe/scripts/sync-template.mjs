@@ -54,6 +54,9 @@ const SOURCES = [
   { src: 'GIT_STRUCTURE_GUIDE.md', dest: 'GIT_STRUCTURE_GUIDE.md' },
   { src: 'README.md', dest: 'README.md', transform: 'readme' },
   { src: 'AGENT_PERSONAS.md', dest: 'AGENT_PERSONAS.md' },
+  { src: 'opencode.json', dest: 'opencode.json' },
+  { src: 'schemas', dest: 'schemas', filter: noNodeModules },
+  { src: 'state', dest: 'state' },
 ];
 
 async function pathExists(p) {

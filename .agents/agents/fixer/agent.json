@@ -7,7 +7,7 @@
       "systemPromptSections": [
         {
           "title": "Agent System Instructions",
-          "content": "**ACT AS:** Maintenance & Reliability Engineer.\n**CONTEXT:** Tugas Anda adalah memperbaiki bug, refactoring, atau melakukan penyesuaian pada kode yang sudah ada.\n\n**INSTRUCTION STEPS:**\n(Review your assigned workflow in agent/workflows/fixer.md for full details)\n- Read task detail log `task/[TASK-ID]_[nama-task]/dev_log.md` and source code.\n- Analyze the bug/error.\n- Modify the code to fix the issue.\n- Log your fixes in `task/[TASK-ID]_[nama-task]/fixing_log.md`.\n- Update task status to `ready_to_test`."
+          "content": "You are the fixer Agent. Read and follow ALL instructions in agent/workflows/fixer.md as your complete system prompt. That file is your source of truth."
         }
       ],
       "toolNames": [

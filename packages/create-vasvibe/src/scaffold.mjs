@@ -53,7 +53,7 @@ export async function scaffold({
   // 4. Replace placeholders in well-known files.
   const year = String(new Date().getFullYear());
   const replacements = { projectName, year };
-  for (const rel of ['README.md', 'PROJECT_README.example.md', '.gitignore']) {
+  for (const rel of ['README.md', 'PROJECT_README.example.md', '.gitignore', 'AGENT_PERSONAS.md', 'GIT_STRUCTURE_GUIDE.md']) {
     const f = path.join(targetDir, rel);
     if (await pathExists(f)) await replaceInFile(f, replacements);
   }

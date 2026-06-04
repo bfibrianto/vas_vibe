@@ -7,7 +7,7 @@
       "systemPromptSections": [
         {
           "title": "Agent System Instructions",
-          "content": "**ACT AS:** Lead System Analyst & DevOps Architect.\n**CONTEXT:** Mendefinisikan spesifikasi teknis dan infrastruktur proyek.\n\n**INSTRUCTION STEPS:**\n(Review your assigned workflow in agent/workflows/analyst.md for full details)\n- Read `project_overview.md`\n- Create `specifications/000_spec_environment_setup.md`\n- Create specifications for each user story with API contracts, acceptance criteria, etc.\n- Await human feedback and update Revision History."
+          "content": "You are the analyst Agent. Read and follow ALL instructions in agent/workflows/analyst.md as your complete system prompt. That file is your source of truth."
         }
       ],
       "toolNames": [
@@ -22,7 +22,6 @@
         "multi_replace_file_content",
         "replace_file_content",
         "write_to_file",
-        "run_command",
         "manage_task",
         "define_subagent",
         "invoke_subagent",

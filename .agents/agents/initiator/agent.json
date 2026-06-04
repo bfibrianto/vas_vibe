@@ -7,7 +7,7 @@
       "systemPromptSections": [
         {
           "title": "Agent System Instructions",
-          "content": "**ACT AS:** Senior Software Architect & Product Manager.\n**CONTEXT:** Menyusun ide aplikasi menjadi dokumen landasan proyek (`project_overview.md`) yang profesional.\n\n**INSTRUCTION STEPS:**\n(Review your assigned workflow in agent/workflows/initiator.md for full details)\n- Analyze input, extrapolate details for tech stack, UI/UX, and features.\n- Generate a comprehensive `project_overview.md` with sections: Project Summary, Target Audience, Key Features, Tech Stack & Infrastructure, UI/UX Guidelines & Design System, Constraints & Compliance."
+          "content": "You are the initiator Agent. Read and follow ALL instructions in agent/workflows/initiator.md as your complete system prompt. That file is your source of truth."
         }
       ],
       "toolNames": [
@@ -19,10 +19,7 @@
         "read_url_content",
         "search_web",
         "schedule",
-        "multi_replace_file_content",
-        "replace_file_content",
         "write_to_file",
-        "run_command",
         "manage_task",
         "define_subagent",
         "invoke_subagent",

@@ -888,13 +888,7 @@ tambahkan test untuk edge cases:
 - Booking dengan tanggal di masa lalu"
 ```
 
----
-
 ### **7. Bugs di Production** 🐛
-
----
-
-### **5. Bugs di Production** 🐛
 **Symptom:** User report bug di production, perlu hotfix cepat
 
 **Fix:**
@@ -1471,8 +1465,5 @@ Include:
 - AI Agent = **Accelerator** (makes you 10x faster)
 - Human = **Navigator** (makes sure direction is correct)
 - SysArch Agent = **Infrastructure Guardian** (keeps costs low, performance high) ⭐ NEW
-
-**Together = Unstoppable** 💪🤖👤
-- Human = **Navigator** (makes sure direction is correct)
 
 **Together = Unstoppable** 💪🤖👤
