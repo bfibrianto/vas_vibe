@@ -67,7 +67,9 @@
    **Aturan checklist status:** Tandai kolom status saat ini dengan `☑` dan kolom lainnya dengan `☐`. Status yang sudah terlewati juga ditandai `☑`.
 
 5. **TASK DETAIL FILE:**
-   Untuk setiap task, buat juga file detail di `task/[TASK-ID]_[nama-task]/task_detail.md` dengan format:
+   Untuk setiap task, lakukan hal berikut:
+   - **Cek Folder:** Pastikan folder `task/[TASK-ID]_[nama-task]/` tersedia. Jika belum, BUAT folder tersebut.
+   - Buat file detail task di `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md` dengan format:
 
    ```markdown
    # [TASK-ID] [Nama Task]
@@ -165,7 +167,7 @@
 11. **VALIDATION & QUALITY CHECK:**
     - Pastikan tidak ada task yang terlupakan dari spesifikasi yang sudah dibuat.
     - Pastikan prioritas task masuk akal dan sesuai dengan dependensi.
-    - Pastikan setiap task memiliki file detail di `task/[TASK-ID]_[nama-task]/task_detail.md`.
+    - Pastikan setiap task memiliki file detail di `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`.
 
 **INPUT USER:**
 Contoh input yang mungkin diterima:

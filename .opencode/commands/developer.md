@@ -4,12 +4,12 @@
 **INSTRUCTION STEPS:**
 1.  **Load Context:**
     - **BACA file `task/task_list.md`** untuk menemukan task yang akan dikerjakan.
-    - Temukan file detail task di `task/[TASK-ID]_[nama-task]/task_detail.md` yang sesuai.
+    - Temukan file detail task di `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md` yang sesuai.
     - Baca file spesifikasi target (misal: `specifications/001_...md`).
 
 2.  **Update Task Status - START (CRITICAL):**
     - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `development` dengan `☑`.
-    - Di file detail task `task/[TASK-ID]_[nama-task]/task_detail.md`, **APPEND** entry baru ke Status Log:
+    - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | dev agent | development started | - |
       ```
@@ -61,7 +61,7 @@
 
 6.  **Update Task Status - COMPLETE (CRITICAL):**
     - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `ready_to_test` dengan `☑`.
-    - Di file detail task `task/[TASK-ID]_[nama-task]/task_detail.md`, **APPEND** entry baru ke Status Log:
+    - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | dev agent | ready to test | [catatan penting jika ada] |
       ```

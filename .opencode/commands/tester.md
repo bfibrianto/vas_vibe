@@ -6,11 +6,11 @@
     - Baca file spesifikasi di `specifications/`.
     - Baca source code terkait di `codes/`.
     - **BACA file `task/task_list.md`** untuk menemukan task yang akan dites.
-    - Temukan file detail task di `task/[TASK-ID]_[nama-task]/task_detail.md` yang sesuai.
+    - Temukan file detail task di `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md` yang sesuai.
 
 2.  **Update Task Status - START (CRITICAL):**
     - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `testing` dengan `☑`.
-    - Di file detail task `task/[TASK-ID]_[nama-task]/task_detail.md`, **APPEND** entry baru ke Status Log:
+    - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | test agent | test created | - |
       ```
