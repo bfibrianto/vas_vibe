@@ -275,7 +275,7 @@ Not green? → Iterate fix
   ↓
 [Fixer] Update status: failed → fixing (set "Assigned To: Fixer Agent")
   ↓
-[Fixer] Fix bugs → Create fixing log
+[Fixer] Fix bugs → Update spesifikasi terkait fitur yang difixing (jika ada penyesuaian scope) → Create fixing log
   ↓
 [Fixer] Update status: fixing → ready_to_test (back to Tester)
 ```

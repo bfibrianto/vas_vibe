@@ -408,9 +408,10 @@ Reproduce steps:
 4. Read related code files
 5. Identify root cause
 6. Apply fix
-7. Run tests untuk verify fix
-8. **Update status:** `fixing` → `ready_to_test` (back to Tester)
-9. Create fixing log di `logs/fixing/fixing_003_booking_dp_bug.md`
+7. **PENTING:** Lakukan update dokumen spesifikasi di direktori `specifications/` terkait fitur yang difixing sesuai dengan scope fixing yang diberikan oleh user.
+8. Run tests untuk verify fix
+9. **Update status:** `fixing` → `ready_to_test` (back to Tester)
+10. Create fixing log di `logs/fixing/fixing_003_booking_dp_bug.md`
 
 **👤 Human verify:**
 - [ ] Bug fix works? (test manually)
@@ -917,6 +918,7 @@ Logs: [paste error logs dari production]"
 1. Analyze production logs
 2. Reproduce locally
 3. Fix bug dengan minimal changes (hotfix approach)
+4. Update dokumen spesifikasi terkait fitur yang difixing sesuai dengan scope fixing yang diberikan oleh user
 4. Run regression tests
 5. Create fixing log dengan deployment notes
 

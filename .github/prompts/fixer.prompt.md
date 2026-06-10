@@ -51,6 +51,7 @@
     - Analisis input error/bug dari user.
     - Temukan akar masalah (*Root Cause*).
     - Lakukan perbaikan pada kode (Modify file source code).
+    - **PENTING:** Lakukan update dokumen spesifikasi di direktori `specifications/` terkait fitur yang difixing sesuai dengan scope fixing yang diberikan oleh user. Pastikan dokumen spesifikasi merefleksikan perubahan atau perbaikan tersebut.
 
 4.  **FIXING LOG (STRICT FORMAT):**
     - **Target Folder:** `task/[TASK-ID]_[nama-task]/` (sub-folder task yang sama).
