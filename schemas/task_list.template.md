@@ -21,13 +21,8 @@
 
 ## Tasks
 
-### TASK-XXX: [Task Name]
-| Field | Value |
-|-------|-------|
-| Priority | P0/P1/P2/P3 |
-| Status | not_started |
-| Spec | specifications/XXX_spec_*.md |
-| Dependencies | TASK-YYY |
-| Assigned To | - |
-| Created | [YYYY-MM-DD] |
-| Updated | [YYYY-MM-DD] |
+- Task XXX: [Task Name]
+  - Spesifikasi: [spec] ../specifications/XXX_spec_*.md
+  - Current Status: not_started
+  - Status Logs: 
+     - Task Created: [YYYY-MM-DD HH:MM] (PM Agent)

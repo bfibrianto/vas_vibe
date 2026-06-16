@@ -16,7 +16,7 @@ memory: project
     - Temukan file detail task di `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md` yang sesuai.
 
 2.  **Update Task Status - START (CRITICAL):**
-    - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `development` dengan `☑`.
+    - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Development: [YYYY-MM-DD HH:MM] (Developer Agent)'. Update juga 'Current Status'.
     - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | dev agent | development started | - |
@@ -89,7 +89,7 @@ memory: project
     - Jika file `dev_log.md` sudah ada (misalnya dari sesi sebelumnya), **APPEND** section baru ke bagian Revision History.
 
 6.  **Update Task Status - COMPLETE (CRITICAL):**
-    - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `ready_to_test` dengan `☑`.
+    - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Ready to Test: [YYYY-MM-DD HH:MM] (Developer Agent)'. Update juga 'Current Status'.
     - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | dev agent | ready to test | [catatan penting jika ada] |

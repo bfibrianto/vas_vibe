@@ -36,7 +36,7 @@ description: Brief description of what this Skill does and when to use it
      - **P3 (Low):** Fitur enhancement atau nice-to-have.
 
 4. **TASK LIST STRUCTURE:**
-   File `task/task_list.md` harus mengikuti format berikut:
+   File `task/task_list.md` harus mengikuti format list dengan status log berbaris ke bawah berikut:
 
    ```markdown
    # TASK LIST - [Nama Project]
@@ -48,68 +48,38 @@ description: Brief description of what this Skill does and when to use it
 
    ## Priority 0 (Critical)
 
-   ### [TASK-000] Environment Setup
-   - **Spec:** `specifications/000_spec_environment_setup.md`
-   - **Status:** `not_started`
-   - **Assigned To:** Developer Agent
-   - **Dependencies:** None
-   - **Description:** Setup development environment dengan Docker containers
-   - **Last Updated:** [YYYY-MM-DD HH:MM]
-   - **Notes:** -
-
-   ---
+   - Task 000: Environment Setup
+     - Spesifikasi: [spec] ../specifications/000_spec_environment_setup.md
+     - Current Status: not_started
+     - Status Logs: 
+        - Task Created: [YYYY-MM-DD HH:MM] (PM Agent)
 
    ## Priority 1 (High)
 
-   ### [TASK-001] User Authentication - Login
-   - **Spec:** `specifications/001_spec_login.md`
-   - **Status:** `not_started`
-   - **Assigned To:** Developer Agent
-   - **Dependencies:** TASK-000
-   - **Description:** Implementasi fitur login user
-   - **Last Updated:** [YYYY-MM-DD HH:MM]
-   - **Notes:** -
-
-   ---
+   - Task 001: [Nama Task]
+     - Spesifikasi: [spec] ../specifications/001_spec_....md
+     - Current Status: not_started
+     - Status Logs: 
+        - Task Created: [YYYY-MM-DD HH:MM] (PM Agent)
 
    ## Priority 2 (Medium)
 
-   ### [TASK-XXX] [Nama Task]
-   - **Spec:** `specifications/XXX_spec_...md`
-   - **Status:** `not_started`
-   - **Assigned To:** -
-   - **Dependencies:** TASK-XXX
-   - **Description:** [Deskripsi singkat]
-   - **Last Updated:** [YYYY-MM-DD HH:MM]
-   - **Notes:** -
+   - Task XXX: [Nama Task]
+     - Spesifikasi: [spec] ../specifications/XXX_spec_....md
+     - Current Status: not_started
+     - Status Logs: 
+        - Task Created: [YYYY-MM-DD HH:MM] (PM Agent)
 
-   ---
+   ## Priority 3 (Low)
 
-   ## Blocked Tasks
-
-   ### [TASK-XXX] [Nama Task]
-   - **Spec:** `specifications/XXX_spec_...md`
-   - **Status:** `blocked`
-   - **Assigned To:** -
-   - **Dependencies:** TASK-XXX
-   - **Blocker Reason:** [Alasan kenapa task ini blocked]
-   - **Description:** [Deskripsi singkat]
-   - **Last Updated:** [YYYY-MM-DD HH:MM]
-   - **Notes:** -
-
-   ---
-
-   ## Completed Tasks
-
-   ### [TASK-XXX] [Nama Task]
-   - **Spec:** `specifications/XXX_spec_...md`
-   - **Status:** `done`
-   - **Assigned To:** Developer Agent
-   - **Dependencies:** TASK-XXX
-   - **Description:** [Deskripsi singkat]
-   - **Completed Date:** [YYYY-MM-DD HH:MM]
-   - **Notes:** Validated by [Nama]
+   - Task XXX: [Nama Task]
+     - Spesifikasi: [spec] ../specifications/XXX_spec_....md
+     - Current Status: not_started
+     - Status Logs: 
+        - Task Created: [YYYY-MM-DD HH:MM] (PM Agent)
    ```
+
+   **Aturan status logs:** Saat task baru dibuat, PM Agent hanya menuliskan baris "Task Created". Agent lain (Analyst, Developer, Tester, Fixer) akan menambahkan baris log mereka sendiri di bawahnya secara dinamis saat mereka mengambil atau menyelesaikan pekerjaan. Update `Current Status` sesuai tahap saat ini.
 
 5. **STATUS DEFINITIONS:**
    Pastikan setiap task memiliki salah satu status berikut:

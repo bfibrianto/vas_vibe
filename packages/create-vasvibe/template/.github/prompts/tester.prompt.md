@@ -9,7 +9,7 @@
     - Temukan file detail task di `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md` yang sesuai.
 
 2.  **Update Task Status - START (CRITICAL):**
-    - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `testing` dengan `☑`.
+    - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Testing: [YYYY-MM-DD HH:MM] (Test Agent)'. Update juga 'Current Status'.
     - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | test agent | test created | - |
@@ -87,13 +87,13 @@
 
 7.  **Update Task Status - COMPLETE (CRITICAL):**
     - Jika **PASS:**
-      - Di `task/task_list.md`, tandai kolom `done` dengan `☑`.
+      - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Done: [YYYY-MM-DD HH:MM] (Test Agent)'. Update juga 'Current Status'.
       - Di file detail task, **APPEND** ke Status Log:
         ```
         | [YYYY-MM-DD HH:MM] | test agent | test passed | Coverage: [X%] |
         ```
     - Jika **FAIL:**
-      - Di `task/task_list.md`, tandai kolom `fixing` dengan `☑` (hapus tanda `done`).
+      - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Issues Reported: [YYYY-MM-DD HH:MM] (Test Agent)'. Update juga 'Current Status'.
       - Di file detail task, **APPEND** ke Status Log:
         ```
         | [YYYY-MM-DD HH:MM] | test agent | test failed | Issues: [ringkasan issue] |

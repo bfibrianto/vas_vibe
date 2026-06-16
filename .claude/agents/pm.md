@@ -29,7 +29,7 @@
      - **P3 (Low):** Fitur enhancement atau nice-to-have.
 
 4. **TASK LIST STRUCTURE:**
-   File `task/task_list.md` harus mengikuti format tabel ringkas berikut (TANPA deskripsi, hanya kolom status checklist):
+   File `task/task_list.md` harus mengikuti format list dengan status log berbaris ke bawah berikut:
 
    ```markdown
    # TASK LIST - [Nama Project]
@@ -41,30 +41,38 @@
 
    ## Priority 0 (Critical)
 
-   | Task ID | Task Name | Spec | not_started | development | ready_to_test | testing | fixing | done |
-   |---------|-----------|------|:-----------:|:-----------:|:-------------:|:-------:|:------:|:----:|
-   | TASK-000 | Environment Setup | [spec](../specification/000_spec_environment_setup.md) | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+   - Task 000: Environment Setup
+     - Spesifikasi: [spec] ../specifications/000_spec_environment_setup.md
+     - Current Status: not_started
+     - Status Logs: 
+        - Task Created: [YYYY-MM-DD HH:MM] (PM Agent)
 
    ## Priority 1 (High)
 
-   | Task ID | Task Name | Spec | not_started | development | ready_to_test | testing | fixing | done |
-   |---------|-----------|------|:-----------:|:-----------:|:-------------:|:-------:|:------:|:----:|
-   | TASK-001 | [Nama Task] | [spec](../specification/001_spec_....md) | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+   - Task 001: [Nama Task]
+     - Spesifikasi: [spec] ../specifications/001_spec_....md
+     - Current Status: not_started
+     - Status Logs: 
+        - Task Created: [YYYY-MM-DD HH:MM] (PM Agent)
 
    ## Priority 2 (Medium)
 
-   | Task ID | Task Name | Spec | not_started | development | ready_to_test | testing | fixing | done |
-   |---------|-----------|------|:-----------:|:-----------:|:-------------:|:-------:|:------:|:----:|
-   | TASK-XXX | [Nama Task] | [spec](../specification/XXX_spec_....md) | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+   - Task XXX: [Nama Task]
+     - Spesifikasi: [spec] ../specifications/XXX_spec_....md
+     - Current Status: not_started
+     - Status Logs: 
+        - Task Created: [YYYY-MM-DD HH:MM] (PM Agent)
 
    ## Priority 3 (Low)
 
-   | Task ID | Task Name | Spec | not_started | development | ready_to_test | testing | fixing | done |
-   |---------|-----------|------|:-----------:|:-----------:|:-------------:|:-------:|:------:|:----:|
-   | TASK-XXX | [Nama Task] | [spec](../specification/XXX_spec_....md) | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+   - Task XXX: [Nama Task]
+     - Spesifikasi: [spec] ../specifications/XXX_spec_....md
+     - Current Status: not_started
+     - Status Logs: 
+        - Task Created: [YYYY-MM-DD HH:MM] (PM Agent)
    ```
 
-   **Aturan checklist status:** Tandai kolom status saat ini dengan `☑` dan kolom lainnya dengan `☐`. Status yang sudah terlewati juga ditandai `☑`.
+   **Aturan status logs:** Saat task baru dibuat, PM Agent hanya menuliskan baris "Task Created". Agent lain (Analyst, Developer, Tester, Fixer) akan menambahkan baris log mereka sendiri di bawahnya secara dinamis saat mereka mengambil atau menyelesaikan pekerjaan. Update `Current Status` sesuai tahap saat ini.
 
 5. **TASK DETAIL FILE:**
    Untuk setiap task, lakukan hal berikut:

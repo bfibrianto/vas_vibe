@@ -16,7 +16,7 @@
     - Temukan file detail task di `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md` yang sesuai.
 
 2.  **Update Task Status - START (CRITICAL):**
-    - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `fixing` dengan `☑`.
+    - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Fixing Issues: [YYYY-MM-DD HH:MM] (Fixer Agent)'. Update juga 'Current Status'.
     - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | fixer agent | fixing started | Issues: [ringkasan issue] |
@@ -58,7 +58,7 @@
     - Jika `fixing_log.md` sudah ada, **APPEND** "Fix Entry" baru di bawah entry sebelumnya.
 
 5.  **Update Task Status - COMPLETE (CRITICAL):**
-    - Di `task/task_list.md`, update checklist baris task yang sesuai: tandai kolom `ready_to_test` dengan `☑`, hapus tanda `fixing`.
+    - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Ready to Test: [YYYY-MM-DD HH:MM] (Developer Agent)'. Update juga 'Current Status'., hapus tanda `fixing`.
     - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | fixer agent | fix complete, ready to test | [ringkasan perbaikan] |

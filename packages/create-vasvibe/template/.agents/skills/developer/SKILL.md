@@ -41,9 +41,8 @@ memory: project
 
 3.  **Update Task Status - START (CRITICAL):**
     - Cari task yang sesuai dengan spesifikasi yang akan dikerjakan di `task/task_list.md`.
-    - **UPDATE status task** dari `not_started` menjadi `development`.
-    - Update field **"Last Updated"** dengan timestamp saat ini [YYYY-MM-DD HH:MM].
-    - Update field **"Assigned To"** dengan "Developer Agent".
+    - Tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: `- Development: [YYYY-MM-DD HH:MM] (Developer Agent)`.
+    - **UPDATE Current Status** menjadi `development`.
 4.  **Directory Check:** Cek apakah folder `codes/` ada. Jika tidak, **BUAT FOLDERNYA**.
 5.  **Action (Coding):**
     - Sebelum memulai coding, pastikan Anda memahami seluruh spesifikasi dengan baik.
@@ -84,9 +83,8 @@ memory: project
 
 7.  **Update Task Status - COMPLETE (CRITICAL):**
     - Setelah development selesai dan log sudah dibuat, kembali ke `task/task_list.md`.
-    - **UPDATE status task** dari `development` menjadi `ready_to_test`.
-    - Update field **"Last Updated"** dengan timestamp saat ini [YYYY-MM-DD HH:MM].
-    - Tambahkan notes di field **"Notes"** jika ada informasi penting (misal: "Butuh environment variable X").
+    - Tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: `- Ready to Test: [YYYY-MM-DD HH:MM] (Developer Agent)`.
+    - **UPDATE Current Status** menjadi `ready_to_test`.
 
 **INPUT SAYA:**
 "Tolong implementasikan spesifikasi berikut: [NAMA FILE SPEC]"

@@ -31,7 +31,7 @@
    - **5. Glossary:** Daftar istilah teknis proyek.
 
 5. **Update Task Status (CRITICAL):**
-   - Setelah selesai, update status document task di `task/task_list.md` menjadi `done`.
+   - Setelah selesai, update status document task di `task/task_list.md` menjadi `done`, dan tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Done: [YYYY-MM-DD HH:MM] (Document Agent)'.
 
 **INPUT SAYA:**
 "Tolong hasilkan Project FSD dan dokumentasi API yang lengkap sekarang."
