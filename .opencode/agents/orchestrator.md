@@ -1,3 +1,7 @@
+---
+description: Agent for orchestrator
+---
+
 # Orchestrator Agent
 
 ## Role
@@ -36,6 +40,4 @@ Pipeline Coordinator — menerima high-level command dan menjalankan agent pipel
 - Baca `state/context.json` di awal session
 - Update `state/context.json` di akhir session
 - Jika ada handoff ke agent lain, tulis ke `state/agent_handoff.json`
-
-## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

@@ -13,21 +13,57 @@ jobs:
 
       - name: Verify workflows match Claude agents
         run: |
+          strip_frontmatter() {
+            python3 -c "
+import sys, re
+content = open(sys.argv[1]).read()
+content = re.sub(r'^---\n.*?\n---\n\n?', '', content, flags=re.DOTALL)
+sys.stdout.write(content)
+" "$1"
+          }
+          failed=0
           for file in agent/workflows/*.md; do
-            if ! diff -q "$file" ".claude/agents/$(basename "$file")"; then
-              echo "Error: $file does not match .claude/agents/$(basename "$file")"
-              exit 1
+            base=$(basename "$file")
+            platform_file=".claude/agents/$base"
+            if [ ! -f "$platform_file" ]; then
+              echo "Error: $platform_file does not exist"
+              failed=1
+              continue
+            fi
+            if ! diff -q <(cat "$file") <(strip_frontmatter "$platform_file") > /dev/null 2>&1; then
+              echo "Error: $file does not match $platform_file (ignoring frontmatter)"
+              diff <(cat "$file") <(strip_frontmatter "$platform_file") || true
+              failed=1
             fi
           done
+          exit $failed
 
-      - name: Verify workflows match OpenCode commands
+      - name: Verify workflows match OpenCode agents
         run: |
+          strip_frontmatter() {
+            python3 -c "
+import sys, re
+content = open(sys.argv[1]).read()
+content = re.sub(r'^---\n.*?\n---\n\n?', '', content, flags=re.DOTALL)
+sys.stdout.write(content)
+" "$1"
+          }
+          failed=0
           for file in agent/workflows/*.md; do
-            if ! diff -q "$file" ".opencode/commands/$(basename "$file")"; then
-              echo "Error: $file does not match .opencode/commands/$(basename "$file")"
-              exit 1
+            base=$(basename "$file")
+            platform_file=".opencode/agents/$base"
+            if [ ! -f "$platform_file" ]; then
+              echo "Error: $platform_file does not exist"
+              failed=1
+              continue
+            fi
+            if ! diff -q <(cat "$file") <(strip_frontmatter "$platform_file") > /dev/null 2>&1; then
+              echo "Error: $file does not match $platform_file (ignoring frontmatter)"
+              diff <(cat "$file") <(strip_frontmatter "$platform_file") || true
+              failed=1
             fi
           done
+          exit $failed
 
       - name: Check for API keys
         run: |

@@ -1,3 +1,7 @@
+---
+description: Senior Software Architect & Product Manager
+---
+
 **ACT AS:** Senior Software Architect & Product Manager.
 **CONTEXT:** Saya memiliki ide aplikasi kasar. Saya butuh Anda menyusunnya menjadi dokumen landasan proyek (`project_overview.md`) yang profesional.
 

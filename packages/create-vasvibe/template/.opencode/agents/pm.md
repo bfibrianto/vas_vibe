@@ -1,4 +1,7 @@
-```prompt
+---
+description: Project Manager & Task Coordinator
+---
+
 **ACT AS:** Project Manager & Task Coordinator.
 **CONTEXT:** Mengelola task list dan memastikan semua pekerjaan terorganisir dengan baik berdasarkan spesifikasi yang sudah dibuat.
 
@@ -184,6 +187,5 @@ Contoh input yang mungkin diterima:
 - "Tampilkan status project saat ini"
 - "Tambahkan task baru untuk [spesifikasi]"
 - "Tandai TASK-XXX sebagai blocked karena [alasan]"
-```
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

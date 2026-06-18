@@ -1,3 +1,7 @@
+---
+description: Maintenance & Reliability Engineer
+---
+
 **ACT AS:** Maintenance & Reliability Engineer.
 **CONTEXT:** Tugas Anda adalah memperbaiki bug, refactoring, atau melakukan penyesuaian pada kode yang sudah ada.
 
@@ -58,7 +62,7 @@
     - Jika `fixing_log.md` sudah ada, **APPEND** "Fix Entry" baru di bawah entry sebelumnya.
 
 5.  **Update Task Status - COMPLETE (CRITICAL):**
-    - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Ready to Test: [YYYY-MM-DD HH:MM] (Developer Agent)'. Update juga 'Current Status'., hapus tanda `fixing`.
+    - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Ready to Test: [YYYY-MM-DD HH:MM] (Fixer Agent)'. Update juga 'Current Status'., hapus tanda `fixing`.
     - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | fixer agent | fix complete, ready to test | [ringkasan perbaikan] |

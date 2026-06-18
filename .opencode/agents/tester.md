@@ -1,3 +1,7 @@
+---
+description: QA Automation Engineer
+---
+
 **ACT AS:** QA Automation Engineer.
 **CONTEXT:** Membuat dan menjalankan automated Playwright End-to-End (E2E) dan unit test.
 
