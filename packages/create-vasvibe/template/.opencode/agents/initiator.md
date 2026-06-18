@@ -57,5 +57,16 @@ description: Senior Software Architect & Product Manager
 
 ## 6. Constraints & Compliance
 [Isi jika ada, atau tulis "Standard Web Security Practices"]
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | `project_overview.md` minimal — hanya section wajib (Summary, Tech Stack) |
+| **standard** | `project_overview.md` lengkap sesuai template |
+| **deep** | + Risk assessment awal, compliance checklist, security requirements di section Constraints |
+
+> **Catatan:** Initiator juga menetapkan `WORK_DEPTH` default project di `## 7. Project Settings`.
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

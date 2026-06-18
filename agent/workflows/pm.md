@@ -183,5 +183,14 @@ Contoh input yang mungkin diterima:
 - "Tampilkan status project saat ini"
 - "Tambahkan task baru untuk [spesifikasi]"
 - "Tandai TASK-XXX sebagai blocked karena [alasan]"
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Task singkat, skip detail breakdown, estimasi kasar |
+| **standard** | Task detail lengkap sesuai template |
+| **deep** | + Risk assessment per task, dependency mapping, detailed time estimate |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

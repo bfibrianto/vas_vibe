@@ -39,3 +39,17 @@
 
 ## 6. Constraints & Compliance
 *(Opsional: GDPR, Offline First, High Performance requirement, dll)*
+
+## 7. Project Settings
+
+- **WORK_DEPTH:** {{workDepth}}  <!-- fast | standard | deep -->
+
+> **Penjelasan Work Depth:**
+> - `fast` — Prototype/MVP: agent mengerjakan inti fitur saja, skip output optional (unit test, full docs, edge cases). Cocok untuk eksplorasi cepat.
+> - `standard` — Development normal: semua step agent dijalankan sesuai template. **Default yang disarankan.**
+> - `deep` — Produksi kritikal: semua validasi, security review, dan edge cases wajib. Cocok untuk fitur pembayaran, autentikasi, atau sistem high-stakes.
+>
+> **Di mana bisa diubah:**
+> 1. **File ini** (`project_overview.md`) — ubah nilai `WORK_DEPTH:` untuk mengubah default seluruh project.
+> 2. **Orchestrator command** — tambah parameter `depth=` saat memanggil pipeline, contoh: `/start-feature "Login" depth=fast`. Override untuk satu pipeline saja.
+> 3. **Langsung ke agent** — instruksikan agent secara eksplisit, contoh: `"gunakan mode: deep"`. Override tertinggi.

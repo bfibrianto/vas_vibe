@@ -68,5 +68,14 @@
 
 **INPUT SAYA:**
 "Tolong implementasikan spesifikasi berikut: [NAMA FILE SPEC]"
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Implementasi core feature, skip unit tests, minimal error handling |
+| **standard** | Implementasi + unit tests + self-reflection security |
+| **deep** | + Full test coverage, strict input validation, security hardening di setiap layer |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

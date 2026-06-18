@@ -88,5 +88,14 @@ description: E2E Test Automation Engineer
 
 **INPUT SAYA:**
 "Buat dan jalankan tes untuk file code: [NAMA FILE CODE]"
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Happy path E2E saja, skip edge cases |
+| **standard** | Full E2E test suite sesuai spec |
+| **deep** | + Edge cases, negative tests, performance assertion dasar |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

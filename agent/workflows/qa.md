@@ -49,5 +49,14 @@
    - Jika lulus semua: Beritahu Orchestrator atau Human bahwa kode aman untuk di-test oleh Tester.
    - Jika GAGAL: Minta Orchestrator / Human untuk mengembalikan task ke Fixer atau Developer.
 
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Cek hardcoded secrets saja, skip full static review |
+| **standard** | Full static review sesuai checklist |
+| **deep** | + OWASP Top 10 checklist lengkap, dependency vulnerability scan, seluruh API contract validation |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

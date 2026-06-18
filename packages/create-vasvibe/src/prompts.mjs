@@ -13,6 +13,7 @@ export async function runPrompts({ argName, flags }) {
       includeGithub: flags.github !== false,
       includeWorkflows: flags.workflows !== false,
       initGit: flags.git !== false,
+      workDepth: flags.depth || 'standard',
     };
   }
 
@@ -72,6 +73,30 @@ export async function runPrompts({ argName, flags }) {
         active: 'yes',
         inactive: 'no',
       },
+      {
+        type: flags.depth ? null : 'select',
+        name: 'workDepth',
+        message: 'Default work depth for all agents?',
+        hint: 'Can be changed anytime in project_overview.md → ## 7. Project Settings',
+        choices: [
+          {
+            title: 'standard (recommended)',
+            description: 'Full spec, unit tests, code review — the default for everyday production development.',
+            value: 'standard',
+          },
+          {
+            title: 'fast',
+            description: 'Core feature only, skip optional steps (unit tests, full docs, edge cases) — good for prototypes and MVPs.',
+            value: 'fast',
+          },
+          {
+            title: 'deep',
+            description: 'Maximum thoroughness — full security review, all edge cases, strict validation — for critical systems.',
+            value: 'deep',
+          },
+        ],
+        initial: 0,
+      },
     ],
     { onCancel },
   );
@@ -83,5 +108,6 @@ export async function runPrompts({ argName, flags }) {
     includeGithub: flags.github === false ? false : answers.includeGithub ?? true,
     includeWorkflows: flags.workflows === false ? false : answers.includeWorkflows ?? true,
     initGit: flags.git === false ? false : answers.initGit ?? true,
+    workDepth: flags.depth || answers.workDepth || 'standard',
   };
 }

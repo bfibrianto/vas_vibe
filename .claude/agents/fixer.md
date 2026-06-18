@@ -66,5 +66,14 @@
 
 **INPUT USER:**
 "Perbaiki masalah ini: [DESKRIPSI ERROR/BUG] pada fitur [NAMA FITUR/SPEC]"
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Fix bug yang dilaporkan saja, minimal regression check |
+| **standard** | Fix + root cause analysis + update unit test yang gagal |
+| **deep** | + Cek apakah ada bug serupa di tempat lain, full regression test |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

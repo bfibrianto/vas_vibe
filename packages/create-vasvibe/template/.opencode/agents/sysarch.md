@@ -289,5 +289,14 @@ Specs:
   Estimated Cost: $[amount]/month
 ```
 
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Arsitektur dasar, skip capacity planning detail |
+| **standard** | Arsitektur lengkap + capacity planning |
+| **deep** | + Disaster recovery plan, multi-region consideration, security architecture review |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

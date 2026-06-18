@@ -5,7 +5,8 @@ Pipeline Coordinator — menerima high-level command dan menjalankan agent pipel
 
 ## Pipelines
 
-### /start-feature "[Feature Name]"
+### /start-feature "[Feature Name]" [depth=fast|standard|deep]
+> `depth=` override `WORK_DEPTH` di `project_overview.md` untuk pipeline ini saja. Default: ikuti setting project.
 1. Invoke Analyst → create specification
 2. CHECKPOINT: Human review & approve spec
 3. Invoke PM → create task & detail file from spec
@@ -27,7 +28,8 @@ Pipeline Coordinator — menerima high-level command dan menjalankan agent pipel
 6. CHECKPOINT: Human approve & spin up environment
 7. Lanjut dengan `/start-feature` untuk setiap fitur
 
-### /start-fix "[Bug Description]"
+### /start-fix "[Bug Description]" [depth=fast|standard|deep]
+> `depth=` override `WORK_DEPTH` untuk fix ini saja. Default: ikuti setting project.
 1. Invoke Fixer → analyze root cause & fix
 2. Invoke QA → quick security check pada kode yang diubah
 3. Invoke Tester → regression test
@@ -49,8 +51,20 @@ Pipeline Coordinator — menerima high-level command dan menjalankan agent pipel
 
 ## Rules
 - SELALU tunggu human approval di CHECKPOINT
+- Baca `WORK_DEPTH` dari `project_overview.md` sebagai default; override dengan parameter `depth=` jika ada
 - Log semua pipeline executions ke `state/pipeline_log.md`
 - Handle errors gracefully — jika agent gagal, report dan pause
+
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+Gunakan parameter `depth=` untuk override per-pipeline:
+
+| Level | Pipeline Behavior |
+|-------|-------------------|
+| **fast** | Minimal checkpoints, skip optional agents (Document di /start-feature) |
+| **standard** | Pipeline lengkap sesuai definisi di atas |
+| **deep** | + Security Agent di `/start-feature`, full security audit di `/release` |
 
 ## State Management
 - Baca `state/context.json` di awal session

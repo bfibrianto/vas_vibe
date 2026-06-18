@@ -39,5 +39,14 @@ description: Senior Technical Writer
 
 **INPUT SAYA:**
 "Tolong hasilkan Project FSD dan dokumentasi API yang lengkap sekarang."
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Skip dokumentasi, cukup update task status |
+| **standard** | Update API docs dan FSD sesuai spesifikasi |
+| **deep** | + Deployment guide, troubleshooting section, diagram arsitektur |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

@@ -25,5 +25,14 @@
 4. **Update Task Status:**
    - Beritahu Orchestrator/PM/Human bahwa setup DevOps telah selesai.
 
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Dockerfile basic + docker-compose minimal |
+| **standard** | Full CI/CD pipeline sesuai template |
+| **deep** | + Multi-stage builds, security scanning di pipeline, rollback strategy, monitoring config |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

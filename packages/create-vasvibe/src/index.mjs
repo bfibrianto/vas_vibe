@@ -24,6 +24,7 @@ ${pc.bold('Options:')}
       --no-claude    Exclude .claude/ and .agents/
       --no-github    Exclude .github/prompts/
       --no-workflows Exclude agent/workflows/
+      --depth=<level> Set default work depth: fast | standard | deep (default: standard)
       --dry-run      (upgrade only) Show what would change without writing files
   -h, --help         Show this help
   -v, --version      Print version
@@ -31,6 +32,7 @@ ${pc.bold('Options:')}
 ${pc.bold('Examples:')}
   npx create-vasvibe my-app
   npx create-vasvibe my-app --yes --no-claude --no-github
+  npx create-vasvibe my-app --depth=fast  Scaffold with fast work depth (prototype mode)
   npx create-vasvibe upgrade              Upgrade current directory
   npx create-vasvibe upgrade ./my-app     Upgrade specific project
   npx create-vasvibe upgrade --dry-run    Preview upgrade without writing
@@ -48,6 +50,7 @@ function parseArgs(argv) {
     help: false,
     version: false,
     dryRun: false,
+    depth: null,
   };
   const positional = [];
 
@@ -84,6 +87,15 @@ function parseArgs(argv) {
         flags.version = true;
         break;
       default:
+        if (a.startsWith('--depth=')) {
+          const val = a.slice('--depth='.length);
+          if (!['fast', 'standard', 'deep'].includes(val)) {
+            log.error(`Invalid depth value "${val}". Use: fast | standard | deep`);
+            process.exit(1);
+          }
+          flags.depth = val;
+          break;
+        }
         if (a.startsWith('-')) {
           log.error(`Unknown flag: ${a}`);
           console.log(HELP);
@@ -177,6 +189,7 @@ export async function main(argv) {
       targetDir,
       projectName,
       version: pkg.version,
+      workDepth: answers.workDepth,
       includeOpencode: answers.includeOpencode,
       includeClaude: answers.includeClaude,
       includeGithub: answers.includeGithub,
