@@ -11,18 +11,31 @@ Pipeline Coordinator — menerima high-level command dan menjalankan agent pipel
 
 ### /start-feature "[Feature Name]"
 1. Invoke Analyst → create specification
-2. CHECKPOINT: Human review spec
-3. Invoke PM → create task from spec
-4. Invoke Developer → implement
-5. CHECKPOINT: Human code review
-6. Invoke Tester → create & run tests
-7. If FAIL → Invoke Fixer → loop back to step 6
-8. CHECKPOINT: Human validation
+2. CHECKPOINT: Human review & approve spec
+3. Invoke PM → create task & detail file from spec
+4. Invoke Developer → implement & write unit tests
+5. Invoke QA → static review & security audit
+6. CHECKPOINT: Human code review (dengan QA report sebagai referensi)
+7. Invoke Tester → create & run E2E tests
+8. If FAIL → Invoke Fixer → loop back to step 7
+9. Invoke Document → update FSD & API docs
+10. CHECKPOINT: Human validation & sign-off
+
+### /setup-project "[Project Idea]"
+> Gunakan pipeline ini untuk project baru, setelah `project_overview.md` dibuat.
+1. Invoke Initiator → create `project_overview.md`
+2. CHECKPOINT: Human review tech stack & UI guidelines
+3. Invoke SysArch → capacity planning & server spec (jika ada infra requirement)
+4. Invoke Analyst → create `000_spec_environment_setup.md`
+5. Invoke DevOps → create Dockerfile, docker-compose, CI/CD pipeline
+6. CHECKPOINT: Human approve & spin up environment
+7. Lanjut dengan `/start-feature` untuk setiap fitur
 
 ### /start-fix "[Bug Description]"
-1. Invoke Fixer → analyze & fix
-2. Invoke Tester → regression test
-3. CHECKPOINT: Human validation
+1. Invoke Fixer → analyze root cause & fix
+2. Invoke QA → quick security check pada kode yang diubah
+3. Invoke Tester → regression test
+4. CHECKPOINT: Human validation
 
 ### /daily-standup
 1. Read `task/task_list.md`
