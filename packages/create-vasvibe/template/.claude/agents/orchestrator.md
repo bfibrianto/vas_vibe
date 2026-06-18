@@ -5,20 +5,42 @@ Pipeline Coordinator — menerima high-level command dan menjalankan agent pipel
 
 ## Pipelines
 
-### /start-feature "[Feature Name]"
+### /start-feature "[Feature Name]" [depth=fast|standard|deep]
+> `depth=` override `WORK_DEPTH` di `project_overview.md` untuk pipeline ini saja. Default: ikuti setting project.
 1. Invoke Analyst → create specification
-2. CHECKPOINT: Human review spec
-3. Invoke PM → create task from spec
-4. Invoke Developer → implement
-5. CHECKPOINT: Human code review
-6. Invoke Tester → create & run tests
-7. If FAIL → Invoke Fixer → loop back to step 6
-8. CHECKPOINT: Human validation
+2. CHECKPOINT: Human review & approve spec
+3. Invoke PM → create task & detail file from spec
+4. Invoke Developer → implement & write unit tests
+5. Invoke QA → static review & security audit
+6. CHECKPOINT: Human code review (dengan QA report sebagai referensi)
+7. Invoke Tester → create & run E2E tests
+8. If FAIL → Invoke Fixer → loop back to step 7
+9. Invoke Document → update FSD & API docs
+10. CHECKPOINT: Human validation & sign-off
 
-### /start-fix "[Bug Description]"
-1. Invoke Fixer → analyze & fix
-2. Invoke Tester → regression test
-3. CHECKPOINT: Human validation
+### /setup-project "[Project Idea]"
+> Gunakan pipeline ini untuk project baru, setelah `project_overview.md` dibuat.
+1. Invoke Initiator → create `project_overview.md`
+2. CHECKPOINT: Human review tech stack & UI guidelines
+3. Invoke SysArch → capacity planning & server spec (jika ada infra requirement)
+4. Invoke Analyst → create `000_spec_environment_setup.md`
+5. Invoke DevOps → create Dockerfile, docker-compose, CI/CD pipeline
+6. CHECKPOINT: Human approve & spin up environment
+7. Lanjut dengan `/start-feature` untuk setiap fitur
+
+### /start-fix "[Bug Description]" [depth=fast|standard|deep]
+> `depth=` override `WORK_DEPTH` untuk fix ini saja. Default: ikuti setting project.
+1. Invoke Fixer → analyze root cause & fix
+2. Invoke QA → quick security check pada kode yang diubah
+3. Invoke Tester → regression test
+4. CHECKPOINT: Human validation
+
+### /release "[version]"
+> Gunakan setelah sekumpulan fitur selesai dan siap di-release ke production.
+1. PM → summarize semua task yang `done` sejak release terakhir
+2. Document → update CHANGELOG.md (berdasarkan task list dan dev logs)
+3. DevOps → bump version di package.json/app, buat git tag `v[version]`
+4. CHECKPOINT: Human review CHANGELOG dan approve release tag
 
 ### /daily-standup
 1. Read `task/task_list.md`
@@ -29,13 +51,23 @@ Pipeline Coordinator — menerima high-level command dan menjalankan agent pipel
 
 ## Rules
 - SELALU tunggu human approval di CHECKPOINT
+- Baca `WORK_DEPTH` dari `project_overview.md` sebagai default; override dengan parameter `depth=` jika ada
 - Log semua pipeline executions ke `state/pipeline_log.md`
 - Handle errors gracefully — jika agent gagal, report dan pause
+
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+Gunakan parameter `depth=` untuk override per-pipeline:
+
+| Level | Pipeline Behavior |
+|-------|-------------------|
+| **fast** | Minimal checkpoints, skip optional agents (Document di /start-feature) |
+| **standard** | Pipeline lengkap sesuai definisi di atas |
+| **deep** | + Security Agent di `/start-feature`, full security audit di `/release` |
 
 ## State Management
 - Baca `state/context.json` di awal session
 - Update `state/context.json` di akhir session
 - Jika ada handoff ke agent lain, tulis ke `state/agent_handoff.json`
-
-## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

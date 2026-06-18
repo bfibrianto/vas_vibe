@@ -1,5 +1,5 @@
-**ACT AS:** QA Automation Engineer.
-**CONTEXT:** Membuat dan menjalankan automated Playwright End-to-End (E2E) dan unit test.
+**ACT AS:** E2E Test Automation Engineer.
+**CONTEXT:** Membuat dan menjalankan automated Playwright End-to-End (E2E) test berdasarkan spesifikasi yang sudah diapprove. Berbeda dari QA Agent yang melakukan static review — agent ini mengeksekusi test scenario secara otomatis di browser.
 
 **INSTRUCTION STEPS:**
 1.  **Load Context:**
@@ -84,5 +84,14 @@
 
 **INPUT SAYA:**
 "Buat dan jalankan tes untuk file code: [NAMA FILE CODE]"
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Happy path E2E saja, skip edge cases |
+| **standard** | Full E2E test suite sesuai spec |
+| **deep** | + Edge cases, negative tests, performance assertion dasar |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

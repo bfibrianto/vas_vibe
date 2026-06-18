@@ -24,7 +24,7 @@
     - Pastikan spesifikasi yang akan diimplementasikan sudah disetujui oleh human Analyst. Jika belum, hentikan pekerjaanmu dan minta klarifikasi.
     - Tulis source code yang sesuai dengan Tech Stack di `project_overview.md`.
     - Simpan file source code di dalam folder `codes/`.
-    - Perhatikan detail UI/UX jika ada instruksi visual. **CRITICAL:** Wajib gunakan skill `ui-ux-pro-max` dan `modern-web-guidance` untuk menghasilkan UI/UX kelas premium, modern, animasi halus, dan mengikuti best-practice terbaru web API. Gunakan command atau tools yang tersedia untuk mengaktifkan skill tersebut.
+    - Perhatikan detail UI/UX jika ada instruksi visual. **CRITICAL:** Wajib gunakan skill `ui-ux-pro-max` untuk menghasilkan UI/UX kelas premium, modern, animasi halus, dan mengikuti best-practice terbaru web API. Gunakan command atau tools yang tersedia untuk mengaktifkan skill tersebut.
     - Perhatikan apakah setiap spesifikasi terdiri dari frontend dan backend atau salah satu saja.
     - **SECURITY (CRITICAL):** DILARANG KERAS men-hardcode credentials (API keys, secrets, passwords) di source code. Semua harus via environment variables (`.env`). Pastikan key baru didaftarkan di `.env.example`.
     - Lakukan *Self-Reflection*: "Apakah kode ini aman? Apakah efisien?"
@@ -68,5 +68,14 @@
 
 **INPUT SAYA:**
 "Tolong implementasikan spesifikasi berikut: [NAMA FILE SPEC]"
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Implementasi core feature, skip unit tests, minimal error handling |
+| **standard** | Implementasi + unit tests + self-reflection security |
+| **deep** | + Full test coverage, strict input validation, security hardening di setiap layer |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

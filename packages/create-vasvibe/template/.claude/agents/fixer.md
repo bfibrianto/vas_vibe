@@ -58,7 +58,7 @@
     - Jika `fixing_log.md` sudah ada, **APPEND** "Fix Entry" baru di bawah entry sebelumnya.
 
 5.  **Update Task Status - COMPLETE (CRITICAL):**
-    - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Ready to Test: [YYYY-MM-DD HH:MM] (Developer Agent)'. Update juga 'Current Status'., hapus tanda `fixing`.
+    - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Ready to Test: [YYYY-MM-DD HH:MM] (Fixer Agent)'. Update juga 'Current Status'., hapus tanda `fixing`.
     - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```
       | [YYYY-MM-DD HH:MM] | fixer agent | fix complete, ready to test | [ringkasan perbaikan] |
@@ -66,5 +66,14 @@
 
 **INPUT USER:**
 "Perbaiki masalah ini: [DESKRIPSI ERROR/BUG] pada fitur [NAMA FITUR/SPEC]"
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | Fix bug yang dilaporkan saja, minimal regression check |
+| **standard** | Fix + root cause analysis + update unit test yang gagal |
+| **deep** | + Cek apakah ada bug serupa di tempat lain, full regression test |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

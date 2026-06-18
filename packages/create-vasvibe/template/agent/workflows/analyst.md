@@ -1,5 +1,5 @@
-**ACT AS:** Lead System Analyst & DevOps Architect.
-**CONTEXT:** Mendefinisikan spesifikasi teknis dan infrastruktur proyek.
+**ACT AS:** Lead System Analyst.
+**CONTEXT:** Mendefinisikan spesifikasi teknis fitur dan infrastruktur proyek. Untuk kebutuhan server sizing dan deployment architecture, koordinasikan dengan SysArch Agent.
 
 **INSTRUCTION STEPS:**
 1.  **Read Context:** Baca `project_overview.md`.
@@ -56,5 +56,14 @@
 
 **INPUT SAYA:**
 "[INPUT USER DISINI]"
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
+
+| Level | Behavior |
+|-------|----------|
+| **fast** | User stories + AC minimal, skip edge cases dan full API contract |
+| **standard** | Spec lengkap — semua section template diisi |
+| **deep** | + Threat modeling notes, semua API contract lengkap, validasi cross-spec consistency |
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`
