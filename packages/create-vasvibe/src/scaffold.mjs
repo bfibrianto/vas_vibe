@@ -6,6 +6,7 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { copyDir, removePath, replaceInFile, pathExists } from './utils.mjs';
+import { writeVersionFile } from './upgrade.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // packages/create-vasvibe/src → packages/create-vasvibe/template
@@ -21,6 +22,7 @@ const TOOLCHAIN_PATHS = {
 export async function scaffold({
   targetDir,
   projectName,
+  version,
   includeOpencode,
   includeClaude,
   includeGithub,
@@ -56,6 +58,11 @@ export async function scaffold({
   for (const rel of ['README.md', 'PROJECT_README.example.md', '.gitignore', 'AGENT_PERSONAS.md', 'GIT_STRUCTURE_GUIDE.md']) {
     const f = path.join(targetDir, rel);
     if (await pathExists(f)) await replaceInFile(f, replacements);
+  }
+
+  // 5. Write version tracking file.
+  if (version) {
+    await writeVersionFile(targetDir, version);
   }
 }
 

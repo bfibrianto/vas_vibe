@@ -7,6 +7,7 @@ import { runPrompts } from './prompts.mjs';
 import { scaffold } from './scaffold.mjs';
 import { initRepo } from './git.mjs';
 import { log, pathExists, isDirEmpty, isValidProjectName } from './utils.mjs';
+import { isVasvibeProject, runUpgrade } from './upgrade.mjs';
 import pc from 'picocolors';
 
 const HELP = `
@@ -14,29 +15,31 @@ ${pc.bold('create-vasvibe')} — scaffold a project with VasVibe agents preconfi
 
 ${pc.bold('Usage:')}
   npx create-vasvibe <project-name> [options]
+  npx create-vasvibe upgrade [path]         Upgrade agent files in an existing project
 
 ${pc.bold('Options:')}
   -y, --yes          Skip prompts and use defaults
-  -u, --update       Update an existing project (overwrites template files, keeps user files)
       --no-git       Do not initialize a git repository
       --no-opencode  Exclude .opencode/ (commands, skills)
       --no-claude    Exclude .claude/ and .agents/
       --no-github    Exclude .github/prompts/
       --no-workflows Exclude agent/workflows/
+      --dry-run      (upgrade only) Show what would change without writing files
   -h, --help         Show this help
   -v, --version      Print version
 
 ${pc.bold('Examples:')}
   npx create-vasvibe my-app
-  npx create-vasvibe my-app --yes
   npx create-vasvibe my-app --yes --no-claude --no-github
+  npx create-vasvibe upgrade              Upgrade current directory
+  npx create-vasvibe upgrade ./my-app     Upgrade specific project
+  npx create-vasvibe upgrade --dry-run    Preview upgrade without writing
 `;
 
 function parseArgs(argv) {
   const args = argv.slice(2);
   const flags = {
     yes: false,
-    update: false,
     git: true,
     opencode: true,
     claude: true,
@@ -44,6 +47,7 @@ function parseArgs(argv) {
     workflows: true,
     help: false,
     version: false,
+    dryRun: false,
   };
   const positional = [];
 
@@ -53,9 +57,8 @@ function parseArgs(argv) {
       case '--yes':
         flags.yes = true;
         break;
-      case '-u':
-      case '--update':
-        flags.update = true;
+      case '--dry-run':
+        flags.dryRun = true;
         break;
       case '--no-git':
         flags.git = false;
@@ -112,6 +115,30 @@ export async function main(argv) {
     return;
   }
 
+  // --- Upgrade subcommand ---
+  if (positional[0] === 'upgrade') {
+    const pkg = await readPkg();
+    const targetDir = positional[1]
+      ? path.resolve(process.cwd(), positional[1])
+      : process.cwd();
+
+    if (!(await isVasvibeProject(targetDir))) {
+      log.error(`No vasvibe project found at ${targetDir}`);
+      log.step('Run this command from inside a vasvibe project directory.');
+      process.exit(1);
+    }
+
+    log.title('\n  create-vasvibe upgrade\n');
+    try {
+      await runUpgrade({ targetDir, newVersion: pkg.version, dryRun: flags.dryRun });
+    } catch (err) {
+      log.error(`Upgrade failed: ${err.message}`);
+      process.exit(1);
+    }
+    return;
+  }
+
+  // --- Scaffold subcommand (default) ---
   const argInput = positional[0];
   // The arg may be a path (e.g. /tmp/foo or ./foo); use its basename as the
   // logical project name, and resolve the full path as the target directory.
@@ -131,13 +158,16 @@ export async function main(argv) {
     ? path.resolve(process.cwd(), argInput)
     : path.resolve(process.cwd(), projectName);
 
-  // Safety: target must not exist or must be empty, unless --update is passed.
-  if (!flags.update && await pathExists(targetDir)) {
+  // Safety: target must not exist or must be empty.
+  if (await pathExists(targetDir)) {
     if (!(await isDirEmpty(targetDir))) {
-      log.error(`Target directory "${projectName}" already exists and is not empty. Use --update to overwrite agent files.`);
+      log.error(`Target directory "${projectName}" already exists and is not empty.`);
+      log.step(`To update agent files in an existing project, use: ${pc.cyan('npx create-vasvibe upgrade')}`);
       process.exit(1);
     }
   }
+
+  const pkg = await readPkg();
 
   log.blank();
   log.step(`Scaffolding into ${pc.cyan(targetDir)}`);
@@ -146,6 +176,7 @@ export async function main(argv) {
     await scaffold({
       targetDir,
       projectName,
+      version: pkg.version,
       includeOpencode: answers.includeOpencode,
       includeClaude: answers.includeClaude,
       includeGithub: answers.includeGithub,

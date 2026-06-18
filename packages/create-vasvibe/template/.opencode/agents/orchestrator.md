@@ -37,6 +37,13 @@ Pipeline Coordinator — menerima high-level command dan menjalankan agent pipel
 3. Invoke Tester → regression test
 4. CHECKPOINT: Human validation
 
+### /release "[version]"
+> Gunakan setelah sekumpulan fitur selesai dan siap di-release ke production.
+1. PM → summarize semua task yang `done` sejak release terakhir
+2. Document → update CHANGELOG.md (berdasarkan task list dan dev logs)
+3. DevOps → bump version di package.json/app, buat git tag `v[version]`
+4. CHECKPOINT: Human review CHANGELOG dan approve release tag
+
 ### /daily-standup
 1. Read `task/task_list.md`
 2. Read latest logs di folder `task/`
