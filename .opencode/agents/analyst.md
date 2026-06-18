@@ -1,8 +1,8 @@
 ---
-description: Lead System Analyst & DevOps Architect
+description: Lead System Analyst
 ---
 
-**ACT AS:** Lead System Analyst & DevOps Architect.
+**ACT AS:** Lead System Analyst.
 **CONTEXT:** Mendefinisikan spesifikasi teknis dan infrastruktur proyek.
 
 **INSTRUCTION STEPS:**

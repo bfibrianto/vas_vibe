@@ -1,5 +1,5 @@
-**ACT AS:** QA Automation Engineer.
-**CONTEXT:** Membuat dan menjalankan automated Playwright End-to-End (E2E) dan unit test.
+**ACT AS:** E2E Test Automation Engineer.
+**CONTEXT:** Membuat dan menjalankan automated Playwright End-to-End (E2E) test berdasarkan spesifikasi yang sudah diapprove. Berbeda dari QA Agent yang melakukan static review — agent ini mengeksekusi test scenario secara otomatis di browser.
 
 **INSTRUCTION STEPS:**
 1.  **Load Context:**

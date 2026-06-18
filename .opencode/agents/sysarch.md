@@ -178,106 +178,39 @@ Jika ada yang tidak yakin, saya akan memberikan rekomendasi berdasarkan best pra
 
 **Step 6: Calculate Resource Requirements**
 
-Based on user input, calculate:
+Gunakan rules of thumb berikut untuk menghitung estimasi dari jawaban user di Step 4:
 
-#### **Database Sizing:**
-```python
-# Example calculation
-total_users = user_input['target_users_1year']
-bookings_per_user_per_year = 2  # average
-total_bookings = total_users * bookings_per_user_per_year
+#### **Database Storage**
+- Estimasi total rows: jumlah users + (users × 2 bookings/tahun) + (bookings × 1.5 payments) + audit logs
+- Ukuran per row rata-rata: ~2 KB
+- Tambahkan 1.5× untuk indexes dan overhead
+- Tambahkan 3× buffer untuk pertumbuhan
+- **Formula singkat:** `(total_rows × 2 KB × 1.5 × 3) / (1024²) = GB`
 
-# Estimate database size
-db_rows_estimate = {
-    'users': total_users,
-    'bookings': total_bookings,
-    'payments': total_bookings * 1.5,  # DP + pelunasan
-    'ships': 10,
-    'pricing': 100,
-    'seasonal_pricing': 200,
-    'audit_logs': total_bookings * 5,
-}
+#### **File Storage**
+- `(files_per_day × avg_size_MB × 365 × retention_years × 1.3) / 1024 = GB`
 
-# Database size (rough estimate)
-avg_row_size_kb = 2  # KB per row
-total_rows = sum(db_rows_estimate.values())
-db_size_gb = (total_rows * avg_row_size_kb) / 1024 / 1024
-db_size_with_indexes = db_size_gb * 1.5  # indexes + overhead
-recommended_db_storage = db_size_with_indexes * 3  # growth buffer
-```
+#### **RAM**
+- App server: 512 MB base + (concurrent_users × 2 MB)
+- DB server: 1024 MB base + (concurrent_users × 1.5 connections × 5 MB/connection)
+- Redis: 512 MB flat
+- Total × 1.5 headroom → round up ke tier terdekat (4/8/16/32 GB)
 
-#### **File Storage Sizing:**
-```python
-files_per_day = user_input['file_uploads_per_day']
-avg_file_size_mb = user_input['avg_file_size_mb']
-retention_years = user_input['retention_years']
+#### **CPU (vCPU)**
+- Standard CRUD API: 1 vCPU per 100 req/min
+- CPU-intensive (PDF, export, image): 1 vCPU per 20 req/min
+- Minimum 2 vCPU, tambahkan 1.5× buffer
 
-daily_storage_mb = files_per_day * avg_file_size_mb
-yearly_storage_gb = (daily_storage_mb * 365) / 1024
-total_storage_gb = yearly_storage_gb * retention_years
-recommended_file_storage = total_storage_gb * 1.3  # buffer
-```
-
-#### **Memory (RAM) Sizing:**
-```python
-# Application server
-concurrent_users = user_input['concurrent_users_peak']
-ram_per_user_mb = 2  # Next.js + session
-app_ram_base = 512  # Base Next.js process
-app_ram_total = app_ram_base + (concurrent_users * ram_per_user_mb)
-
-# Database server
-db_connections = concurrent_users * 1.5
-ram_per_connection_mb = 5
-db_ram_base = 1024  # PostgreSQL base
-db_ram_total = db_ram_base + (db_connections * ram_per_connection_mb)
-
-# Redis cache
-redis_ram = 512  # MB for session + cache
-
-total_ram_gb = (app_ram_total + db_ram_total + redis_ram) / 1024
-recommended_ram = total_ram_gb * 1.5  # headroom
-```
-
-#### **CPU Sizing:**
-```python
-api_requests_per_minute = user_input['api_requests_per_minute']
-cpu_intensive_operations = ['pdf_generation', 'excel_export', 'image_processing']
-
-# Rule of thumb: 1 vCPU handles ~100 req/min for standard CRUD
-# 1 vCPU handles ~20 req/min for CPU-intensive operations
-base_vcpu = 2
-vcpu_for_api = api_requests_per_minute / 100
-vcpu_total = max(base_vcpu, vcpu_for_api)
-recommended_vcpu = vcpu_total * 1.5  # buffer
-```
-
-#### **Bandwidth Calculation:**
-```python
-avg_page_size_kb = 500  # KB
-avg_api_response_kb = 50  # KB
-daily_page_views = concurrent_users * 20  # pages per user per day
-daily_api_calls = api_requests_per_minute * 60 * 24
-
-daily_bandwidth_gb = (
-    (daily_page_views * avg_page_size_kb) +
-    (daily_api_calls * avg_api_response_kb) +
-    (files_per_day * avg_file_size_mb * 1024)  # uploads
-) / 1024 / 1024
-
-monthly_bandwidth_gb = daily_bandwidth_gb * 30
-recommended_bandwidth = monthly_bandwidth_gb * 1.5  # buffer
-```
+#### **Bandwidth (per bulan)**
+- `(page_views/day × 500 KB + api_calls/day × 50 KB + uploads/day × avg_size) × 30 × 1.5 / (1024²) = GB`
 
 **Step 7: Document Calculations**
-```markdown
-Create: `architecture/capacity_planning.md`
-- User input summary
-- Calculation formulas
-- Resource estimates
-- Growth projections (6 months, 1 year, 2 years)
-- Peak vs normal load comparison
-```
+
+Buat file `architecture/capacity_planning.md` yang berisi:
+- Ringkasan jawaban user
+- Estimasi resource (DB, storage, RAM, CPU, bandwidth) dengan angka aktual
+- Proyeksi pertumbuhan 6 bulan, 1 tahun, 2 tahun
+- Perbandingan beban normal vs peak season
 
 ---
 
@@ -354,5 +287,7 @@ Specs:
     - Type: Cloud LB or Nginx
   
   Estimated Cost: $[amount]/month
+```
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`
