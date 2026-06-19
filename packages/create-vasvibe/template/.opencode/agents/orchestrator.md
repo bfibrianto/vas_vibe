@@ -15,12 +15,13 @@ Pipeline Coordinator — menerima high-level command dan menjalankan agent pipel
 2. CHECKPOINT: Human review & approve spec
 3. Invoke PM → create task & detail file from spec
 4. Invoke Developer → implement & write unit tests
-5. Invoke QA → static review & security audit
-6. CHECKPOINT: Human code review (dengan QA report sebagai referensi)
-7. Invoke Tester → create & run E2E tests
-8. If FAIL → Invoke Fixer → loop back to step 7
-9. Invoke Document → update FSD & API docs
-10. CHECKPOINT: Human validation & sign-off
+5. Invoke QA → static review & code quality audit
+6. **[depth=deep only]** Invoke Security → vulnerability scan & OWASP check
+7. CHECKPOINT: Human code review (dengan QA report dan Security report sebagai referensi)
+8. Invoke Tester → create & run E2E tests
+9. If FAIL → Invoke Fixer → loop back to step 8
+10. Invoke Document → update FSD & API docs
+11. CHECKPOINT: Human validation & sign-off
 
 ### /setup-project "[Project Idea]"
 > Gunakan pipeline ini untuk project baru, setelah `project_overview.md` dibuat.
@@ -42,9 +43,20 @@ Pipeline Coordinator — menerima high-level command dan menjalankan agent pipel
 ### /release "[version]"
 > Gunakan setelah sekumpulan fitur selesai dan siap di-release ke production.
 1. PM → summarize semua task yang `done` sejak release terakhir
-2. Document → update CHANGELOG.md (berdasarkan task list dan dev logs)
-3. DevOps → bump version di package.json/app, buat git tag `v[version]`
-4. CHECKPOINT: Human review CHANGELOG dan approve release tag
+2. Security → Mode D: pre-release audit (scan perubahan sejak release terakhir)
+3. CHECKPOINT: Human review security findings — approve atau minta fix dulu
+4. Document → update CHANGELOG.md (berdasarkan task list dan dev logs)
+5. DevOps → bump version di package.json/app, buat git tag `v[version]`
+6. CHECKPOINT: Human review CHANGELOG dan approve release tag
+
+### /security-audit "[scope]"
+> Jalankan full security audit. Scope bisa berupa nama fitur, TASK-ID, atau "seluruh codebase".
+1. Security → Mode A: Threat Modeling
+2. Security → Mode B: Vulnerability Scan
+3. CHECKPOINT: Human review findings — approve fix plan atau mark sebagai accepted risk
+4. Security → Mode C: Security Fix (untuk semua temuan CRITICAL dan HIGH)
+5. Invoke Tester → regression test (pastikan fix tidak break fitur existing)
+6. CHECKPOINT: Human sign-off
 
 ### /daily-standup
 1. Read `task/task_list.md`

@@ -2,7 +2,7 @@
 
 Setiap Agent memiliki **system instruction** yang tersimpan di `.github/prompts/` dan dapat dipanggil via slash command.
 
-**Total: 8 Specialized Agents**
+**Total: 12 Specialized Agents**
 
 ### 1. **Initiator Agent** (`/initiator`)
 **Role:** Project Initiator & Product Manager
@@ -347,7 +347,47 @@ for production deployment. Target: 100 concurrent users,
 
 ---
 
-### 8. **Document Agent** (`/document`)
+### 8. **Security Expert Agent** (`/security`)
+**Role:** Application Security Expert
+
+**Capabilities:**
+- ✅ Threat modeling menggunakan metodologi STRIDE
+- ✅ OWASP Top 10 vulnerability scanning
+- ✅ Secrets dan hardcoded credential detection
+- ✅ Dependency vulnerability scan (`npm audit`, dll)
+- ✅ Implementasi security fix (input validation, parameterized queries, header hardening)
+- ✅ Pre-release security audit
+
+**4 Mode Kerja:**
+- **Mode A — Threat Model:** Identifikasi attack surface dan threat berdasarkan arsitektur
+- **Mode B — Vulnerability Scan:** OWASP Top 10 check + dependency scan + secrets check
+- **Mode C — Security Fix:** Implementasi patch untuk temuan CRITICAL dan HIGH
+- **Mode D — Pre-release Audit:** Quick scan perubahan sejak release terakhir
+
+**When to Use:**
+- Pipeline `/security-audit` untuk full audit manual
+- Otomatis di `/start-feature` saat `depth=deep`
+- Otomatis di `/release` (Mode D, selalu)
+
+**Input Example:**
+```
+/security
+
+"Mode B: Lakukan vulnerability scan pada fitur authentication dan payment"
+```
+
+**Output:**
+- `task/[TASK-ID]/security_threat_model.md` (Mode A)
+- `task/[TASK-ID]/security_report.md` (Mode B/C/D)
+
+**👤 Human Task:**
+- Review temuan dan tentukan mana yang perlu di-fix vs accepted risk
+- Approve sebelum Security Fix diimplementasi (untuk CRITICAL)
+- Final sign-off setelah semua fix diverifikasi
+
+---
+
+### 9. **Document Agent** (`/document`)
 **Role:** Technical Writer
 
 **Capabilities:**
@@ -381,9 +421,12 @@ for production deployment. Target: 100 concurrent users,
 | **PM** | `/pm` | Task management & coordination | `task/task_list.md`, `task/PROJECT_STATUS_REPORT.md` | ✅ **MEDIUM** |
 | **Analyst** | `/analyst` | Technical specifications | `specifications/*.md` | ⚠️ **HIGH** |
 | **Developer** | `/developer` | Code implementation | `codes/*`, `logs/development/` | ⚠️ **HIGH** |
-| **Tester** | `/tester` | Test automation & QA | `tests/*`, `logs/testing/` | ✅ **MEDIUM** |
+| **QA** | `/qa` | Static code review & security audit | `task/[ID]/qa_report.md` | ⚠️ **HIGH** |
+| **Tester** | `/tester` | E2E test automation | `tests/*`, `logs/testing/` | ✅ **MEDIUM** |
 | **Fixer** | `/fixer` | Bug fixing & debugging | `codes/*`, `logs/fixing/` | ⚠️ **HIGH** |
+| **Security** | `/security` | Threat modeling, OWASP scan, security fix | `task/[ID]/security_report.md` | ⚠️ **CRITICAL** |
 | **SysArch** | `/sysarch` | Infrastructure & deployment planning | `architecture/*` | ⚠️ **CRITICAL** |
+| **DevOps** | `/devops` | Docker, CI/CD, deployment | `Dockerfile`, `.github/workflows/` | ⚠️ **HIGH** |
 | **Document** | `/document` | Final documentation | `documentation/*.md` | ✅ **LOW** |
 
 ---
