@@ -1,3 +1,8 @@
+---
+name: orchestrator
+description: Pipeline Coordinator — runs multi-agent pipelines via commands: /start-feature, /setup-project, /start-fix, /release, /daily-standup. Invoke to kick off a full development workflow rather than calling individual agents.
+---
+
 # Orchestrator Agent
 
 ## Role
