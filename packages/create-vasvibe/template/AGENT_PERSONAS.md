@@ -1,8 +1,38 @@
 ## 🤖 AI Agent Personas & Capabilities
 
-Setiap Agent memiliki **system instruction** yang tersimpan di `.github/prompts/` dan dapat dipanggil via slash command.
+Setiap Agent memiliki **system instruction** dan dapat dipanggil via slash command.
 
-**Total: 8 Specialized Agents**
+**Total: 18 Specialized Agents**
+
+---
+
+## 🔄 Workflow 4 Fase (v2.0)
+
+Pengerjaan proyek dibagi ke **4 fase** dengan gerbang human di tiap transisi. Detail: `agent/workflows/_shared/phases.md`.
+
+| Fase | Agen | Output (acuan) | Gate |
+|------|------|----------------|------|
+| **1 · Perencanaan** | **Discovery** (wawancara human), Initiator, SysArch, Data Architect, UX Designer, Security (Mode S), Analyst | requirements, overview, architecture, data-model, design-system, security-standards, **API Contract** | requirements sign-off → Blueprint disetujui |
+| **2 · Pengerjaan** | Analyst (spec-lock), Backend Engineer ∥ Frontend Engineer (atau Developer @ `fast`), QA | kode + unit test + review | Code review lulus |
+| **3 · Testing** | Tester, Fixer | E2E hijau | Fungsional hijau |
+| **4 · Hardening** (per-release) | Security (A/B/C/D), Reliability, Fixer | security & reliability report | Siap produksi |
+
+**Lintas fase:** PM (koordinasi), Orchestrator (gerbang fase), DevOps (CI/CD), Document (dokumentasi).
+
+**Komunikasi rigid — "No Silent Changes":** setiap perubahan dari user WAJIB ditulis ke dokumen acuan + dicatat (ADR jika perlu) + agen hilir di-notify. Detail: `agent/workflows/_shared/change-management.md`.
+
+**Pemisahan spesialis:** Backend Engineer (API/logic/DB) dan Frontend Engineer (UI/UX/integrasi) bekerja paralel, disatukan oleh **API Contract**. Pada `depth=fast` keduanya digabung jadi satu Developer fullstack.
+
+### 0. **Discovery Agent** (`/discovery`) — Fase Perencanaan (paling hulu)
+**Role:** Product Discovery Lead & Business Analyst
+
+- ✅ **Mewawancarai human** secara interaktif (tanya-jawab bertahap) untuk menggali kebutuhan
+- ✅ Menggali: masalah & metrik sukses, persona, scope (must/nice/out), non-functional, constraint, data & integrasi, risiko & asumsi
+- ✅ Reflect-back untuk validasi; berhenti saat cukup; sign-off human
+- **Output:** `state/knowledge_base/requirements/requirements.md` · **Acuan untuk:** Initiator
+- ⚠️ Berjalan di **thread utama** (interaktif), bukan subagent. Tidak membuat `project_overview.md`.
+
+---
 
 ### 1. **Initiator Agent** (`/initiator`)
 **Role:** Project Initiator & Product Manager
@@ -347,7 +377,97 @@ for production deployment. Target: 100 concurrent users,
 
 ---
 
-### 8. **Document Agent** (`/document`)
+### 8. **Security Expert Agent** (`/security`)
+**Role:** Application Security Expert
+
+**Capabilities:**
+- ✅ Threat modeling menggunakan metodologi STRIDE
+- ✅ OWASP Top 10 vulnerability scanning
+- ✅ Secrets dan hardcoded credential detection
+- ✅ Dependency vulnerability scan (`npm audit`, dll)
+- ✅ Implementasi security fix (input validation, parameterized queries, header hardening)
+- ✅ Pre-release security audit
+
+**4 Mode Kerja:**
+- **Mode A — Threat Model:** Identifikasi attack surface dan threat berdasarkan arsitektur
+- **Mode B — Vulnerability Scan:** OWASP Top 10 check + dependency scan + secrets check
+- **Mode C — Security Fix:** Implementasi patch untuk temuan CRITICAL dan HIGH
+- **Mode D — Pre-release Audit:** Quick scan perubahan sejak release terakhir
+
+**When to Use:**
+- Pipeline `/security-audit` untuk full audit manual
+- Otomatis di `/start-feature` saat `depth=deep`
+- Otomatis di `/release` (Mode D, selalu)
+
+**Input Example:**
+```
+/security
+
+"Mode B: Lakukan vulnerability scan pada fitur authentication dan payment"
+```
+
+**Output:**
+- `task/[TASK-ID]/security_threat_model.md` (Mode A)
+- `task/[TASK-ID]/security_report.md` (Mode B/C/D)
+
+**👤 Human Task:**
+- Review temuan dan tentukan mana yang perlu di-fix vs accepted risk
+- Approve sebelum Security Fix diimplementasi (untuk CRITICAL)
+- Final sign-off setelah semua fix diverifikasi
+
+---
+
+### 9. **Data Architect Agent** (`/data-architect`) — Fase Perencanaan
+**Role:** Data Architect
+
+- ✅ Merancang data model, ERD, skema per-entity, indexing
+- ✅ Data governance: PII, retention, encryption at rest, audit
+- ✅ Migration strategy sesuai tooling stack
+- **Output:** `state/knowledge_base/data-model/` · **Acuan untuk:** Backend Engineer
+
+---
+
+### 10. **UX Designer Agent** (`/ux-designer`) — Fase Perencanaan
+**Role:** UX/UI Designer
+
+- ✅ Design system: color palette, tipografi, spacing, spec komponen, motion
+- ✅ Memakai skill `ui-ux-pro-max`
+- ✅ Accessibility & responsive guidelines
+- **Output:** `state/knowledge_base/design-system/` · **Acuan untuk:** Frontend Engineer
+
+---
+
+### 11. **Backend Engineer Agent** (`/backend`) — Fase Pengerjaan
+**Role:** Senior Backend Engineer (`depth=standard|deep`)
+
+- ✅ Implementasi API, business logic, akses DB **sesuai API Contract**
+- ✅ Honor `data-model/` dan `security-standards.md`
+- ✅ Unit test + propagasi perubahan contract ke Frontend
+- **Output:** `codes/*` (server) · **Paralel dengan:** Frontend Engineer
+
+---
+
+### 12. **Frontend Engineer Agent** (`/frontend`) — Fase Pengerjaan
+**Role:** Senior Frontend Engineer & UI Specialist (`depth=standard|deep`)
+
+- ✅ Implementasi UI **sesuai design-system** + integrasi **API Contract**
+- ✅ Memakai skill `ui-ux-pro-max`; handle semua state (loading/empty/error)
+- ✅ Component test + a11y
+- **Output:** `codes/*` (client) · **Paralel dengan:** Backend Engineer
+
+---
+
+### 13. **Reliability Engineer Agent** (`/reliability`) — Fase Hardening
+**Role:** Reliability & Performance Engineer (per-release)
+
+- ✅ Performance review (N+1, indexing, caching, payload)
+- ✅ Resilience: error handling, timeout/retry, graceful degradation
+- ✅ Load test + observability audit
+- **Output:** `task/[RELEASE]/reliability_report.md`
+
+---
+
+### 14. **Document Agent** (`/document`)
 **Role:** Technical Writer
 
 **Capabilities:**
@@ -377,13 +497,25 @@ for production deployment. Target: 100 concurrent users,
 
 | Agent | Command | Primary Function | Output | Human Review |
 | --- | --- | --- | --- | --- |
-| **Initiator** | `/initiator` | Project kickoff & overview | `project_overview.md` | ⚠️ **CRITICAL** |
-| **PM** | `/pm` | Task management & coordination | `task/task_list.md`, `task/PROJECT_STATUS_REPORT.md` | ✅ **MEDIUM** |
-| **Analyst** | `/analyst` | Technical specifications | `specifications/*.md` | ⚠️ **HIGH** |
-| **Developer** | `/developer` | Code implementation | `codes/*`, `logs/development/` | ⚠️ **HIGH** |
-| **Tester** | `/tester` | Test automation & QA | `tests/*`, `logs/testing/` | ✅ **MEDIUM** |
-| **Fixer** | `/fixer` | Bug fixing & debugging | `codes/*`, `logs/fixing/` | ⚠️ **HIGH** |
-| **SysArch** | `/sysarch` | Infrastructure & deployment planning | `architecture/*` | ⚠️ **CRITICAL** |
-| **Document** | `/document` | Final documentation | `documentation/*.md` | ✅ **LOW** |
+| Agen | Command | Fase | Primary Function | Output |
+| --- | --- | --- | --- | --- |
+| **Discovery** | `/discovery` | Perencanaan | Requirement gathering (wawancara human) | `state/knowledge_base/requirements/` |
+| **Initiator** | `/initiator` | Perencanaan | Project overview (sintesis requirements) | `project_overview.md` |
+| **SysArch** | `/sysarch` | Perencanaan | Infrastructure & deployment planning | `state/knowledge_base/architecture/` |
+| **Data Architect** | `/data-architect` | Perencanaan | Data model & governance | `state/knowledge_base/data-model/` |
+| **UX Designer** | `/ux-designer` | Perencanaan | Design system & UI guidelines | `state/knowledge_base/design-system/` |
+| **Security** | `/security` | Perencanaan + Hardening | Standards, threat model, OWASP, fix | `state/knowledge_base/security/`, `task/[ID]/security_report.md` |
+| **Analyst** | `/analyst` | Perencanaan | User story, **API Contract**, spec-lock | `specifications/*.md` |
+| **PM** | `/pm` | Lintas fase | Task management & coordination | `task/task_list.md` |
+| **Backend Engineer** | `/backend` | Pengerjaan | Server API, logic, DB (std/deep) | `codes/*` |
+| **Frontend Engineer** | `/frontend` | Pengerjaan | UI/UX & API integration (std/deep) | `codes/*` |
+| **Developer** | `/developer` | Pengerjaan | Fullstack tunggal (`depth=fast`) | `codes/*` |
+| **QA** | `/qa` | Pengerjaan | Static review & unit test | `task/[ID]/qa_report.md` |
+| **Tester** | `/tester` | Testing | E2E test automation | `tests/*` |
+| **Fixer** | `/fixer` | Testing + Hardening | Bug fixing & debugging | `codes/*` |
+| **Reliability** | `/reliability` | Hardening | Performance, resilience, load | `task/[RELEASE]/reliability_report.md` |
+| **DevOps** | `/devops` | Lintas fase | Docker, CI/CD, deployment | `Dockerfile`, `.github/workflows/` |
+| **Document** | `/document` | Lintas fase | Final documentation | `documentation/*.md` |
+| **Orchestrator** | `/plan-project`, `/build-feature`, dll | Lintas fase | Pipeline & phase gates | `state/pipeline_log.md` |
 
 ---

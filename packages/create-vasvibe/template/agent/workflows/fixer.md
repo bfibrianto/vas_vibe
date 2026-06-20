@@ -75,5 +75,8 @@
 | **standard** | Fix + root cause analysis + update unit test yang gagal |
 | **deep** | + Cek apakah ada bug serupa di tempat lain, full regression test |
 
+## Change Management
+> 📎 **BACA DAN IKUTI** `agent/workflows/_shared/change-management.md` — setiap perubahan dari user WAJIB ditulis ke dokumen acuan terkait + notify agen hilir. No silent changes.
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

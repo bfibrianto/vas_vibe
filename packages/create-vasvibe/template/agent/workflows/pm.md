@@ -192,5 +192,8 @@ Contoh input yang mungkin diterima:
 | **standard** | Task detail lengkap sesuai template |
 | **deep** | + Risk assessment per task, dependency mapping, detailed time estimate |
 
+## Change Management
+> 📎 **BACA DAN IKUTI** `agent/workflows/_shared/change-management.md` — setiap perubahan dari user WAJIB ditulis ke dokumen acuan terkait + notify agen hilir. No silent changes.
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

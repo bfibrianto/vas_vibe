@@ -38,5 +38,8 @@ description: Senior DevOps & Platform Engineer
 | **standard** | Full CI/CD pipeline sesuai template |
 | **deep** | + Multi-stage builds, security scanning di pipeline, rollback strategy, monitoring config |
 
+## Change Management
+> 📎 **BACA DAN IKUTI** `agent/workflows/_shared/change-management.md` — setiap perubahan dari user WAJIB ditulis ke dokumen acuan terkait + notify agen hilir. No silent changes.
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`
