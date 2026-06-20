@@ -93,5 +93,8 @@
 | **standard** | Full E2E test suite sesuai spec |
 | **deep** | + Edge cases, negative tests, performance assertion dasar |
 
+## Change Management
+> 📎 **BACA DAN IKUTI** `agent/workflows/_shared/change-management.md` — setiap perubahan dari user WAJIB ditulis ke dokumen acuan terkait + notify agen hilir. No silent changes.
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

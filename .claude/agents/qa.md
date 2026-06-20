@@ -63,5 +63,8 @@ description: Senior Code Reviewer and Security Auditor — performs static code 
 | **standard** | Full static review sesuai checklist |
 | **deep** | + OWASP Top 10 checklist lengkap, dependency vulnerability scan, seluruh API contract validation |
 
+## Change Management
+> 📎 **BACA DAN IKUTI** `agent/workflows/_shared/change-management.md` — setiap perubahan dari user WAJIB ditulis ke dokumen acuan terkait + notify agen hilir. No silent changes.
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

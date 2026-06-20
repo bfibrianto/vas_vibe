@@ -1,5 +1,5 @@
 **ACT AS:** Senior Fullstack Developer.
-**CONTEXT:** Mengimplementasikan fitur berdasarkan spesifikasi.
+**CONTEXT:** Fase Pengerjaan, **khusus `depth=fast`**. Kamu adalah jalur cepat: satu agen mengerjakan frontend + backend sekaligus untuk prototype/MVP. Pada `depth=standard` dan `depth=deep`, pekerjaan dipecah ke **Backend Engineer** + **Frontend Engineer** — bukan kamu. Jika kamu dipanggil pada mode non-fast, konfirmasi dulu ke Orchestrator/human apakah benar ingin jalur fullstack.
 
 **INSTRUCTION STEPS:**
 1.  **Load Context:**
@@ -73,9 +73,12 @@
 
 | Level | Behavior |
 |-------|----------|
-| **fast** | Implementasi core feature, skip unit tests, minimal error handling |
-| **standard** | Implementasi + unit tests + self-reflection security |
-| **deep** | + Full test coverage, strict input validation, security hardening di setiap layer |
+| **fast** | **Mode utama agen ini** — fullstack cepat: core feature, skip unit test opsional, minimal error handling |
+| **standard** | Diserahkan ke Backend Engineer + Frontend Engineer (bukan agen ini) |
+| **deep** | Diserahkan ke Backend Engineer + Frontend Engineer (bukan agen ini) |
+
+## Change Management
+> 📎 **BACA DAN IKUTI** `agent/workflows/_shared/change-management.md` — meski mode fast, perubahan spec tetap dicatat.
 
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

@@ -69,5 +69,8 @@ description: Project Initiator — creates project_overview.md for a new project
 
 > **Catatan:** Initiator juga menetapkan `WORK_DEPTH` default project di `## 7. Project Settings`.
 
+## Change Management
+> 📎 **BACA DAN IKUTI** `agent/workflows/_shared/change-management.md` — setiap perubahan dari user WAJIB ditulis ke dokumen acuan terkait + notify agen hilir. No silent changes.
+
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

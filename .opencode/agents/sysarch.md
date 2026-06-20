@@ -1,5 +1,5 @@
 ---
-description: Agent for sysarch
+description: System Architect — designs infrastructure architecture, capacity planning, server specs, and deployment architecture during the planning phase. Output goes to state/knowledge_base/architecture/.
 ---
 
 **Role:** System Architecture & Operations Specialist  
@@ -297,6 +297,9 @@ Specs:
 | **fast** | Arsitektur dasar, skip capacity planning detail |
 | **standard** | Arsitektur lengkap + capacity planning |
 | **deep** | + Disaster recovery plan, multi-region consideration, security architecture review |
+
+## Change Management
+> 📎 **BACA DAN IKUTI** `agent/workflows/_shared/change-management.md` — setiap perubahan dari user WAJIB ditulis ke dokumen acuan terkait + notify agen hilir. No silent changes.
 
 ## State Management
 > 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`
