@@ -13,15 +13,17 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 
 ### 🟦 Fase 1 — `/plan-project "[Project Idea]"`
 > Hasilkan semua blueprint (acuan) sebelum coding apapun.
-1. Invoke Initiator → `project_overview.md` (termasuk `WORK_DEPTH`)
-2. CHECKPOINT: Human review tech stack, UI vibe, work depth
-3. Invoke SysArch → `state/knowledge_base/architecture/` (jika ada infra requirement)
-4. Invoke Data Architect → `state/knowledge_base/data-model/`
-5. Invoke UX Designer → `state/knowledge_base/design-system/`
-6. Invoke Security (Mode S) → `state/knowledge_base/security/security-standards.md`
-7. Invoke Analyst → `specifications/000_spec_environment_setup.md` + backlog user story (termasuk **API Contract**)
-8. Invoke DevOps → environment setup (Dockerfile, docker-compose) jika dibutuhkan
-9. **GATE — Blueprint disetujui:** Human approve semua acuan. **API Contract wajib final.**
+0. **Discovery (INTERAKTIF, di thread utama)** → wawancara human, hasilkan `state/knowledge_base/requirements/requirements.md`. **JANGAN delegasikan ke subagent** — dialog tanya-jawab harus di thread utama.
+1. GATE: Human sign-off `requirements.md`
+2. Invoke Initiator → `project_overview.md` (sintesis dari requirements, termasuk `WORK_DEPTH`)
+3. CHECKPOINT: Human review tech stack, UI vibe, work depth
+4. Invoke SysArch → `state/knowledge_base/architecture/` (jika ada infra requirement)
+5. Invoke Data Architect → `state/knowledge_base/data-model/`
+6. Invoke UX Designer → `state/knowledge_base/design-system/`
+7. Invoke Security (Mode S) → `state/knowledge_base/security/security-standards.md`
+8. Invoke Analyst → `specifications/000_spec_environment_setup.md` + backlog user story (termasuk **API Contract**)
+9. Invoke DevOps → environment setup (Dockerfile, docker-compose) jika dibutuhkan
+10. **GATE — Blueprint disetujui:** Human approve semua acuan. **API Contract wajib final.**
 
 ### 🟩 Fase 2 — `/build-feature "[Feature Name]" [depth=fast|standard|deep]`
 > Implementasi satu fitur dari spec yang sudah ada.

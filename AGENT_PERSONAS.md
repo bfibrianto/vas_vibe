@@ -2,7 +2,7 @@
 
 Setiap Agent memiliki **system instruction** dan dapat dipanggil via slash command.
 
-**Total: 17 Specialized Agents**
+**Total: 18 Specialized Agents**
 
 ---
 
@@ -12,7 +12,7 @@ Pengerjaan proyek dibagi ke **4 fase** dengan gerbang human di tiap transisi. De
 
 | Fase | Agen | Output (acuan) | Gate |
 |------|------|----------------|------|
-| **1 · Perencanaan** | Initiator, SysArch, Data Architect, UX Designer, Security (Mode S), Analyst | overview, architecture, data-model, design-system, security-standards, **API Contract** | Blueprint disetujui |
+| **1 · Perencanaan** | **Discovery** (wawancara human), Initiator, SysArch, Data Architect, UX Designer, Security (Mode S), Analyst | requirements, overview, architecture, data-model, design-system, security-standards, **API Contract** | requirements sign-off → Blueprint disetujui |
 | **2 · Pengerjaan** | Analyst (spec-lock), Backend Engineer ∥ Frontend Engineer (atau Developer @ `fast`), QA | kode + unit test + review | Code review lulus |
 | **3 · Testing** | Tester, Fixer | E2E hijau | Fungsional hijau |
 | **4 · Hardening** (per-release) | Security (A/B/C/D), Reliability, Fixer | security & reliability report | Siap produksi |
@@ -22,6 +22,17 @@ Pengerjaan proyek dibagi ke **4 fase** dengan gerbang human di tiap transisi. De
 **Komunikasi rigid — "No Silent Changes":** setiap perubahan dari user WAJIB ditulis ke dokumen acuan + dicatat (ADR jika perlu) + agen hilir di-notify. Detail: `agent/workflows/_shared/change-management.md`.
 
 **Pemisahan spesialis:** Backend Engineer (API/logic/DB) dan Frontend Engineer (UI/UX/integrasi) bekerja paralel, disatukan oleh **API Contract**. Pada `depth=fast` keduanya digabung jadi satu Developer fullstack.
+
+### 0. **Discovery Agent** (`/discovery`) — Fase Perencanaan (paling hulu)
+**Role:** Product Discovery Lead & Business Analyst
+
+- ✅ **Mewawancarai human** secara interaktif (tanya-jawab bertahap) untuk menggali kebutuhan
+- ✅ Menggali: masalah & metrik sukses, persona, scope (must/nice/out), non-functional, constraint, data & integrasi, risiko & asumsi
+- ✅ Reflect-back untuk validasi; berhenti saat cukup; sign-off human
+- **Output:** `state/knowledge_base/requirements/requirements.md` · **Acuan untuk:** Initiator
+- ⚠️ Berjalan di **thread utama** (interaktif), bukan subagent. Tidak membuat `project_overview.md`.
+
+---
 
 ### 1. **Initiator Agent** (`/initiator`)
 **Role:** Project Initiator & Product Manager
@@ -488,7 +499,8 @@ for production deployment. Target: 100 concurrent users,
 | --- | --- | --- | --- | --- |
 | Agen | Command | Fase | Primary Function | Output |
 | --- | --- | --- | --- | --- |
-| **Initiator** | `/initiator` | Perencanaan | Project kickoff & overview | `project_overview.md` |
+| **Discovery** | `/discovery` | Perencanaan | Requirement gathering (wawancara human) | `state/knowledge_base/requirements/` |
+| **Initiator** | `/initiator` | Perencanaan | Project overview (sintesis requirements) | `project_overview.md` |
 | **SysArch** | `/sysarch` | Perencanaan | Infrastructure & deployment planning | `state/knowledge_base/architecture/` |
 | **Data Architect** | `/data-architect` | Perencanaan | Data model & governance | `state/knowledge_base/data-model/` |
 | **UX Designer** | `/ux-designer` | Perencanaan | Design system & UI guidelines | `state/knowledge_base/design-system/` |

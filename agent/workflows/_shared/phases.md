@@ -10,12 +10,15 @@ Project VasVibe dikerjakan dalam **4 fase** dengan gerbang (gate) human di tiap 
 
 | Agen | Output (acuan) |
 |------|----------------|
-| Initiator | `project_overview.md` |
+| **Discovery** (paling hulu, INTERAKTIF) | `state/knowledge_base/requirements/requirements.md` |
+| Initiator | `project_overview.md` (sintesis dari requirements) |
 | SysArch | `state/knowledge_base/architecture/` |
 | Data Architect | `state/knowledge_base/data-model/` |
 | UX Designer | `state/knowledge_base/design-system/` |
 | Security (Mode Standards) | `state/knowledge_base/security/security-standards.md` |
 | Analyst | `specifications/` (user story + **API Contract**) |
+
+**Discovery dulu:** Sebelum dokumen apapun, Discovery mewawancarai human (tanya-jawab) untuk menggali kebutuhan. Karena interaktif, **Discovery berjalan di thread utama**, bukan sebagai subagent. Outputnya (`requirements.md`) di-sign-off human, lalu jadi input Initiator.
 
 **Gate:** Human menyetujui blueprint. **API Contract wajib final** — ini seam antara Backend & Frontend.
 

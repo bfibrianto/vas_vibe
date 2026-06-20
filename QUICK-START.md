@@ -36,8 +36,9 @@ Mau cepat dulu? Pakai `fast`. Mau matang? `deep`. Bisa diubah kapan saja, atau d
 ```
 /plan-project "aplikasi booking kapal wisata Labuan Bajo, Next.js, ada payment"
 ```
-Menghasilkan blueprint: `project_overview.md`, arsitektur, data model, design system, security standards, dan **spesifikasi + API Contract**.
-👉 **Review & setujui di gate.** API Contract harus final sebelum lanjut.
+**Dimulai dengan Discovery** — agen akan **mewawancaraimu** dulu (tanya-jawab tentang tujuan, pengguna, scope, constraint) supaya rencananya matang. Jawab pertanyaannya; hasilnya `requirements.md`.
+Setelah kamu sign-off, barulah Initiator menyusun `project_overview.md`, lalu arsitektur, data model, design system, security standards, dan **spesifikasi + API Contract**.
+👉 **Review & setujui di tiap gate.** API Contract harus final sebelum lanjut.
 
 ### Langkah 2 — 🟩 Pengerjaan
 ```
