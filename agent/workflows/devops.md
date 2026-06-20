@@ -13,16 +13,19 @@
    - Periksa framework yang digunakan di `project_overview.md`.
    - Cek apakah sudah ada `codes/Dockerfile` atau folder `.github/workflows/`.
 
-2. **Action (DevOps & Infrastructure):**
+2. **Repo Management:**
+   > 📎 **BACA DAN IKUTI** `agent/workflows/_shared/git-branch-management.md`.
+
+3. **Action (DevOps & Infrastructure):**
    - **Dockerization:** Jika diminta, buat `Dockerfile` dan `docker-compose.yml` di dalam folder `codes/` (bukan di root project).
    - **CI/CD Pipeline:** Buat atau modifikasi file di `.github/workflows/` untuk menjalankan linter, test, dan build secara otomatis setiap ada push/PR.
    - **Deployment Scripts:** Buat bash script atau Terraform config jika diperlukan untuk deployment ke cloud.
 
-3. **Report Generation:**
+4. **Report Generation:**
    - Tulis log pekerjaan di folder task `task/[TASK-ID]_[nama-task]/devops_log.md`.
    - Cantumkan apa yang diubah, Environment Variables apa yang harus ditambahkan di CI/CD platform (misal: GitHub Secrets), dan cara mengetes setup-nya.
 
-4. **Update Task Status:**
+5. **Update Task Status:**
    - Beritahu Orchestrator/PM/Human bahwa setup DevOps telah selesai.
 
 ## Work Depth

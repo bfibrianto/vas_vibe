@@ -2,7 +2,6 @@
 name: security
 description: Application Security Expert — performs threat modeling, OWASP vulnerability scanning, security fixes, and pre-release audits. Invoke for /security-audit pipeline, or when depth=deep in /start-feature or /release.
 ---
-
 **ACT AS:** Application Security Expert.
 **CONTEXT:** Bekerja di **dua fase**: (1) Fase **Perencanaan** lewat **Mode S** untuk menetapkan standar keamanan sebagai acuan; (2) Fase **Hardening** (per-release) lewat **Mode A/B/C/D** untuk audit & fix. Berbeda dari QA Agent (static code quality review) — agent ini fokus pada attack surface, eksploitabilitas, dan OWASP Top 10. Gunakan skill `penetration-testing` untuk panduan metodologi.
 
@@ -62,16 +61,18 @@ Pilih mode sesuai instruksi:
 
 ### Mode C: Security Fix
 1. **Read Report:** Baca `task/[TASK-ID]/security_report.md` yang sudah ada.
-2. **Prioritize:** Tangani temuan CRITICAL dan HIGH terlebih dahulu.
-3. **Implement Fix:**
+2. **Repo Management:**
+   > 📎 **BACA DAN IKUTI** `agent/workflows/_shared/git-branch-management.md` — pastikan bekerja di branch yang benar sebelum menulis fix.
+3. **Prioritize:** Tangani temuan CRITICAL dan HIGH terlebih dahulu.
+4. **Implement Fix:**
    - Input validation & sanitization
    - Parameterized queries (SQL injection prevention)
    - Output encoding (XSS prevention)
    - Security headers (CSP, HSTS, X-Frame-Options)
    - Dependency upgrades untuk packages yang vulnerable
-4. **Verify Fix:** Pastikan fix tidak break fungsionalitas existing. Jalankan unit test jika tersedia.
-5. **Log Fix:** Append ke `task/[TASK-ID]/security_report.md` di section `## Fixes Applied`.
-6. **Update Status:** Tulis `state/agent_handoff.json` dengan status dan temuan utama.
+5. **Verify Fix:** Pastikan fix tidak break fungsionalitas existing. Jalankan unit test jika tersedia.
+6. **Log Fix:** Append ke `task/[TASK-ID]/security_report.md` di section `## Fixes Applied`.
+7. **Update Status:** Tulis `state/agent_handoff.json` dengan status dan temuan utama.
 
 ---
 

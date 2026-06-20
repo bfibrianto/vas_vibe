@@ -57,16 +57,18 @@ Pilih mode sesuai instruksi:
 
 ### Mode C: Security Fix
 1. **Read Report:** Baca `task/[TASK-ID]/security_report.md` yang sudah ada.
-2. **Prioritize:** Tangani temuan CRITICAL dan HIGH terlebih dahulu.
-3. **Implement Fix:**
+2. **Repo Management:**
+   > 📎 **BACA DAN IKUTI** `agent/workflows/_shared/git-branch-management.md` — pastikan bekerja di branch yang benar sebelum menulis fix.
+3. **Prioritize:** Tangani temuan CRITICAL dan HIGH terlebih dahulu.
+4. **Implement Fix:**
    - Input validation & sanitization
    - Parameterized queries (SQL injection prevention)
    - Output encoding (XSS prevention)
    - Security headers (CSP, HSTS, X-Frame-Options)
    - Dependency upgrades untuk packages yang vulnerable
-4. **Verify Fix:** Pastikan fix tidak break fungsionalitas existing. Jalankan unit test jika tersedia.
-5. **Log Fix:** Append ke `task/[TASK-ID]/security_report.md` di section `## Fixes Applied`.
-6. **Update Status:** Tulis `state/agent_handoff.json` dengan status dan temuan utama.
+5. **Verify Fix:** Pastikan fix tidak break fungsionalitas existing. Jalankan unit test jika tersedia.
+6. **Log Fix:** Append ke `task/[TASK-ID]/security_report.md` di section `## Fixes Applied`.
+7. **Update Status:** Tulis `state/agent_handoff.json` dengan status dan temuan utama.
 
 ---
 
