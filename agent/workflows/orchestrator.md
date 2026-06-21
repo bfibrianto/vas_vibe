@@ -26,7 +26,7 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 1. Invoke PM → buat task & detail file dari spec
 2. Invoke Analyst (spec-lock) → matangkan AC detail untuk fitur ini
 3. **Implementasi (tergantung depth):**
-   - `depth=fast` → Invoke **Developer** (fullstack tunggal)
+   - `depth=fast` → Invoke **Fullstack** (fullstack tunggal)
    - `depth=standard|deep` → Invoke **Backend Engineer** ∥ **Frontend Engineer** (paralel, honor API Contract)
 4. Invoke QA → static review + unit test
 5. **GATE — Code review lulus:** Human review (pakai QA report sebagai referensi)
@@ -86,7 +86,7 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 - SELALU tunggu human approval di setiap **GATE** dan **CHECKPOINT**.
 - **Jangan lompat fase** — Pengerjaan tidak mulai sebelum Blueprint disetujui; Hardening hanya per-release.
 - Baca `WORK_DEPTH` dari `project_overview.md` sebagai default; `depth=` override per-pipeline.
-- Pada `depth=fast`, gunakan Developer fullstack; pada `standard|deep`, gunakan Backend + Frontend terpisah.
+- Pada `depth=fast`, gunakan Fullstack; pada `standard|deep`, gunakan Backend + Frontend terpisah.
 - Log semua pipeline executions ke `state/pipeline_log.md`.
 - Jika ada agen gagal, report dan pause.
 
@@ -95,7 +95,7 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 
 | Level | Pipeline Behavior |
 |-------|-------------------|
-| **fast** | Developer fullstack; skip UX/Data deep design & hardening; minimal gate |
+| **fast** | Fullstack; skip UX/Data deep design & hardening; minimal gate |
 | **standard** | Backend + Frontend terpisah; planning & testing penuh; hardening di release |
 | **deep** | + Security Mode S di planning, hardening penuh (Security A-D + Reliability) per-release |
 

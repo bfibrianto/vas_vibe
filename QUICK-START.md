@@ -45,7 +45,7 @@ Setelah kamu sign-off, barulah Initiator menyusun `project_overview.md`, lalu ar
 /build-feature "Login dengan email & password"
 ```
 - `depth=standard|deep` → **Backend** & **Frontend** engineer kerja paralel
-- `depth=fast` → satu **Developer** fullstack
+- `depth=fast` → satu **Fullstack**
 Lalu **QA** review kode.
 👉 **Review kode di gate.**
 
@@ -90,7 +90,7 @@ Menjalankan hardening (security audit + reliability/load test), update CHANGELOG
 
 | Level | Untuk | Yang dikerjakan |
 |-------|-------|-----------------|
-| **fast** | Prototype, MVP, eksplorasi | Inti fitur saja, 1 Developer fullstack, skip test/hardening opsional |
+| **fast** | Prototype, MVP, eksplorasi | Inti fitur saja, 1 Fullstack, skip test/hardening opsional |
 | **standard** | Produksi normal *(default)* | Backend+Frontend terpisah, full spec, unit test, review |
 | **deep** | Fintech, auth, data sensitif | + security standards, full coverage, hardening penuh |
 
@@ -102,7 +102,7 @@ Menjalankan hardening (security audit + reliability/load test), update CHANGELOG
 project_overview.md          → setting proyek + WORK_DEPTH
 specifications/              → user story + API Contract (Analyst)
 state/knowledge_base/        → acuan: architecture, data-model, design-system, security, decisions (ADR)
-codes/                      → source code (Backend/Frontend/Developer)
+codes/                      → source code (Backend/Frontend/Fullstack)
 tests/                      → E2E test (Tester)
 task/                       → task list + log per task
 agent/workflows/            → definisi agen (source of truth)

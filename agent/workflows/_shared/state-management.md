@@ -16,7 +16,7 @@ Baca file ini di **awal setiap session**. Update di **akhir session** jika ada p
 {
   "project_name": "string — nama project dari project_overview.md",
   "last_updated": "YYYY-MM-DD HH:MM — timestamp update terakhir",
-  "last_agent": "string — nama agent yang terakhir aktif (developer/tester/fixer/dll)",
+  "last_agent": "string — nama agent yang terakhir aktif (fullstack/tester/fixer/dll)",
   "current_sprint": "string atau null — nama sprint aktif jika ada",
   "active_tasks": ["TASK-XXX", "TASK-YYY"],
   "blocked_tasks": ["TASK-ZZZ"],
@@ -30,7 +30,7 @@ Baca file ini di **awal setiap session**. Update di **akhir session** jika ada p
 {
   "project_name": "booking-kapal-wisata",
   "last_updated": "2025-06-18 14:30",
-  "last_agent": "developer",
+  "last_agent": "fullstack",
   "current_sprint": "Sprint 1 - Auth & Environment",
   "active_tasks": ["TASK-001"],
   "blocked_tasks": [],
@@ -64,7 +64,7 @@ Tulis file ini ketika kamu **menyerahkan pekerjaan ke agent lain** (bukan sekeda
 
 ```json
 {
-  "from_agent": "developer",
+  "from_agent": "fullstack",
   "to_agent": "qa",
   "task_id": "TASK-001",
   "timestamp": "2025-06-18 14:30",

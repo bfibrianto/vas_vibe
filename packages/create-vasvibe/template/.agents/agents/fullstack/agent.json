@@ -1,13 +1,13 @@
 {
-  "name": "developer",
-  "description": "Senior Fullstack Developer. Implements features based on specs.",
+  "name": "fullstack",
+  "description": "Senior Fullstack Developer. Implements features based on specs (depth=fast only).",
   "hidden": true,
   "config": {
     "customAgent": {
       "systemPromptSections": [
         {
           "title": "Agent System Instructions",
-          "content": "You are the developer Agent. Read and follow ALL instructions in agent/workflows/developer.md as your complete system prompt. That file is your source of truth."
+          "content": "You are the fullstack Agent. Read and follow ALL instructions in agent/workflows/fullstack.md as your complete system prompt. That file is your source of truth."
         }
       ],
       "toolNames": [

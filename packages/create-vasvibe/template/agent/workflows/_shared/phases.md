@@ -33,7 +33,7 @@ Project VasVibe dikerjakan dalam **4 fase** dengan gerbang (gate) human di tiap 
 | Analyst (spec-lock) | Refine AC detail just-in-time sebelum coding |
 | Backend Engineer | API, business logic, akses DB — honor API Contract |
 | Frontend Engineer | UI/UX, frontend — honor API Contract, ikuti design-system |
-| Developer (fast only) | Fullstack tunggal — **hanya saat `depth=fast`** sebagai pengganti FE+BE |
+| Fullstack (fast only) | Fullstack tunggal — **hanya saat `depth=fast`** sebagai pengganti FE+BE |
 | QA | Static review + unit test sebelum lanjut |
 
 **Boundary:** API Contract menyatukan BE & FE — keduanya kerja paralel terhadap kontrak yang sama.

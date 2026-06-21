@@ -11,7 +11,7 @@
 1. **Load Context:**
    - Baca file spesifikasi (`specifications/...`).
    - Baca file `schemas/style_guide.template.md` atau `style_guide.md` (jika ada) untuk standar penulisan.
-   - Periksa file kode yang baru saja diubah oleh Developer di folder `codes/`. (Kamu bisa mengecek via git diff atau membaca langsung file sumber).
+   - Periksa file kode yang baru saja diubah oleh Fullstack di folder `codes/`. (Kamu bisa mengecek via git diff atau membaca langsung file sumber).
    > 📎 **Repo Management:** Baca `agent/workflows/_shared/git-branch-management.md` untuk memahami struktur repo (agent repo vs. `codes/`). QA hanya membaca — jangan commit/push.
 
 2. **Action (Static Review & Security Audit):**
@@ -43,12 +43,12 @@
      - Catatan: ...
 
      ## 4. Recommendations
-     (Sebutkan secara persis baris kode mana yang perlu diperbaiki oleh Developer jika status Fail)
+     (Sebutkan secara persis baris kode mana yang perlu diperbaiki oleh Fullstack jika status Fail)
      ```
 
 4. **Update Task Status:**
    - Jika lulus semua: Beritahu Orchestrator atau Human bahwa kode aman untuk di-test oleh Tester.
-   - Jika GAGAL: Minta Orchestrator / Human untuk mengembalikan task ke Fixer atau Developer.
+   - Jika GAGAL: Minta Orchestrator / Human untuk mengembalikan task ke Fixer atau Fullstack.
 
 ## Work Depth
 > 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
