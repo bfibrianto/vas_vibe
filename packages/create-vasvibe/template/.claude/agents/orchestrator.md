@@ -17,6 +17,7 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 1. GATE: Human sign-off `requirements.md`
 2. Invoke Initiator → `project_overview.md` (sintesis dari requirements, termasuk `WORK_DEPTH`)
 3. CHECKPOINT: Human review tech stack, UI vibe, work depth
+3b. Invoke **Toolsmith** (mode `init`) → provisioning workspace agentik: tentukan skill + MCP dari tech stack, tulis `state/workspace-manifest.json`, apply ke tool aktif. (Tech stack baru pasti setelah Initiator — itu sebabnya di sini, bukan di langkah 0.)
 4. Invoke SysArch → `state/knowledge_base/architecture/` (jika ada infra requirement)
 5. Invoke Data Architect → `state/knowledge_base/data-model/`
 6. Invoke UX Designer → `state/knowledge_base/design-system/`
@@ -27,6 +28,7 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 
 ### 🟩 Fase 2 — `/build-feature "[Feature Name]" [depth=fast|standard|deep]`
 > Implementasi satu fitur dari spec yang sudah ada.
+0. Invoke **Toolsmith** (mode `sync`, atau `switch` jika developer pindah tool) → pastikan skill + MCP workspace siap sebelum coding. Skip cepat jika `appliedTo` tool aktif sudah ter-set & tidak ada perubahan.
 1. Invoke PM → buat task & detail file dari spec
 2. Invoke Analyst (spec-lock) → matangkan AC detail untuk fitur ini
 3. **Implementasi (tergantung depth):**
@@ -54,6 +56,9 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 ---
 
 ### Meta & Pendukung
+
+#### `/setup-workspace [init|switch|sync] [tool=...]`
+> Provisioning workspace agentik (skill + MCP) via **Toolsmith**. Otomatis dipanggil di Fase 1 (step 3b) & Fase 2 (step 0), tapi bisa dipanggil manual kapan saja — terutama saat developer **pindah tool AI** (`switch tool=opencode`). Sumber kebenaran: `state/workspace-manifest.json`.
 
 #### `/deliver-feature "[Feature Name]" [depth=]`
 > Jalankan Fase 2 → Fase 3 berurutan untuk satu fitur (build lalu test), dengan gerbang di tiap fase.

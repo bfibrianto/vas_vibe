@@ -2,7 +2,7 @@
 
 Setiap Agent memiliki **system instruction** dan dapat dipanggil via slash command.
 
-**Total: 18 Specialized Agents**
+**Total: 19 Specialized Agents**
 
 ---
 
@@ -12,12 +12,12 @@ Pengerjaan proyek dibagi ke **4 fase** dengan gerbang human di tiap transisi. De
 
 | Fase | Agen | Output (acuan) | Gate |
 |------|------|----------------|------|
-| **1 · Perencanaan** | **Discovery** (wawancara human), Initiator, SysArch, Data Architect, UX Designer, Security (Mode S), Analyst | requirements, overview, architecture, data-model, design-system, security-standards, **API Contract** | requirements sign-off → Blueprint disetujui |
+| **1 · Perencanaan** | **Discovery** (wawancara human), Initiator, **Toolsmith**, SysArch, Data Architect, UX Designer, Security (Mode S), Analyst | requirements, overview, **workspace-manifest**, architecture, data-model, design-system, security-standards, **API Contract** | requirements sign-off → Blueprint disetujui |
 | **2 · Pengerjaan** | Analyst (spec-lock), Backend Engineer ∥ Frontend Engineer (atau Developer @ `fast`), QA | kode + unit test + review | Code review lulus |
 | **3 · Testing** | Tester, Fixer | E2E hijau | Fungsional hijau |
 | **4 · Hardening** (per-release) | Security (A/B/C/D), Reliability, Fixer | security & reliability report | Siap produksi |
 
-**Lintas fase:** PM (koordinasi), Orchestrator (gerbang fase), DevOps (CI/CD), Document (dokumentasi).
+**Lintas fase:** PM (koordinasi), Orchestrator (gerbang fase), **Toolsmith (provisioning workspace agentik)**, DevOps (CI/CD), Document (dokumentasi).
 
 **Komunikasi rigid — "No Silent Changes":** setiap perubahan dari user WAJIB ditulis ke dokumen acuan + dicatat (ADR jika perlu) + agen hilir di-notify. Detail: `agent/workflows/_shared/change-management.md`.
 
@@ -58,6 +58,36 @@ untuk admin."
 **👤 Human Task:**
 - Review `project_overview.md`
 - Approve atau minta revisi (tech stack, UI guidelines, timeline)
+
+---
+
+### 1b. **Toolsmith Agent** (`/setup-workspace`) ⭐ NEW — Lintas Fase
+**Role:** Agentic Workspace Provisioner
+
+**Capabilities:**
+- ✅ Menyiapkan **perkakas si AI agent** (skills + MCP) — bukan infra produk (itu DevOps)
+- ✅ Memutuskan skill/MCP dari tech stack (hybrid: registry kurasi `schemas/workspace-registry.json` + augmentasi `find-skills`)
+- ✅ Menulis **MCP config declarative** per tool: `.mcp.json` (Claude), `opencode.json` (OpenCode), `.vscode/mcp.json` (Copilot), `.agents/mcp.json` (Antigravity)
+- ✅ Install skills ke `skillsDir` tiap platform via `npx skills add`
+- ✅ **Re-callable saat pindah tool** — manifest persist, tinggal re-apply ke format tool baru (mode `switch`)
+
+**Mode:** `init` (provisioning awal) · `switch` (pindah tool) · `sync` (perbaiki drift)
+
+**Input Example:**
+```
+/setup-workspace init
+/setup-workspace switch tool=opencode    # saat pindah dari Claude Code ke OpenCode
+```
+
+**Output:**
+- `state/workspace-manifest.json` (desired-state: daftar skill + MCP, platform-agnostic)
+- Config MCP per tool + skills terpasang
+
+**👤 Human Task:**
+- Review ringkasan skill/MCP sebelum apply
+- Isi env var sensitif (mis. `POSTGRES_URL`) yang ditulis sebagai placeholder `${VAR}`
+
+⚠️ Otomatis dipanggil Orchestrator di Fase 1 (setelah tech stack) & Fase 2 (sebelum coding), tapi bisa dipanggil manual kapan saja.
 
 ---
 

@@ -12,6 +12,7 @@ Project VasVibe dikerjakan dalam **4 fase** dengan gerbang (gate) human di tiap 
 |------|----------------|
 | **Discovery** (paling hulu, INTERAKTIF) | `state/knowledge_base/requirements/requirements.md` |
 | Initiator | `project_overview.md` (sintesis dari requirements) |
+| **Toolsmith** (setelah tech stack diketahui) | `state/workspace-manifest.json` + config MCP per tool |
 | SysArch | `state/knowledge_base/architecture/` |
 | Data Architect | `state/knowledge_base/data-model/` |
 | UX Designer | `state/knowledge_base/design-system/` |
@@ -74,6 +75,7 @@ Project VasVibe dikerjakan dalam **4 fase** dengan gerbang (gate) human di tiap 
 |------|-------|
 | PM | Koordinasi task & status di semua fase |
 | Orchestrator | Menjalankan pipeline & menjaga gerbang fase |
+| **Toolsmith** | Provisioning workspace agentik (skill + MCP); re-apply saat pindah tool AI |
 | DevOps | CI/CD, containerization (Implementation & Hardening) |
 | Document | Dokumentasi (akhir siklus) |
 

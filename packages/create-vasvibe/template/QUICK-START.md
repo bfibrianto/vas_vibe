@@ -73,6 +73,7 @@ Menjalankan hardening (security audit + reliability/load test), update CHANGELOG
 | Command | Fase | Fungsi |
 |---------|------|--------|
 | `/plan-project "[ide]"` | 🟦 Perencanaan | Buat semua blueprint/acuan |
+| `/setup-workspace [init\|switch\|sync]` | lintas fase | Install skill + MCP untuk tool AI (re-callable saat pindah tool) |
 | `/build-feature "[fitur]" [depth=]` | 🟩 Pengerjaan | Implementasi satu fitur |
 | `/test-feature "[fitur]"` | 🟨 Testing | E2E test fungsional |
 | `/harden-release "[versi]"` | 🟧 Hardening | Security + reliability audit |
@@ -101,6 +102,7 @@ Menjalankan hardening (security audit + reliability/load test), update CHANGELOG
 ```
 project_overview.md          → setting proyek + WORK_DEPTH
 specifications/              → user story + API Contract (Analyst)
+state/workspace-manifest.json → skill + MCP yang diinginkan (Toolsmith)
 state/knowledge_base/        → acuan: architecture, data-model, design-system, security, decisions (ADR)
 codes/                      → source code (Backend/Frontend/Fullstack)
 tests/                      → E2E test (Tester)

@@ -6,6 +6,26 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [2.2.0] — 2026-06-22
+
+### Added — Toolsmith: Agentic Workspace Provisioning
+
+New cross-phase agent (**19 agents total**) that sets up the *AI agent's own toolkit* — distinct from DevOps, which provisions the *product's* runtime.
+
+- **`toolsmith` agent** (`agent/workflows/toolsmith.md`) — installs needed **skills** and configures **MCP servers** for the active AI tool, declaratively. Modes: `init` (initial), `switch` (tool change), `sync` (fix drift).
+- **`/setup-workspace` command** (Claude, OpenCode, Antigravity) — `[init|switch|sync] [tool=...]`.
+- **Desired-state architecture** — `state/workspace-manifest.json` is the platform-agnostic source of truth (which skills + MCP the project wants); per-tool config files (`.mcp.json`, `opencode.json`, `.vscode/mcp.json`, `.agents/mcp.json`) are derived artifacts. Switching tools re-applies the same manifest to the new tool's format — that's what makes tool-switch seamless.
+- **Curated registry** — `schemas/workspace-registry.json`: tech-stack→{skills,mcp} mappings, a catalog of common MCP servers (filesystem, git, fetch, postgres, playwright, shadcn), and per-platform MCP config recipes. Hybrid: registry default + agent augmentation via `find-skills`.
+- **Manifest template** — `schemas/workspace-manifest.template.json`.
+
+### Changed
+- **Orchestrator wiring** — `/plan-project` runs Toolsmith `init` after tech stack is known (step 3b); `/build-feature` runs Toolsmith `sync`/`switch` before coding (step 0). `/setup-workspace` added to meta commands.
+- **phases.md** — Toolsmith added to Fase 1 and cross-phase tables.
+- **Declarative + no secrets** — MCP config written to files (commit-able); sensitive env values written as `${VAR}` placeholders for the human to fill.
+- Docs updated: `AGENT_PERSONAS.md` (19 agents), `QUICK-START.md`.
+
+---
+
 ## [2.0.0] — 2026-06-20
 
 ### Workflow Overhaul — 4-Phase Model
