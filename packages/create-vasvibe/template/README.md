@@ -1,7 +1,5 @@
 # 🌊 Vibe Coding Workflow
 
-> _This README ships from the [`create-vasvibe`](https://www.npmjs.com/package/create-vasvibe) starter. Examples reference a boat tour booking project (Labuan Bajo) for illustration. Replace examples with your own context as needed._
-
 Selamat datang di ekosistem **Vibe Coding**.
 Ini adalah standar alur kerja pengembangan software berbasis **AI Agent** yang mengutamakan struktur, dokumentasi otomatis, dan validasi berjenjang. 
 Template ini telah berevolusi dan secara *native* mendukung integrasi untuk berbagai AI agent environment mutakhir:
@@ -51,17 +49,22 @@ cd my-new-project
 - 🧠 **Mengambil keputusan** berdasarkan context dan error feedback
 - 📝 **Membuat dokumentasi** otomatis dari perubahan yang dilakukan
 
-Dalam workflow ini, kita menggunakan **8 AI Agent persona** yang bekerja secara terspesialisasi (mirip tim development sesungguhnya).
+Dalam workflow ini, kita menggunakan **19 AI Agent persona** yang bekerja secara terspesialisasi (mirip tim development sesungguhnya) di dalam **4-fase model**: Perencanaan → Pengerjaan → Testing → Hardening.
 
 ---
 
-## 🚀 Filosofi
-1.  **Context is King:** AI tidak bisa bekerja tanpa konteks. `project_overview.md` adalah otak proyek ini.
-2.  **Infrastructure First:** Jangan menulis kode fitur sebelum environment (Docker) siap.
-3.  **Role Segregation:** Analis, Developer, dan QA adalah persona berbeda dengan tanggung jawab spesifik.
-4.  **Log Everything:** Setiap sesi coding dan testing dicatat untuk menjaga kontinuitas memori AI.
-5.  **Human-in-the-Loop:** Manusia sebagai Decision Maker, AI sebagai Executor.
-6.  **Git Branching & Repo Management:** Agent seperti Developer, Fixer, dan Tester dibekali pemahaman ketat mengenai *git branching* (membuat branch, pull/merge origin) untuk menjaga keutuhan `main`/`development` branch.
+## 🚀 Filosofi (v2.2)
+
+1. **4-Phase Model (Fase Gated):** Perencanaan → Pengerjaan → Testing → Hardening. Tiap fase ada **gate** (checkpoint manusia) sebelum lanjut fase berikutnya. Tidak ada yang jalan diam-diam.
+2. **No Silent Changes:** Setiap perubahan yang diminta harus **ditulis ke dokumen acuan** (spec, requirement, ADR) dan di-propagate ke agen terkait. Result: rework minimal, audit trail jelas.
+3. **Context is King:** AI tidak bisa bekerja tanpa konteks. `project_overview.md` + specifications/ adalah otak proyek.
+4. **Work Depth Flexibility:** 3 level kedalaman (`fast`/`standard`/`deep`). Mulai fast untuk validate ide, naik standard saat serius, deep hanya untuk area sensitif.
+5. **Tool-Agnostic Workflow:** Agent berjalan di Claude Code, OpenCode, GitHub Copilot, Antigravity. Source of truth di `agent/workflows/`, propagate ke tool-specific folders.
+6. **Desired-State Architecture (Toolsmith):** `state/workspace-manifest.json` adalah manifest platform-agnostic. Toolsmith: install skills + MCP sesuai tech stack, re-applicable saat ganti tool.
+7. **Role Segregation:** 19 agen specialized dengan tanggung jawab clear. Backend ≠ Frontend ≠ Security ≠ DevOps.
+8. **Log Everything:** Setiap sesi coding, testing, fixing tercatat untuk kontinuitas AI memori.
+9. **Human-in-the-Loop:** Manusia = Decision Maker (bisnis, arch, security, UX). AI = Executor (code, test, doc).
+10. **Git Workflow Compliance:** Agen (Developer, QA, Security, Reliability) mengikuti `_shared/git-branch-management.md` ketat.
 
 ---
 
@@ -91,13 +94,23 @@ root/
 ├── project_overview.md       # [MASTER] Definisi produk, tech stack, & UI/UX
 │                             # 👤 HUMAN: Review & approve setelah Initiator Agent buat
 │
+├── state/                    # [CONFIG] Workspace manifest & knowledge base ⭐ v2.2
+│   ├── workspace-manifest.json # Desired-state: skills[], mcp[], appliedTo platform
+│   └── knowledge_base/       # Living docs: architecture, data-model, design-system, security, ADR/
+│       ├── architecture.md
+│       ├── data-model.md
+│       ├── design-system.md
+│       ├── security-standards.md
+│       └── adr/              # Keputusan teknis (Architecture Decision Records)
+│
 ├── specifications/           # [DOCS] Output dari Analyst Agent
 │   ├── README.md            # Index semua spesifikasi
 │   ├── 000_spec_environment_setup.md # Infrastruktur (Wajib pertama)
 │   ├── 001_spec_database_schema.md
-│   └── ...                  # 👤 HUMAN: Review setiap spec sebelum dev
+│   ├── requirements.md       # Hasil Discovery Agent (user story, constraint, scope)
+│   └── api-contract.md       # API Contract (final sebelum Fase 2)
 │
-├── task/                     # [PROJECT MANAGEMENT] Output dari PM Agent ⭐ NEW
+├── task/                     # [PROJECT MANAGEMENT] Output dari PM Agent
 │   ├── task_list.md         # Central task tracking (priority, status, dependencies)
 │   ├── PROJECT_STATUS_REPORT.md # Progress reports
 │   ├── TASK-001/            # Folder khusus per task
@@ -105,27 +118,24 @@ root/
 │   │   └── ...
 │   └── TASK-002/            # Setiap task baru akan diisolasi ke dalam sub-folder tersendiri
 │
-├── architecture/             # [INFRA] Output dari SysArch Agent
-│   ├── current_state.md     # Application analysis
-│   ├── server_specifications.md # Server specs (CPU, RAM, Storage)
-│   └── ...
-│
-├── codes/                    # [SRC] Output dari Developer Agent
+├── codes/                    # [SRC] Output dari Backend + Frontend atau Fullstack
 │   ├── docker-compose.yml
 │   ├── package.json
 │   ├── app/                 # Aplikasi utama
 │   └── ...                  # 👤 HUMAN: Code review & testing manual
 │
 ├── tests/                    # [TEST] Output dari Tester Agent
-│   └── e2e/                 # 👤 HUMAN: Verify test results
+│   ├── e2e/                 # Playwright E2E tests
+│   └── integration/         # Integration tests
 │
-├── logs/                     # [TRACKING] Auto-generated logs
-│   ├── development/         # Developer Agent logs
+├── logs/                     # [TRACKING] Auto-generated logs per phase
+│   ├── development/         # Backend + Frontend + Fullstack logs
 │   ├── testing/             # Tester Agent logs
 │   └── fixing/              # Bug fixing logs
 │
 └── documentation/            # [FINAL] Technical Writer output
-    └── FSD_{{projectName}}.md       # Functional Specification Document
+    ├── FSD_VasVibe.md       # Functional Specification Document
+    └── API_Documentation.md
 ```
 
 **Legend:**
@@ -135,27 +145,424 @@ root/
 
 ---
 
-## 🤖 AI Agent Personas & Capabilities
+## 📊 Folder `state/` — Workspace State & Knowledge Base
 
-Dalam workflow ini, kita memecah siklus SDLC (Software Development Life Cycle) menjadi 8 **persona agen terspesialisasi**:
+Folder ini adalah **jantung kontinuitas project** — menyimpan manifest provisioning, context session, dan knowledge base project.
 
-1. **Initiator Agent** (`/initiator`) - Project kickoff & overview
-2. **PM Agent** (`/pm`) - Task management & coordination
-3. **Analyst Agent** (`/analyst`) - Technical specifications
-4. **Developer Agent** (`/developer`) - Code implementation (termasuk Repo Management)
-5. **Tester Agent** (`/tester`) - Test automation & QA (termasuk Repo Management)
-6. **Fixer Agent** (`/fixer`) - Bug fixing & debugging (termasuk Repo Management)
-7. **SysArch Agent** (`/sysarch`) - Infrastructure & deployment planning
-8. **Document Agent** (`/document`) - Final documentation
+### **Struktur dan Fungsi**
+
+```
+state/
+├── workspace-manifest.json       # 🤖 Desired-state (platform-agnostic)
+├── context.json                  # 🤖 Session continuity (agent handoff)
+├── agent_handoff.json            # 🤖 Current handoff (agent-to-agent)
+└── knowledge_base/               # 📝 Living docs (architecture, design, decisions)
+    ├── requirements/             # User stories, scope, constraint dari Discovery
+    ├── architecture.md           # High-level design (system architecture, tech decisions)
+    ├── data-model.md             # Database schema, ERD, relationships
+    ├── design-system.md          # UI/UX guidelines (colors, typography, components)
+    ├── security-standards.md     # Security policies, compliance requirements
+    └── decisions/                # ADR (Architecture Decision Records)
+        └── adr-001-*.md          # Keputusan teknis signifikan (why, trade-offs)
+```
+
+### **1. workspace-manifest.json** — Agentic Workspace Provisioning
+
+**Ditulis oleh:** Toolsmith agent (mode `init`, `switch`, `sync`)
+
+**Dibaca oleh:** Toolsmith, Orchestrator (untuk verify readiness)
+
+**Fungsi:** Platform-agnostic source of truth untuk workspace setup.
+
+```json
+{
+  "project": "booking-kapal-wisata",
+  "decidedFrom": ["project_overview.md tech stack", "find-skills"],
+  "skills": [
+    { "id": "find-skills", "reason": "discover further skills" },
+    { "id": "ui-ux-pro-max", "reason": "Next.js + Tailwind UI" }
+  ],
+  "mcp": [
+    { "id": "filesystem", "reason": "workspace grounding" },
+    { "id": "git", "reason": "code-aware context" }
+  ],
+  "appliedTo": {
+    "claude-code": "2025-06-23 09:15",
+    "opencode": null,
+    "antigravity": null,
+    "github-copilot": null
+  },
+  "revisionHistory": [
+    { "timestamp": "2025-06-23 09:15", "agent": "toolsmith", "change": "initial provisioning" }
+  ]
+}
+```
+
+**Workflow Toolsmith:**
+- **Mode init** (Fase 1 step 3b) — Toolsmith read `project_overview.md` tech stack, konsultasi `schemas/workspace-registry.json`, derive skills + MCP, tulis manifest, apply ke tool aktif
+- **Mode sync** (Fase 2 step 0) — Verify manifest sesuai config aktual, deteksi drift, update jika perlu
+- **Mode switch** (developer pindah tool) — Read manifest lama, apply ke tool baru tanpa re-derive
+
+**Aturan:**
+- Manifest adalah keputusan shared — jika ada request ganti skill/MCP, **update dokumen acuan terlebih dahulu** (No Silent Changes)
+- Secrets (API keys, db password) ditulis sebagai `${VAR}` placeholder → developer isi di `.env`
+- Per-tool config files (`.mcp.json`, `opencode.json`, dll) adalah **derived artifacts** — jangan edit manual, biarkan Toolsmith manage
+
+---
+
+### **2. context.json** — Session Continuity
+
+**Ditulis oleh:** Setiap agent di **akhir session** (jika ada perubahan)
+
+**Dibaca oleh:** Setiap agent di **awal session** (context awareness)
+
+**Fungsi:** Menjaga continuity workflow antar-session/antar-developer.
+
+```json
+{
+  "project_name": "booking-kapal-wisata",
+  "last_updated": "2025-06-23 14:30",
+  "last_agent": "backend",
+  "current_sprint": "Sprint 1 - Auth & Database",
+  "active_tasks": ["TASK-001", "TASK-002"],
+  "blocked_tasks": [],
+  "notes": "TASK-001 (Backend Login) ready for QA. TASK-002 (Frontend Login UI) in progress—waiting for API Contract finalization"
+}
+```
+
+**Aturan:**
+- Setiap agent WAJIB baca file ini di awal untuk understand status project
+- Update di akhir dengan status terkini, task active, blocker, dll
+- Format ketat (JSON) — parser automation bergantung pada structure consistent
+
+**Contoh flow:**
+```
+Backend Agent (09:00) baca context.json
+  → lanjut TASK-001 dari status "dev"
+  → selesai, update context: active_tasks=[TASK-002], last_agent="backend", notes="ready for QA"
+  → simpan context.json
+
+Frontend Agent (10:00) baca context.json
+  → lihat last_agent="backend", notes="ready for QA"
+  → understand Backend sudah selesai, siap kolaborasi via API Contract
+  → lanjut TASK-002
+  → update context di akhir
+```
+
+---
+
+### **3. agent_handoff.json** — Agent-to-Agent Handoff
+
+**Ditulis oleh:** Agent yang mengirim task (overwrite setiap handoff)
+
+**Dibaca oleh:** Agent penerima (instruction + artifacts)
+
+**Fungsi:** Detailed handoff notes + artifact pointers untuk agent berikutnya.
+
+```json
+{
+  "from_agent": "backend",
+  "to_agent": "qa",
+  "task_id": "TASK-001",
+  "timestamp": "2025-06-23 14:30",
+  "status": "ready_to_test",
+  "notes": "Login API selesai (POST /api/auth/login, POST /api/auth/refresh). Test case priority: validasi email invalid, password wrong, token refresh expired.",
+  "artifacts": [
+    "codes/src/app/api/auth/login/route.ts",
+    "codes/src/app/api/auth/refresh/route.ts",
+    "logs/development/dev_001_login.md"
+  ]
+}
+```
+
+**Aturan:**
+- Hanya menyimpan handoff **terakhir** (overwrite, jangan append)
+- Artifacts path harus relative ke repo root
+- Gunakan saat menyerahkan task antar-agent formal (bukan sekadar update status di task_list.md)
+
+---
+
+### **4. knowledge_base/** — Living Documentation
+
+**Ditulis oleh:** Berbagai agen (Discovery, Analyst, Data Architect, UX Designer, Security, PM)
+
+**Dibaca oleh:** Semua agen (setiap agen wajib baca acuan sebelum kerja)
+
+**Fungsi:** Single source of truth untuk architectural decisions, design, security policies, dll.
+
+#### **knowledge_base/requirements/**
+- Ditulis oleh: **Discovery Agent** (Fase 1 awal)
+- Isi: User stories, scope, constraint, acceptance criteria, assumptions
+- Dibaca oleh: Initiator, Analyst, PM
+- Update: Discovery/Analyst saat scope berubah (dengan gate)
+
+#### **knowledge_base/architecture.md**
+- Ditulis oleh: **Initiator** → high-level, **Backend/DevOps** → detailed
+- Isi: System design, tech stack rationale, API patterns, deployment strategy
+- Dibaca oleh: Semua agen (terutama Backend, Frontend, DevOps)
+- Update: Saat ada architectural change (ADR required)
+
+#### **knowledge_base/data-model.md**
+- Ditulis oleh: **Data Architect** (Fase 1), **Backend** (maintenance)
+- Isi: Database schema, ERD, indexes, relationships, data governance
+- Dibaca oleh: Backend, Frontend (untuk API contract), Analyst
+- Update: Saat ada schema change (migration + dokumentasi)
+
+#### **knowledge_base/design-system.md**
+- Ditulis oleh: **UX Designer** (Fase 1), **Frontend** (maintenance)
+- Isi: Color palette, typography, component library, motion, accessibility
+- Dibaca oleh: Frontend, Backend (untuk validation), Design feedback
+- Update: Saat ada design change (dengan gate)
+
+#### **knowledge_base/security-standards.md**
+- Ditulis oleh: **Security Expert** (Fase 1 Mode S, atau Fase 4 audit)
+- Isi: Authentication strategy, encryption, data protection, OWASP, compliance
+- Dibaca oleh: Backend, DevOps, QA (untuk security testing)
+- Update: Saat ada security audit findings atau new requirement (dengan gate)
+
+#### **knowledge_base/decisions/**
+- ADR (Architecture Decision Records) untuk keputusan signifikan
+- Format: ADR-001-*.md (title-kebab-case)
+- Isi: Decision, context, alternatives considered, rationale, consequences
+- Ditulis oleh: Agent yang propose (dengan human approval)
+- Dibaca oleh: Semua agen (sebelum buat keputusan serupa)
+
+---
+
+### **Aturan Interaksi state/ folder** ⚠️
+
+#### **1. Read sebelum action**
+```bash
+# Setiap agent WAJIB baca di awal session:
+1. context.json — understand current status
+2. agent_handoff.json — jika ada handoff yang ditunggu
+3. knowledge_base/* — acuan untuk domain spesifik
+```
+
+#### **2. Update dengan disiplin**
+- **context.json** — update hanya di akhir session (jika ada change)
+- **agent_handoff.json** — tulis hanya saat handoff formal antar-agent
+- **knowledge_base/** — update hanya jika change terverifikasi/approved (No Silent Changes)
+
+#### **3. Jangan edit manual**
+- `workspace-manifest.json` — Toolsmith yang kelola (jangan diedit manual)
+- `context.json`, `agent_handoff.json` — Agent yang kelola (format ketat untuk parser)
+- `knowledge_base/` — Hanya agen authorized yang edit (Discovery → requirements, Architect → architecture, dll)
+
+#### **4. Conflict resolution**
+- Jika ada conflict di `knowledge_base/` (dua agen edit file sama), **winner adalah yang lebih recent** (by timestamp)
+- Jika conflict signifikan, human harus approve di gate
+
+#### **5. Tidak ada "hardcoded state"**
+- state/ folder adalah **tentative** (bisa berubah saat gate review)
+- Final truth tetap di dokumen acuan (specifications/, project_overview.md)
+- state/ adalah **convenience cache** untuk agen continuity, bukan single source of truth
+
+---
+
+### **Contoh Workflow Lengkap**
+
+```
+🟦 FASE 1 (Perencanaan)
+
+[Discovery] Interview → tulis requirements.md di state/knowledge_base/requirements/
+[Initiator] Baca requirements.md → tulis project_overview.md + architecture.md di knowledge_base/
+[Analyst] Baca project_overview.md → tulis api-contract.md di specifications/
+  → Update context.json: active_tasks=[TASK-001], notes="API Contract finalized, ready for Fase 2"
+[UX Designer] Baca architecture.md → tulis design-system.md di knowledge_base/
+[Data Architect] Baca architecture.md → tulis data-model.md di knowledge_base/
+[Toolsmith] (Mode init) Baca project_overview.md → derive workspace manifest → tulis state/workspace-manifest.json
+  → Apply ke tool aktif (.mcp.json / opencode.json / dll)
+
+👤 GATE: Human approve API Contract + workspace setup → Fase 1 done
+
+---
+
+🟩 FASE 2 (Pengerjaan)
+
+[Toolsmith] (Mode sync) Verify manifest sesuai config aktif → detect drift jika ada
+[Backend] Baca context.json → active_tasks=[TASK-001]
+  → Baca api-contract.md di specifications/
+  → Baca data-model.md di knowledge_base/
+  → Implementasi login API
+  → Update context.json: last_agent="backend", notes="Login API ready"
+  → Tulis agent_handoff.json → to_agent="qa", status="ready_to_test"
+
+[QA] Baca context.json → lihat last_agent="backend"
+  → Baca agent_handoff.json → understand task & artifacts
+  → Review code, run security checks
+  → Approve atau request fix
+
+[Frontend] Paralel dengan Backend
+  → Baca api-contract.md, design-system.md
+  → Implementasi login UI
+  → Update context.json
+
+👤 GATE: Human approve kode → Fase 2 done
+
+---
+
+🟨 FASE 3 (Testing) & 🟧 FASE 4 (Hardening)
+
+[Tester] Baca context.json → understand status
+  → Run E2E tests
+  → Report findings
+  
+[Security] Baca knowledge_base/security-standards.md (jika ada)
+  → Audit code
+  → Propose changes → ADR jika signifikan
+  → Update knowledge_base/decisions/
+
+→ Update context.json, agent_handoff.json sesuai handoff
+```
+
+---
+
+### **Best Practice**
+
+1. **Treat state/ as continuity**, not source of truth
+   - Source of truth tetap di `specifications/`, `project_overview.md`, `knowledge_base/`
+   - state/ adalah **derived convenience** untuk agen awareness
+
+2. **Keep context.json brief**
+   - Jangan simpan data besar — hanya summary + pointers
+   - Detail ada di task/task_list.md, logs/, artifacts
+
+3. **Honor handoff protocol**
+   - Jangan skip agent_handoff.json saat formal handoff
+   - Frontend tunggu Backend siap sebelum mulai (via handoff + API Contract)
+
+4. **Document decisions**
+   - Keputusan signifikan (architecture, security, data-model) → ADR di decisions/
+   - Jangan hanya di chat/notes — harus permanent di KB
+
+---
+
+## 🤖 19 AI Agent Personas & Capabilities
+
+VasVibe v2.2 menggunakan **19 agent terspesialisasi** di 4 fase:
+
+**Fase 1 — Perencanaan (Discovery & Blueprint):**
+- **Discovery Agent** — Wawancara kebutuhan → requirements.md
+- **Initiator Agent** — Tulis project_overview.md (tech stack, UI/UX, roadmap)
+- **Data Architect** — Design data model & ERD
+- **UX Designer** — Design system (colors, components, motion)
+- **Analyst Agent** — Spesifikasi & API Contract
+- **Toolsmith Agent** ⭐ NEW — Provisioning workspace agentik (skills + MCP)
+
+**Fase 2 — Pengerjaan (Implementation):**
+- **Backend Engineer** — Server-side API & business logic (standard/deep)
+- **Frontend Engineer** — Client-side UI & integration (standard/deep)
+- **Fullstack Developer** — Satu developer untuk dua sisi (fast mode)
+- **QA Agent** — Code review & static analysis
+- **Fixer Agent** — Bug fixing & debugging
+
+**Fase 3 — Testing (E2E & Verification):**
+- **Tester Agent** — Playwright automation & QA testing
+
+**Fase 4 — Hardening (Release Readiness):**
+- **Security Expert** — Threat modeling & OWASP audit
+- **Reliability Engineer** — Performance & load testing
+
+**Cross-Phase (Coordination & Documentation):**
+- **Orchestrator** — Pipeline coordinator (/plan-project, /build-feature, /test-feature, /release, dll)
+- **PM Agent** — Task management & progress tracking
+- **DevOps Agent** — Infrastructure & CI/CD setup
+- **Document Agent** — Technical documentation
 
 > 🔗 **Detail lengkap** mengenai cara kerja, rules, integrasi alur tugas, serta kemampuan (*capabilities*) dari tiap-tiap agen dapat dibaca di panduan terpisah:
 > 👉 **[BACA: Panduan Persona & Kemampuan Agen (AGENT_PERSONAS.md)](./AGENT_PERSONAS.md)**
 
 ---
 
+## ✨ Perubahan Utama v2.2
+
+### **1. Toolsmith Agent — Workspace Provisioning Agentik** ⭐
+Agen baru (ke-19) yang mengotomatisasi setup AI tool. Membedakan:
+- **Toolsmith** → Setup tool AI (skills + MCP) untuk agent bekerja optimal
+- **DevOps** → Setup runtime produk (Docker, infrastructure)
+
+**Desired-State Architecture:**
+- `state/workspace-manifest.json` — Single source of truth (platform-agnostic)
+- Per-tool config (`.mcp.json`, `opencode.json`, `.vscode/mcp.json`) — Derived artifacts
+- `/setup-workspace [init|switch|sync]` — Otomatis detect tool aktif, apply manifest
+
+**Benefit:** Ganti tool (Claude Code → OpenCode) tanpa re-derive requirements. Just run `/setup-workspace switch tool=opencode`.
+
+### **2. Developer → Fullstack (v2.0 contd.)**
+- **Fast mode** (`depth=fast`) → Satu **Fullstack** developer
+- **Standard/Deep** (`depth=standard|deep`) → **Backend + Frontend paralel** via API Contract
+
+### **3. Multi-Tool Support Sync** ⭐ v2.2
+- **GitHub Copilot prompt files** → `.github/prompts/*.prompt.md` (19 agents synced)
+- **Source of truth** → `agent/workflows/` (auto-propagate ke `.claude/`, `.opencode/`, `.agents/`, `.github/prompts/`)
+- **Template sync** → `npm run sync-template` (create-vasvibe template always up-to-date)
+
+### **4. Git Workflow Audit** ⭐ v2.2
+- **4 agen** ditambahkan pointer ke `_shared/git-branch-management.md`:
+  - DevOps (sebelum menulis infrastructure code)
+  - QA (code review checkpoint)
+  - Security (vulnerability fix phase)
+  - Reliability (hardening phase)
+- **Kenapa:** Consistency git workflow di semua agen, prevent merge conflicts
+
+### **5. No Silent Changes Protocol** ⭐ v2.0
+Setiap perubahan yang diminta **harus ditulis ke dokumen acuan**:
+- Request change → Analyst (atau agen terkait) update spec/requirement/design-system
+- Dokumen di-review & approve
+- Agen downstream di-notify
+- Result: No rework, clear audit trail
+
+---
+
 ## 🛠️ Cara Memulai (Step-by-Step)
 
-### **Phase 0: Project Initialization** 👤🤖
+### **4-Phase Model Ringkas**
+
+Workflow ini diorganisir dalam **4 fase**, tiap fase diakhiri **gate** (approval manusia):
+
+```
+🟦 FASE 1: Perencanaan
+   Discovery → Requirements → project_overview.md → Tech stack + Design system → Spesifikasi → API Contract
+   ↓ GATE: Approve API Contract
+
+🟩 FASE 2: Pengerjaan
+   Analyst spec-lock → Backend + Frontend coding paralel (atau Fullstack fast) → QA review
+   ↓ GATE: Approve kode
+
+🟨 FASE 3: Testing
+   E2E Playwright tests → Fixer fixes bugs sampai hijau
+   ↓ GATE: Approve test results
+
+🟧 FASE 4: Hardening
+   Security audit + Reliability test → CHANGELOG → Git tag
+   ↓ GATE: Approve rilis
+```
+
+**Aturan:**
+- Tidak boleh lanjut fase tanpa approval di gate
+- Setiap perubahan dicatat ke dokumen acuan (No Silent Changes)
+- Jika ada blocker → discuss & document, jangan skip
+
+---
+
+### **Phase 1: Perencanaan** 👤🤖
+
+**Step 0: Tentukan Work Depth**
+
+Buka `project_overview.md` (atau buat baru), set:
+```yaml
+WORK_DEPTH: standard   # fast | standard | deep
+```
+
+**Kapan:**
+- `fast` — MVP, prototype, eksplorasi ide (Fullstack 1 agen)
+- `standard` — Produksi normal (Backend + Frontend terpisah) **← DEFAULT**
+- `deep` — Fintech, auth, data sensitif (+ Security + Reliability)
+
+---
+
+### **Phase 1a: Project Initialization** 👤🤖
 
 **👤 Human Decision:**
 1. Tentukan ide proyek (apa yang ingin dibuat?)
@@ -190,11 +597,37 @@ Target launch April 2025."
 - [ ] Check development roadmap (realistis tidak?)
 - [ ] **APPROVE** atau minta revisi ke Agent
 
-**⚠️ Jangan lanjut ke Phase 1 jika belum approve!**
+**⚠️ Jangan lanjut jika belum approve project_overview.md!**
 
 ---
 
-### **Phase 1: Infrastructure Setup** 👤🤖
+### **Phase 1b: Workspace Provisioning** 🤖 ⭐ v2.2
+
+**Setelah tech stack diketahui (di project_overview.md), setup workspace agentik:**
+
+```bash
+/setup-workspace init
+```
+
+**Toolsmith Agent akan:**
+1. Detect tool aktif (Claude Code? OpenCode? GitHub Copilot?)
+2. Baca `project_overview.md` → extract tech stack
+3. Konsultasi `schemas/workspace-registry.json` → recommend skills + MCP
+4. Present manifest untuk approval
+
+**Output:**
+- `state/workspace-manifest.json` — Desired state (platform-agnostic)
+- `.mcp.json` (Claude) / `opencode.json` (OpenCode) / `.vscode/mcp.json` (Copilot) / `.agents/mcp.json` (Antigravity)
+- Secrets sebagai `${VAR}` placeholder → developer isi di `.env`
+
+**👤 Human:**
+- [ ] Review manifest (skills + MCP sesuai tech stack?)
+- [ ] Fill `.env` dengan secrets
+- [ ] Verify MCP servers functional
+
+---
+
+### **Phase 1c: Infrastructure Setup** 👤🤖
 
 **👤 Human Decision:**
 - Hosting: Local Docker? Cloud (Vercel + Supabase)? VPS?
@@ -299,11 +732,27 @@ npx prisma generate
 
 ---
 
-### **Phase 3: Feature Development Loop** 🔄 👤🤖
+### **Phase 2: Pengerjaan** 👤🤖
+
+**Step 0: Sync Workspace** ⭐ v2.2
+
+Sebelum build feature, pastikan workspace sync (special jika ganti tool):
+
+```bash
+/setup-workspace sync
+# atau jika switch tool:
+/setup-workspace switch tool=opencode
+```
+
+**Tujuan:** Verifikasi manifest sesuai config aktual, deteksi drift, update jika ada perubahan tech stack.
+
+---
+
+### **Step 1: Feature Development Loop** 🔄 👤🤖
 
 Ulangi siklus ini untuk **setiap fitur**:
 
-#### **Step 3.1: Specification (Analyst)**
+#### **Step 1.1: Specification (Analyst)**
 
 **👤 Human:** Tentukan fitur mana yang dikerjakan duluan (prioritas)
 
@@ -342,26 +791,42 @@ Ulangi siklus ini untuk **setiap fitur**:
   - **Description:** Implement booking CRUD operations with DP calculation
   ```
 
-#### **Step 3.2: Implementation (Developer)**
+#### **Step 1.2: Implementation**
 
+**Jika depth=fast:**
 ```bash
-/developer
+/fullstack
 
 "Implementasikan SPEC-003 (Booking Management)"
 ```
+→ Satu Fullstack agent koding dua sisi
+
+**Jika depth=standard atau depth=deep:**
+```bash
+/backend
+
+"Implementasikan backend SPEC-003 (Booking Management)"
+```
+
+```bash
+/frontend
+
+"Implementasikan frontend SPEC-003 (Booking Management)"
+```
+→ Backend + Frontend jalankan paralel via API Contract
 
 **🤖 Agent akan:**
 1. Read `task/task_list.md` → Find TASK-003
 2. **Update status:** `not_started` → `dev`
-3. **Set Assigned To:** Developer Agent
-4. Implement code
+3. **Set Assigned To:** [Backend/Frontend/Fullstack] Agent
+4. Implement code sesuai spec + API Contract
 5. Create development log
 6. **Update status:** `dev` → `ready_to_test`
 
 **🤖 Agent Output:**
-- API routes: `codes/app/api/backoffice/bookings/route.ts`
-- Components: `codes/components/bookings/BookingForm.tsx`
-- Development log: `logs/development/dev_003_booking_management.md`
+- Backend: API routes, business logic, DB queries
+- Frontend: UI components, API integration, styling
+- Log: `logs/development/dev_003_booking_management.md`
 
 **👤 Human Tasks:**
 1. **Code Review:**
@@ -388,7 +853,7 @@ Ulangi siklus ini untuk **setiap fitur**:
    npm run lint
    ```
 
-**If bugs found:**
+**Jika ada bugs di testing:**
 ```bash
 /fixer
 
@@ -410,7 +875,7 @@ Reproduce steps:
 4. Read related code files
 5. Identify root cause
 6. Apply fix
-7. **PENTING:** Lakukan update dokumen spesifikasi di direktori `specifications/` terkait fitur yang difixing sesuai dengan scope fixing yang diberikan oleh user.
+7. **PENTING:** Update dokumen spesifikasi (`specifications/`) jika scope fixing melebihi bug kecil
 8. Run tests untuk verify fix
 9. **Update status:** `fixing` → `ready_to_test` (back to Tester)
 10. Create fixing log di `logs/fixing/fixing_003_booking_dp_bug.md`
@@ -420,22 +885,56 @@ Reproduce steps:
 - [ ] No side effects? (test related features)
 - [ ] Root cause addressed? (bukan just symptom fix)
 
-#### **Step 3.3: Testing (Tester)**
+---
+
+#### **Step 2.2: Re-test (Tester)**
+
+Setelah Fixer fix bugs, Tester run tests ulang sampai hijau.
+
+**Gate: Approve saat semua test hijau ✅**
+
+#### **Step 1.3: Code Review (QA Agent)**
+
+```bash
+/qa
+
+"Review SPEC-003 implementation code untuk correctness, security, performance"
+```
+
+**🤖 QA Agent akan:**
+1. Static code analysis (TypeScript, linting)
+2. Security checks (OWASP top 10, input validation)
+3. Performance review (N+1 queries, unnecessary re-renders)
+4. Report findings
+
+**Output:**
+- Code review comments
+- Pass/Fail status
+
+**👤 Human:**
+- [ ] Review QA findings
+- [ ] Approve jika OK, atau minta developer fix
+
+---
+
+### **Step 2: Testing** 👤🤖
+
+**Step 2.1: Testing (Tester)**
 
 ```bash
 /tester
 
-"Buat dan jalankan test untuk Booking Management API"
+"Buat dan jalankan E2E test untuk Booking Management API"
 ```
 
 **🤖 Agent akan:**
 1. Read `task/task_list.md` → Find TASK-003 with status "ready_to_test"
-2. Create test scenarios → **Update status:** `ready_to_test` → `testing_ready`
+2. Create test scenarios (Playwright) → **Update status:** `ready_to_test` → `testing_ready`
 3. Run tests → **Update status:** `testing_ready` → `testing`
 4. Analyze results → **Update status:** `testing` → `passed` (or `failed`)
 
 **🤖 Agent Output:**
-- `tests/integration/booking.test.ts`
+- `tests/e2e/booking.test.ts`
 - `logs/testing/test_003_booking_management.md`
 
 **👤 Human Tasks:**
@@ -456,15 +955,41 @@ Reproduce steps:
 
 ---
 
-### **Phase 4: Infrastructure Planning & Deployment** 👤🤖 ⭐ NEW
+### **Step 3: Hardening** 👤🤖 (Per-Release)
+
+Setelah 3-5 fitur selesai & siap rilis, jalankan hardening:
+
+```bash
+/harden-release "1.0.0"
+```
+
+**Agents yang jalan:**
+- **Security Agent** — OWASP audit, threat modeling, vulnerability scan
+- **Reliability Agent** — Load testing, performance optimization
+- **Document Agent** — CHANGELOG generation
+
+**Output:**
+- `logs/hardening/security_audit_1.0.0.md`
+- `logs/hardening/reliability_test_1.0.0.md`
+- Updated `CHANGELOG.md`
+- `git tag v1.0.0`
+
+**👤 Human:**
+- [ ] Review security findings
+- [ ] Review performance metrics
+- [ ] Approve release
+
+---
+
+### **Step 4 (Optional): Production Deployment** 👤🤖
 
 **When to do this:**
-- Setelah MVP selesai development & testing (minimum 3-5 features implemented)
+- Setelah hardening disetujui
 - Sebelum deployment ke production
-- Saat merencanakan scaling untuk high season
-- Saat ada budget review atau cost optimization needs
+- Saat merencanakan scaling atau cost optimization
+- Saat ada infrastructure review perlu
 
-**Step 7: Infrastructure Requirements Gathering**
+**Step 4.1: Infrastructure Analysis**
 
 ```bash
 /sysarch
@@ -485,137 +1010,58 @@ for production deployment. Create deployment plan."
    - Budget & deployment preferences
    - Security & compliance needs
 
-**👤 Human Tasks:**
-- [ ] **ANSWER semua questions** dari SysArch Agent dengan data yang akurat
-  - Estimasi conservative (jangan over-promise)
-  - Consider seasonal peaks (high season bisa 3-5x normal)
-  - Include growth projection (6 months, 1 year, 2 years)
+**👤 Human:**
+- [ ] Answer all questions accurately
+- [ ] Provide conservative estimates
 
-**Step 8: Review Architecture Plan**
+**Output:**
+- `architecture/current_state.md`
+- `architecture/server_specifications.md`
+- `architecture/deployment_plan.md`
+- `architecture/cost_analysis.md`
+- `architecture/monitoring_plan.md`
 
-**🤖 SysArch Agent Output:**
-- `architecture/current_state.md` - Application analysis & tech stack summary
-- `architecture/server_specifications.md` - Detailed specs:
-  - Development server specs
-  - Staging server specs
-  - Production server specs (with scaling recommendations)
-  - Database server specs
-  - Storage requirements
-- `architecture/deployment_plan.md` - Step-by-step deployment guide
-- `architecture/cost_analysis.md` - Monthly cost breakdown by component
-- `architecture/monitoring_plan.md` - Observability setup (metrics, alerts, logs)
+**Step 4.2: Review & Approve**
 
-**👤 Human Review (CRITICAL):**
-- [ ] Server specs realistic untuk workload?
-- [ ] Cost analysis sesuai budget? (jika over budget, diskusikan trade-offs)
-- [ ] Deployment plan clear & executable?
-- [ ] Monitoring plan comprehensive? (uptime, performance, errors, business metrics)
-- [ ] Backup & disaster recovery adequate?
-- [ ] Security measures sufficient? (SSL, firewall, WAF, DDoS)
+**👤 Human Review:**
+- [ ] Server specs sufficient?
+- [ ] Cost sesuai budget?
+- [ ] Deployment plan clear?
+- [ ] Monitoring comprehensive?
+- [ ] Backup & disaster recovery OK?
 
 **If cost too high:**
 ```bash
 /sysarch
 
-"Cost analysis shows $500/month but budget is $200/month.
-Provide cost optimization options with trade-offs.
-
-Priorities:
-1. Data integrity & backup (non-negotiable)
-2. Reasonable performance (acceptable: 2-3s page load)
-3. 99% uptime (99.9% nice to have)
-
-Can consider:
-- Smaller instance sizes (scale later when needed)
-- Managed database vs self-hosted
-- CDN optional for MVP
-- Monitoring with free tier tools"
+"Cost $500/month, budget $200/month.
+Provide 2-3 cost optimization scenarios dengan trade-offs."
 ```
 
-**🤖 SysArch Agent will:**
-- Provide 2-3 cost optimization scenarios
-- Show trade-offs for each option
-- Recommend which option for MVP vs scale-up plan
+**Step 4.3: Deploy**
 
-**Step 9: Deploy to Production**
-
-**👤 Human Tasks:**
-1. **Setup Infrastructure:**
-   ```bash
-   # Follow deployment_plan.md step-by-step
-   # Example: Setup VPS, install Docker, configure firewall
-   ```
-
-2. **Ask Developer/SysArch Agent for deployment help:**
-   ```bash
-   /developer
-   
-   "Follow architecture/deployment_plan.md, deploy application to production.
-   
-   Server: Ubuntu 22.04 VPS (IP: xxx.xxx.xxx.xxx)
-   Domain: example.com
-   SSL: Let's Encrypt
-   
-   Setup:
-   1. Docker & Docker Compose
-   2. PostgreSQL (managed service: Supabase/AWS RDS)
-   3. Redis (optional for caching)
-   4. Nginx reverse proxy
-   5. SSL certificate
-   6. Environment variables from .env.production"
-   ```
-
-3. **Setup Monitoring:**
-   ```bash
-   /sysarch
-   
-   "Setup monitoring following monitoring_plan.md.
-   
-   Tools available:
-   - Uptime: UptimeRobot (free tier)
-   - APM: New Relic / Datadog (free tier)
-   - Logs: Papertrail / Logtail (free tier)
-   - Error tracking: Sentry (free tier)
-   
-   Setup alerts for:
-   - Server down (uptime < 99%)
-   - API response time > 2s
-   - Database connections > 80%
-   - Disk usage > 80%
-   - Error rate > 1%"
-   ```
-
-**Verify Production Deployment:**
-- [ ] Application accessible via domain (https://example.com)
-- [ ] SSL certificate valid (green padlock)
-- [ ] Database connected & migrations applied
-- [ ] All API endpoints working
-- [ ] Monitoring alerts configured
-- [ ] Backup scheduled (daily database backup)
-- [ ] Test booking flow end-to-end
-- [ ] Test payment flow (if integrated)
+**👤 Human:**
+- [ ] Follow deployment_plan.md step-by-step
+- [ ] Setup infrastructure (VPS, Docker, PostgreSQL, monitoring, SSL, backups)
+- [ ] Verify deployment (app accessible, SSL valid, monitoring alerts OK, backup running)
 - [ ] Performance check (page load < 3s)
 
 ---
 
-### **Phase 5: Documentation** 👤🤖
-
-**Step 10: Generate Final Documentation**
+### **Step 5: Final Documentation** 👤🤖 (Per-Release)
 
 ```bash
 /document
 
-"Generate FSD lengkap dari semua specifications"
+"Generate FSD + API documentation dari semua specifications"
 ```
 
 **Output:**
-- `documentation/FSD_{{projectName}}.md`
+- `documentation/FSD_VasVibe.md`
 - `documentation/API_Documentation.md`
 
-**👤 Human Review:**
-- [ ] Documentation complete?
-- [ ] Deployment guide clear?
-- [ ] API examples working?
+**👤 Human:**
+- [ ] Documentation complete & clear?
 
 ---
 
@@ -816,7 +1262,7 @@ sebelum implementasi fitur Booking"
 ```bash
 /sysarch
 
-"Analyze current application ({{projectName}} Reservation System).
+"Analyze current application (VAS Vibe Reservation System).
 
 Context:
 - Next.js 14 App Router
