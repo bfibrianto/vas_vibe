@@ -100,16 +100,24 @@ Menjalankan hardening (security audit + reliability/load test), update CHANGELOG
 ## 5. Di Mana Semuanya?
 
 ```
-project_overview.md          → setting proyek + WORK_DEPTH
-specifications/              → user story + API Contract (Analyst)
-state/workspace-manifest.json → skill + MCP yang diinginkan (Toolsmith)
-state/knowledge_base/        → acuan: architecture, data-model, design-system, security, decisions (ADR)
-codes/                      → source code (Backend/Frontend/Fullstack)
-tests/                      → E2E test (Tester)
-task/                       → task list + log per task
-agent/workflows/            → definisi agen (source of truth)
-agent/workflows/_shared/    → phases.md, work-depth.md, change-management.md
+project_overview.md              → Setting proyek + WORK_DEPTH
+specifications/                  → Requirements, API Contract, user stories
+state/                           → Workspace state & knowledge base
+  ├── workspace-manifest.json        → Skill + MCP yang diinginkan (Toolsmith)
+  ├── context.json                   → Session continuity (status project saat ini)
+  ├── agent_handoff.json             → Handoff terakhir antar-agen
+  └── knowledge_base/                → Acuan: architecture, data-model, design-system, security, ADR
+codes/                           → Source code (Backend/Frontend/Fullstack)
+tests/                           → E2E test (Tester)
+task/                            → Task list + log per task
+agent/workflows/                 → Definisi agen (source of truth)
+agent/workflows/_shared/         → Phases, work-depth, change-management, git-workflow, state-management
 ```
+
+**📌 Penting:** `state/workspace-manifest.json` harus approved di Fase 1 setelah tech stack diketahui.
+Jangan ganti tool atau sesuaikan skill/MCP tanpa update manifest terlebih dahulu (run `/setup-workspace sync`).
+
+👉 **Dokumentasi lengkap folder `state/`:** Lihat README.md section **📊 Folder `state/`** untuk detail tentang workflow, aturan, dan contoh interaksi antar-agen.
 
 ---
 
