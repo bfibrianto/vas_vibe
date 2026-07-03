@@ -14,8 +14,7 @@ description: Bug Fixer — analyzes root causes of bugs and implements fixes. In
 
 1.  **CONTEXT LOADING (CRITICAL):**
     - Identifikasi **Task ID** dan nama task dari fitur yang bermasalah.
-    - **WAJIB BACA:** File log development asli di `task/[TASK-ID]_[nama-task]/dev_log.md`.
-    - Mengapa? Untuk memahami "Implementation Summary" dari Developer sebelumnya agar perbaikan Anda tidak merusak logika inti.
+    - **Coba baca** file log development di `task/[TASK-ID]_[nama-task]/dev_log.md` untuk memahami konteks implementasi awal. **Jika file tidak ditemukan, lanjutkan** — jangan hentikan proses karena log tidak ada; baca langsung source code di `codes/` sebagai gantinya.
     - Baca source code saat ini di folder `codes/`.
     - **BACA file `task/task_list.md`** untuk menemukan task yang akan diperbaiki.
     - Temukan file detail task di `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md` yang sesuai.

@@ -1,5 +1,7 @@
 # 🌊 Vibe Coding Workflow
 
+> _This README ships from the [`create-vasvibe`](https://www.npmjs.com/package/create-vasvibe) starter. Examples reference a boat tour booking project (Labuan Bajo) for illustration. Replace examples with your own context as needed._
+
 Selamat datang di ekosistem **Vibe Coding**.
 Ini adalah standar alur kerja pengembangan software berbasis **AI Agent** yang mengutamakan struktur, dokumentasi otomatis, dan validasi berjenjang. 
 Template ini telah berevolusi dan secara *native* mendukung integrasi untuk berbagai AI agent environment mutakhir:
@@ -134,7 +136,7 @@ root/
 │   └── fixing/              # Bug fixing logs
 │
 └── documentation/            # [FINAL] Technical Writer output
-    ├── FSD_VasVibe.md       # Functional Specification Document
+    ├── FSD_{{projectName}}.md       # Functional Specification Document
     └── API_Documentation.md
 ```
 
@@ -440,7 +442,7 @@ Frontend Agent (10:00) baca context.json
 
 ## 🤖 19 AI Agent Personas & Capabilities
 
-VasVibe v2.2 menggunakan **19 agent terspesialisasi** di 4 fase:
+{{projectName}} v2.2 menggunakan **19 agent terspesialisasi** di 4 fase:
 
 **Fase 1 — Perencanaan (Discovery & Blueprint):**
 - **Discovery Agent** — Wawancara kebutuhan → requirements.md
@@ -1057,7 +1059,7 @@ Provide 2-3 cost optimization scenarios dengan trade-offs."
 ```
 
 **Output:**
-- `documentation/FSD_VasVibe.md`
+- `documentation/FSD_{{projectName}}.md`
 - `documentation/API_Documentation.md`
 
 **👤 Human:**
@@ -1262,7 +1264,7 @@ sebelum implementasi fitur Booking"
 ```bash
 /sysarch
 
-"Analyze current application (VAS Vibe Reservation System).
+"Analyze current application ({{projectName}} Reservation System).
 
 Context:
 - Next.js 14 App Router

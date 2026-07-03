@@ -5,6 +5,7 @@
   "stackMappings": {
     "_comment": "tech-stack / capability keyword -> recommended skills + mcp ids. Match loosely (case-insensitive substring) against project_overview tech stack & key features.",
     "ui|frontend|react|next|nextjs|vue|svelte|tailwind|shadcn": { "skills": ["ui-ux-pro-max"], "mcp": ["shadcn"] },
+    "prototype|mockup|wireframe|demo": { "skills": ["ui-ux-pro-max", "theme-factory"], "mcp": ["shadcn"] },
     "postgres|postgresql|prisma|sql|database": { "skills": [], "mcp": ["postgres"] },
     "e2e|test|testing|playwright|qa": { "skills": [], "mcp": ["playwright"] },
     "security|auth|oauth|pentest|owasp": { "skills": ["penetration-testing"], "mcp": [] },
