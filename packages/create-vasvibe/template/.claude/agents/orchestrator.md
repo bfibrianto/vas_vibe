@@ -2,6 +2,7 @@
 name: orchestrator
 description: Pipeline Coordinator — runs phase-gated multi-agent pipelines: /plan-project (planning), /build-feature (implementation), /test-feature (testing), /harden-release (hardening), plus /deliver-feature, /release, /start-fix, /security-audit, /daily-standup. Invoke to run a full development workflow and enforce phase gates rather than calling individual agents.
 ---
+
 # Orchestrator Agent
 
 ## Role
