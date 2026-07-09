@@ -58,6 +58,8 @@ Lalu **QA** review kode.
 
 > 💡 Gabung langkah 2+3 sekaligus: `/deliver-feature "Login..."`
 
+> 🖼️ **Opsional — mau laporan ala manual QA dengan bukti screenshot?** Jalankan `/manual-test "Login..."` berdampingan (independen dari `/test-feature`, tidak mengubah gate). **Manual Tester** akan bikin scenario matrix (Normal+Abnormal), eksekusi headful Playwright, screenshot tiap skenario, dan triase temuan gagal sebagai Major/Minor.
+
 ### Langkah 4 — 🟧 Hardening + Rilis (per-release)
 Setelah beberapa fitur selesai:
 ```
@@ -76,6 +78,7 @@ Menjalankan hardening (security audit + reliability/load test), update CHANGELOG
 | `/setup-workspace [init\|switch\|sync]` | lintas fase | Install skill + MCP untuk tool AI (re-callable saat pindah tool) |
 | `/build-feature "[fitur]" [depth=]` | 🟩 Pengerjaan | Implementasi satu fitur |
 | `/test-feature "[fitur]"` | 🟨 Testing | E2E test fungsional |
+| `/manual-test "[fitur]"` | 🟨 Testing (opsional) | UAT headful: scenario matrix, screenshot, Major/Minor triage |
 | `/harden-release "[versi]"` | 🟧 Hardening | Security + reliability audit |
 | `/deliver-feature "[fitur]"` | 🟩→🟨 | Build + test sekaligus |
 | `/release "[versi]"` | — | Hardening → changelog → tag |
@@ -100,16 +103,24 @@ Menjalankan hardening (security audit + reliability/load test), update CHANGELOG
 ## 5. Di Mana Semuanya?
 
 ```
-project_overview.md          → setting proyek + WORK_DEPTH
-specifications/              → user story + API Contract (Analyst)
-state/workspace-manifest.json → skill + MCP yang diinginkan (Toolsmith)
-state/knowledge_base/        → acuan: architecture, data-model, design-system, security, decisions (ADR)
-codes/                      → source code (Backend/Frontend/Fullstack)
-tests/                      → E2E test (Tester)
-task/                       → task list + log per task
-agent/workflows/            → definisi agen (source of truth)
-agent/workflows/_shared/    → phases.md, work-depth.md, change-management.md
+project_overview.md              → Setting proyek + WORK_DEPTH
+specifications/                  → Requirements, API Contract, user stories
+state/                           → Workspace state & knowledge base
+  ├── workspace-manifest.json        → Skill + MCP yang diinginkan (Toolsmith)
+  ├── context.json                   → Session continuity (status project saat ini)
+  ├── agent_handoff.json             → Handoff terakhir antar-agen
+  └── knowledge_base/                → Acuan: architecture, data-model, design-system, security, ADR
+codes/                           → Source code (Backend/Frontend/Fullstack)
+tests/                           → E2E test (Tester) + tests/screenshots/ (Manual Tester)
+task/                            → Task list + log per task (termasuk manual_test_report.md)
+agent/workflows/                 → Definisi agen (source of truth)
+agent/workflows/_shared/         → Phases, work-depth, change-management, git-workflow, state-management
 ```
+
+**📌 Penting:** `state/workspace-manifest.json` harus approved di Fase 1 setelah tech stack diketahui.
+Jangan ganti tool atau sesuaikan skill/MCP tanpa update manifest terlebih dahulu (run `/setup-workspace sync`).
+
+👉 **Dokumentasi lengkap folder `state/`:** Lihat README.md section **📊 Folder `state/`** untuk detail tentang workflow, aturan, dan contoh interaksi antar-agen.
 
 ---
 

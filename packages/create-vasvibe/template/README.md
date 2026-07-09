@@ -1,5 +1,7 @@
 # 🌊 Vibe Coding Workflow
 
+> _This README ships from the [`create-vasvibe`](https://www.npmjs.com/package/create-vasvibe) starter. Examples reference a boat tour booking project (Labuan Bajo) for illustration. Replace examples with your own context as needed._
+
 Selamat datang di ekosistem **Vibe Coding**.
 Ini adalah standar alur kerja pengembangan software berbasis **AI Agent** yang mengutamakan struktur, dokumentasi otomatis, dan validasi berjenjang. 
 Template ini telah berevolusi dan secara *native* mendukung integrasi untuk berbagai AI agent environment mutakhir:
@@ -49,7 +51,7 @@ cd my-new-project
 - 🧠 **Mengambil keputusan** berdasarkan context dan error feedback
 - 📝 **Membuat dokumentasi** otomatis dari perubahan yang dilakukan
 
-Dalam workflow ini, kita menggunakan **19 AI Agent persona** yang bekerja secara terspesialisasi (mirip tim development sesungguhnya) di dalam **4-fase model**: Perencanaan → Pengerjaan → Testing → Hardening.
+Dalam workflow ini, kita menggunakan **20 AI Agent persona** yang bekerja secara terspesialisasi (mirip tim development sesungguhnya) di dalam **4-fase model**: Perencanaan → Pengerjaan → Testing → Hardening.
 
 ---
 
@@ -134,7 +136,7 @@ root/
 │   └── fixing/              # Bug fixing logs
 │
 └── documentation/            # [FINAL] Technical Writer output
-    ├── FSD_VasVibe.md       # Functional Specification Document
+    ├── FSD_{{projectName}}.md       # Functional Specification Document
     └── API_Documentation.md
 ```
 
@@ -438,9 +440,9 @@ Frontend Agent (10:00) baca context.json
 
 ---
 
-## 🤖 19 AI Agent Personas & Capabilities
+## 🤖 20 AI Agent Personas & Capabilities
 
-VasVibe v2.2 menggunakan **19 agent terspesialisasi** di 4 fase:
+{{projectName}} v2.3 menggunakan **20 agent terspesialisasi** di 4 fase:
 
 **Fase 1 — Perencanaan (Discovery & Blueprint):**
 - **Discovery Agent** — Wawancara kebutuhan → requirements.md
@@ -459,6 +461,7 @@ VasVibe v2.2 menggunakan **19 agent terspesialisasi** di 4 fase:
 
 **Fase 3 — Testing (E2E & Verification):**
 - **Tester Agent** — Playwright automation & QA testing
+- **Manual Tester Agent** ⭐ NEW — Headful UAT: scenario matrix (Normal/Abnormal), screenshot evidence, Major/Minor defect triage, retest iteration (opsional, berdampingan dengan Tester)
 
 **Fase 4 — Hardening (Release Readiness):**
 - **Security Expert** — Threat modeling & OWASP audit
@@ -955,6 +958,28 @@ Setelah Fixer fix bugs, Tester run tests ulang sampai hijau.
 
 ---
 
+### **Step 2.1b: Manual/Headful UAT Testing (Manual Tester)** ⭐ NEW — Opsional
+
+Selain `/tester` (scripted E2E), tersedia `/manual-test` untuk pengujian bergaya manusia dengan bukti visual — **independen**, bisa dijalankan kapan saja, tidak mengubah gate Fase 3:
+
+```bash
+/manual-test
+
+"Buat dan jalankan manual UAT test untuk fitur Booking Management"
+```
+
+**🤖 Manual Tester Agent akan:**
+1. Susun scenario matrix (minimal 1 Normal + 1 Abnormal per fitur/fungsi)
+2. Eksekusi headful Playwright (browser terlihat), screenshot tiap skenario
+3. Update Pass/Fail, dan untuk yang Fail: deskripsi temuan + Severity (Major/Minor)
+4. Tulis laporan `task/[TASK-ID]_[nama-task]/manual_test_report.md` — berisi sheet **Summary** (agregat: total skenario, pass, fail, major, minor) dan sheet **Scenario Detail** (langkah, ekspektasi, aktual, path screenshot, catatan)
+
+**👤 Human:**
+- Review temuan Major → kirim ke `/fixer`
+- Setelah fix, jalankan ulang `/manual-test` untuk retest — iterasi baru otomatis tercatat, histori iterasi sebelumnya tetap tersimpan di laporan yang sama
+
+---
+
 ### **Step 3: Hardening** 👤🤖 (Per-Release)
 
 Setelah 3-5 fitur selesai & siap rilis, jalankan hardening:
@@ -1057,7 +1082,7 @@ Provide 2-3 cost optimization scenarios dengan trade-offs."
 ```
 
 **Output:**
-- `documentation/FSD_VasVibe.md`
+- `documentation/FSD_{{projectName}}.md`
 - `documentation/API_Documentation.md`
 
 **👤 Human:**
@@ -1262,7 +1287,7 @@ sebelum implementasi fitur Booking"
 ```bash
 /sysarch
 
-"Analyze current application (VAS Vibe Reservation System).
+"Analyze current application ({{projectName}} Reservation System).
 
 Context:
 - Next.js 14 App Router

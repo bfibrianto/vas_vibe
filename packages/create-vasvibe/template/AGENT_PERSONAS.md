@@ -2,7 +2,7 @@
 
 Setiap Agent memiliki **system instruction** dan dapat dipanggil via slash command.
 
-**Total: 19 Specialized Agents**
+**Total: 20 Specialized Agents**
 
 ---
 
@@ -14,7 +14,7 @@ Pengerjaan proyek dibagi ke **4 fase** dengan gerbang human di tiap transisi. De
 |------|------|----------------|------|
 | **1 · Perencanaan** | **Discovery** (wawancara human), Initiator, **Toolsmith**, SysArch, Data Architect, UX Designer, Security (Mode S), Analyst | requirements, overview, **workspace-manifest**, architecture, data-model, design-system, security-standards, **API Contract** | requirements sign-off → Blueprint disetujui |
 | **2 · Pengerjaan** | Analyst (spec-lock), Backend Engineer ∥ Frontend Engineer (atau Developer @ `fast`), QA | kode + unit test + review | Code review lulus |
-| **3 · Testing** | Tester, Fixer | E2E hijau | Fungsional hijau |
+| **3 · Testing** | Tester, **Manual Tester** (opsional), Fixer | E2E hijau | Fungsional hijau |
 | **4 · Hardening** (per-release) | Security (A/B/C/D), Reliability, Fixer | security & reliability report | Siap produksi |
 
 **Lintas fase:** PM (koordinasi), Orchestrator (gerbang fase), **Toolsmith (provisioning workspace agentik)**, DevOps (CI/CD), Document (dokumentasi).
@@ -273,6 +273,49 @@ not_started → dev (Developer working) → ready_to_test (Dev complete)
 [Tester] Run tests → Update status: testing_ready → testing
   ↓
 [Tester] Check results → Update status: testing → passed (or failed)
+```
+
+---
+
+### 5b. **Manual Tester Agent** (`/manual-test`) ⭐ NEW
+**Role:** Manual/UAT Tester (Headful Playwright)
+
+**Capabilities:**
+- ✅ Menyusun **scenario matrix** per fitur/fungsi — minimal 1 Normal case + 1 Abnormal case masing-masing
+- ✅ Eksekusi **headful** Playwright (browser terlihat) — tidak ada mode headless
+- ✅ Screenshot bukti untuk setiap skenario (`tests/screenshots/[TASK-ID]/iteration-[N]/`)
+- ✅ Update Pass/Fail per skenario, triase temuan gagal sebagai **Major** atau **Minor**
+- ✅ Sheet **Summary** agregat (total skenario, pass, fail, major, minor, pass rate) + sheet **Detail** (langkah, ekspektasi, aktual, screenshot, catatan) — keduanya markdown table dalam satu laporan
+- ✅ **Retest iterasi** — histori tiap iterasi tetap tersimpan (append, bukan overwrite), nomor iterasi tercatat di laporan
+- ✅ **Append-only** ke `Status Logs:` — tidak pernah mengubah `Current Status` milik pipeline Tester/Fixer, sehingga bisa dipanggil kapan saja tanpa bentrok status
+
+**Berbeda dari Tester Agent:** Tester = scripted E2E (assertion-based, cocok CI). Manual Tester = bergaya human UAT (bukti visual + defect log untuk stakeholder/klien). Keduanya independen, bisa dipakai berdampingan.
+
+**Input Example:**
+```
+/manual-test
+
+"Buat dan jalankan manual UAT test untuk fitur Booking Management"
+```
+
+**Output:**
+- `tests/screenshots/[TASK-ID]/iteration-[N]/*.png`
+- `task/[TASK-ID]_[nama-task]/manual_test_report.md` (Summary + Scenario Detail, bertambah tiap iterasi retest)
+
+**👤 Human Task:**
+- Review temuan Major → putuskan apakah lanjut ke Fixer
+- Review temuan Minor → terima sebagai known-issue atau minta perbaikan juga
+- Approve saat semua skenario Pass (atau Minor yang tersisa sudah didokumentasikan)
+
+**Retest Workflow:**
+```
+[Manual Tester] Iteration 1 → 3 Fail (1 Major, 2 Minor) → notify Fixer
+  ↓
+[Fixer] Fix bug → Ready to test
+  ↓
+[Manual Tester] Iteration 2 (retest skenario yang Fail) → semua Pass
+  ↓
+👤 Human approve UAT
 ```
 
 ---
@@ -542,6 +585,7 @@ for production deployment. Target: 100 concurrent users,
 | **Developer** | `/developer` | Pengerjaan | Fullstack tunggal (`depth=fast`) | `codes/*` |
 | **QA** | `/qa` | Pengerjaan | Static review & unit test | `task/[ID]/qa_report.md` |
 | **Tester** | `/tester` | Testing | E2E test automation | `tests/*` |
+| **Manual Tester** | `/manual-test` | Testing (opsional) | Headful UAT: scenario matrix, screenshot, defect triage | `task/[ID]/manual_test_report.md` |
 | **Fixer** | `/fixer` | Testing + Hardening | Bug fixing & debugging | `codes/*` |
 | **Reliability** | `/reliability` | Hardening | Performance, resilience, load | `task/[RELEASE]/reliability_report.md` |
 | **DevOps** | `/devops` | Lintas fase | Docker, CI/CD, deployment | `Dockerfile`, `.github/workflows/` |

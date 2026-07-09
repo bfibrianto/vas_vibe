@@ -58,6 +58,8 @@ Lalu **QA** review kode.
 
 > 💡 Gabung langkah 2+3 sekaligus: `/deliver-feature "Login..."`
 
+> 🖼️ **Opsional — mau laporan ala manual QA dengan bukti screenshot?** Jalankan `/manual-test "Login..."` berdampingan (independen dari `/test-feature`, tidak mengubah gate). **Manual Tester** akan bikin scenario matrix (Normal+Abnormal), eksekusi headful Playwright, screenshot tiap skenario, dan triase temuan gagal sebagai Major/Minor.
+
 ### Langkah 4 — 🟧 Hardening + Rilis (per-release)
 Setelah beberapa fitur selesai:
 ```
@@ -76,6 +78,7 @@ Menjalankan hardening (security audit + reliability/load test), update CHANGELOG
 | `/setup-workspace [init\|switch\|sync]` | lintas fase | Install skill + MCP untuk tool AI (re-callable saat pindah tool) |
 | `/build-feature "[fitur]" [depth=]` | 🟩 Pengerjaan | Implementasi satu fitur |
 | `/test-feature "[fitur]"` | 🟨 Testing | E2E test fungsional |
+| `/manual-test "[fitur]"` | 🟨 Testing (opsional) | UAT headful: scenario matrix, screenshot, Major/Minor triage |
 | `/harden-release "[versi]"` | 🟧 Hardening | Security + reliability audit |
 | `/deliver-feature "[fitur]"` | 🟩→🟨 | Build + test sekaligus |
 | `/release "[versi]"` | — | Hardening → changelog → tag |
@@ -108,8 +111,8 @@ state/                           → Workspace state & knowledge base
   ├── agent_handoff.json             → Handoff terakhir antar-agen
   └── knowledge_base/                → Acuan: architecture, data-model, design-system, security, ADR
 codes/                           → Source code (Backend/Frontend/Fullstack)
-tests/                           → E2E test (Tester)
-task/                            → Task list + log per task
+tests/                           → E2E test (Tester) + tests/screenshots/ (Manual Tester)
+task/                            → Task list + log per task (termasuk manual_test_report.md)
 agent/workflows/                 → Definisi agen (source of truth)
 agent/workflows/_shared/         → Phases, work-depth, change-management, git-workflow, state-management
 ```

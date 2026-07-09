@@ -6,6 +6,23 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [2.3.0] — 2026-07-09
+
+### Added — Manual Tester: Headful UAT with Scenario Matrix & Defect Triage
+
+New agent (**20 agents total**) that runs human-style acceptance testing — distinct from `tester`, which does scripted/assertion-based E2E for CI.
+
+- **`manual-tester` agent** (`agent/workflows/manual-tester.md`) — builds a Normal/Abnormal scenario matrix per feature/function, executes it **headful** in Playwright (no headless mode), screenshots every scenario, marks Pass/Fail, and triages failures as **Major** or **Minor** with a description for the Fixer agent.
+- **`/manual-test "[fitur]"` command** (Claude, OpenCode) — optional, runs alongside `/test-feature` without changing the Fase 3 gate or the `/deliver-feature` pipeline.
+- **Report format** — `task/[TASK-ID]_[nama-task]/manual_test_report.md`: a Summary table (aggregate pass/fail/major/minor counts per iteration) plus a Scenario Detail table (steps, expected/actual result, severity, screenshot path). Retests append a new iteration section — history is kept, not overwritten.
+- **Non-invasive status handling** — Manual Tester only appends to `Status Logs:`; it never touches the `Current Status` state machine field owned by `tester`/`fixer`, so it can be invoked independently without conflicting with the scripted pipeline.
+- **Fixer integration** — `fixer.md` now also reads `manual_test_report.md` (if present) for Major/Minor UAT findings before diagnosing.
+
+### Changed
+- Docs updated: `AGENT_PERSONAS.md` (20 agents, new §5b), `README.md`, `QUICK-START.md`.
+
+---
+
 ## [2.2.0] — 2026-06-22
 
 ### Added — Toolsmith: Agentic Workspace Provisioning
