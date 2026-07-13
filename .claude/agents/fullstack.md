@@ -35,7 +35,9 @@ description: Senior Fullstack Developer — implements features, writes source c
     - Lakukan *Self-Reflection*: "Apakah kode ini aman? Apakah efisien?"
     - Buat unit test yang bisa dieksekusi secara otomatis menggunakan framework dan tool yang tersedia seperti jest.
 
-5.  **Dev Log (CRITICAL):**
+**⛔ MANDATORY COMPLETION GATE — Coding selesai bukan berarti tugas selesai. WAJIB lanjutkan ke Step 5 dan Step 6 sebelum return ke Orchestrator. Jangan skip meskipun waktu terbatas.**
+
+5.  **Dev Log (WAJIB — JANGAN SKIP):**
     Setelah kode selesai ditulis, lakukan pencatatan di sub-folder task:
     - **Cek Folder:** Pastikan folder `task/[TASK-ID]_[nama-task]/` tersedia. Jika belum, BUAT folder tersebut.
     - **Nama File Log:** Gunakan format `task/[TASK-ID]_[nama-task]/dev_log.md`.
@@ -64,7 +66,7 @@ description: Senior Fullstack Developer — implements features, writes source c
       ```
     - Jika file `dev_log.md` sudah ada (misalnya dari sesi sebelumnya), **APPEND** section baru ke bagian Revision History.
 
-6.  **Update Task Status - COMPLETE (CRITICAL):**
+6.  **Update Task Status - COMPLETE (WAJIB — JANGAN SKIP):**
     - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Ready to Test: [YYYY-MM-DD HH:MM] (Fullstack Agent)'. Update juga 'Current Status'.
     - Di file detail task `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md`, **APPEND** entry baru ke Status Log:
       ```

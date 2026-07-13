@@ -9,8 +9,6 @@ codes/*
 !codes/.gitkeep
 
 
-project_overview.md
-development_log.md
 .mcp.json
 opencode.json
 
@@ -100,7 +98,6 @@ prisma/migrations/
 # ==========================================
 # Logs
 # ==========================================
-logs/
 *.log
 
 # ==========================================
