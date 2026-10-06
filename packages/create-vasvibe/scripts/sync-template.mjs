@@ -2,7 +2,7 @@
 // Sync agent assets from the repo root into packages/create-vasvibe/template/.
 // Run before publishing, or any time the source assets change.
 
-import { promises as fs } from 'node:fs';
+import { promises as fs, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -43,7 +43,19 @@ function opencodeFilter(srcPath) {
   return true;
 }
 
+// state/ in the repo root holds this repo's own working project state (context,
+// knowledge base docs, pipeline log). Ship only the skeleton: directories,
+// .gitkeep placeholders, and the workspace manifest.
+const STATE_SKELETON_FILES = new Set(['.gitkeep', 'workspace-manifest.json']);
+function stateFilter(srcPath) {
+  if (!noNodeModules(srcPath)) return false;
+  if (statSync(srcPath).isDirectory()) return true;
+  return STATE_SKELETON_FILES.has(path.basename(srcPath));
+}
+
 const SOURCES = [
+  { src: 'AGENTS.md', dest: 'AGENTS.md' },
+  { src: '.codex', dest: '.codex', filter: noNodeModules },
   { src: '.agents', dest: '.agents', filter: noNodeModules },
   { src: '.claude', dest: '.claude', filter: noNodeModules },
   { src: '.opencode', dest: '.opencode', filter: opencodeFilter },
@@ -57,7 +69,7 @@ const SOURCES = [
   { src: 'AGENT_PERSONAS.md', dest: 'AGENT_PERSONAS.md' },
   { src: 'opencode.json', dest: 'opencode.json' },
   { src: 'schemas', dest: 'schemas', filter: noNodeModules },
-  { src: 'state', dest: 'state' },
+  { src: 'state', dest: 'state', filter: stateFilter },
 ];
 
 async function pathExists(p) {

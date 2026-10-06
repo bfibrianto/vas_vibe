@@ -21,9 +21,10 @@ ${pc.bold('Options:')}
   -y, --yes          Skip prompts and use defaults
       --no-git       Do not initialize a git repository
       --no-opencode  Exclude .opencode/ (commands, skills)
-      --no-claude    Exclude .claude/ and .agents/
+      --no-claude    Exclude .claude/ agents and Antigravity wrappers
+      --no-codex     Exclude Codex subagents and VasVibe Codex skills
       --no-github    Exclude .github/prompts/
-      --no-workflows Exclude agent/workflows/
+      --no-workflows Exclude agent/workflows/ (when Codex is disabled)
       --depth=<level> Set default work depth: fast | standard | deep (default: standard)
       --dry-run      (upgrade only) Show what would change without writing files
   -h, --help         Show this help
@@ -45,6 +46,7 @@ function parseArgs(argv) {
     git: true,
     opencode: true,
     claude: true,
+    codex: true,
     github: true,
     workflows: true,
     help: false,
@@ -71,6 +73,9 @@ function parseArgs(argv) {
         break;
       case '--no-claude':
         flags.claude = false;
+        break;
+      case '--no-codex':
+        flags.codex = false;
         break;
       case '--no-github':
         flags.github = false;
@@ -192,6 +197,7 @@ export async function main(argv) {
       workDepth: answers.workDepth,
       includeOpencode: answers.includeOpencode,
       includeClaude: answers.includeClaude,
+      includeCodex: answers.includeCodex,
       includeGithub: answers.includeGithub,
       includeWorkflows: answers.includeWorkflows,
     });

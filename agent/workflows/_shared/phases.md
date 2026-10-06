@@ -62,7 +62,8 @@ Project VasVibe dikerjakan dalam **4 fase** dengan gerbang (gate) human di tiap 
 | Agen | Peran |
 |------|-------|
 | Security | Pen-test, OWASP audit, security fix (Mode B/C/D) |
-| Reliability Engineer | Performance, resilience, error handling, load test |
+| Reliability Engineer | Performance, resilience, error handling review & fix |
+| Perf Tester | Performance & load test as code (k6 default / JMeter), SLA thresholds, baseline |
 | Fixer | Remediasi temuan |
 
 **Gate:** Sign-off siap produksi.

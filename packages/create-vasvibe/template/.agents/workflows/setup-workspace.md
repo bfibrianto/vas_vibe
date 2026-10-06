@@ -8,10 +8,10 @@ Tujuan: menyiapkan perkakas si AI agent (skills + MCP) agar bekerja optimal — 
 
 Langkah:
 1. **Deteksi mode** dari argumen (`init` default jika `state/workspace-manifest.json` belum ada; `switch` saat pindah tool; `sync` untuk perbaiki drift).
-2. **Deteksi tool aktif** dari penanda (`.claude/`, `.opencode/`, `.agents/`, `.github/prompts/`/`.vscode/`). Ambigu → tanya human.
+2. **Deteksi tool aktif** dari penanda (`.codex/`/`AGENTS.md`, `.claude/`, `.opencode/`, `.agents/`, `.github/prompts/`/`.vscode/`). Ambigu → tanya human.
 3. **Mode `init`:** tentukan kebutuhan (hybrid: `schemas/workspace-registry.json` `stackMappings` dari tech stack di `project_overview.md`/`requirements.md` + baseline + augmentasi `find-skills`) → tulis `state/workspace-manifest.json` → **tunjukkan ringkasan, minta approve human**.
 4. **Mode `switch`/`sync`:** baca manifest yang ada (jangan hitung ulang), apply ke tool target.
-5. **Apply declarative:** tulis MCP ke file config tool (`.mcp.json` / `opencode.json` / `.vscode/mcp.json` / `.agents/mcp.json`) sesuai `platformTargets`; install skills ke `skillsDir` via `npx skills add`. **Merge, jangan timpa. Secrets → placeholder `${VAR}`.**
+5. **Apply declarative:** tulis MCP ke file config tool (`.codex/config.toml` / `.mcp.json` / `opencode.json` / `.vscode/mcp.json` / `.agents/mcp.json`) sesuai `platformTargets`; install skills ke `skillsDir` via `npx skills add`. **Merge, jangan timpa. Secrets → placeholder `${VAR}`.**
 6. **Update `appliedTo[tool]`** = timestamp; laporkan langkah manual tersisa.
 
 **Aturan:**

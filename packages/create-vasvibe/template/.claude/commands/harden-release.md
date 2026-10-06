@@ -8,8 +8,8 @@ Jalankan **Fase 4 — Hardening** (per-release) untuk versi: **$ARGUMENTS**
 Langkah:
 1. **Security (Mode A)** → Threat Modeling
 2. **Security (Mode B)** → Vulnerability Scan + verifikasi `security-standards.md`
-3. **Reliability** → performance, resilience, load test
-4. **CHECKPOINT:** Human review temuan Security + Reliability
+3. **Reliability** → performance & resilience review; delegasikan load test ke **Perf Tester** (k6 default, JMeter opsional) → `task/[versi]/performance_report.md`
+4. **CHECKPOINT:** Human review temuan Security + Reliability + Performance
 5. **Security (Mode C)** + **Fixer** → remediasi CRITICAL & HIGH
 6. **Tester** → regression test
 7. **GATE — Siap produksi:** Human sign-off.

@@ -2,7 +2,7 @@
 
 Panduan singkat memulai proyek dengan workflow agen VasVibe setelah scaffold selesai.
 
-> **Sudah install?** Kamu menjalankan `npx create-vasvibe my-app`. Folder `my-app/` sudah berisi semua agen & command. Buka folder itu di **Claude Code** atau **OpenCode**, lalu ikuti langkah di bawah.
+> **Sudah install?** Kamu menjalankan `npx create-vasvibe my-app`. Folder `my-app/` sudah berisi agen & workflow yang dipilih. Untuk Codex, mulai sesi baru di folder project; panggil workflow dengan `$vasvibe-plan-project`, `$vasvibe-build-feature`, atau skill lain dari daftar `$`.
 
 ---
 
@@ -66,11 +66,15 @@ Setelah beberapa fitur selesai:
 /release "2.0.0"
 ```
 Menjalankan hardening (security audit + reliability/load test), update CHANGELOG, dan bikin git tag.
+
+> ⚡ **Load test kapan saja:** `/load-test "POST /api/bookings type=load"` — **Perf Tester** menulis script k6 di `tests/performance/`, menjalankannya ke staging (setelah kamu konfirmasi target & SLA), dan melaporkan p95/p99, RPS, error rate vs SLA. Pakai `tool=jmeter` bila project sudah memakai JMeter.
 👉 **Sign-off siap produksi.**
 
 ---
 
 ## 3. Daftar Command
+
+Di Codex, command pipeline tersedia sebagai skills eksplisit: `$vasvibe-plan-project`, `$vasvibe-build-feature`, `$vasvibe-test-feature`, dan skill lain yang tampil saat mengetik `$`. Persona bisa dipanggil di percakapan saat ini melalui `$vasvibe-agent-backend`; untuk delegasi pipeline Codex menyediakan custom subagent seperti `vasvibe_backend`.
 
 | Command | Fase | Fungsi |
 |---------|------|--------|
@@ -79,7 +83,8 @@ Menjalankan hardening (security audit + reliability/load test), update CHANGELOG
 | `/build-feature "[fitur]" [depth=]` | 🟩 Pengerjaan | Implementasi satu fitur |
 | `/test-feature "[fitur]"` | 🟨 Testing | E2E test fungsional |
 | `/manual-test "[fitur]"` | 🟨 Testing (opsional) | UAT headful: scenario matrix, screenshot, Major/Minor triage |
-| `/harden-release "[versi]"` | 🟧 Hardening | Security + reliability audit |
+| `/harden-release "[versi]"` | 🟧 Hardening | Security + reliability audit (+ load test via Perf Tester) |
+| `/load-test "[target]" [type=] [tool=]` | 🟧 Hardening / ad-hoc | Load test as code (k6 default, JMeter opsional) terhadap SLA |
 | `/deliver-feature "[fitur]"` | 🟩→🟨 | Build + test sekaligus |
 | `/release "[versi]"` | — | Hardening → changelog → tag |
 | `/start-fix "[bug]"` | — | Perbaikan bug terarah |
@@ -111,8 +116,8 @@ state/                           → Workspace state & knowledge base
   ├── agent_handoff.json             → Handoff terakhir antar-agen
   └── knowledge_base/                → Acuan: architecture, data-model, design-system, security, ADR
 codes/                           → Source code (Backend/Frontend/Fullstack)
-tests/                           → E2E test (Tester) + tests/screenshots/ (Manual Tester)
-task/                            → Task list + log per task (termasuk manual_test_report.md)
+tests/                           → E2E test (Tester) + tests/screenshots/ (Manual Tester) + tests/performance/ (Perf Tester)
+task/                            → Task list + log per task (termasuk manual_test_report.md, performance_report.md)
 agent/workflows/                 → Definisi agen (source of truth)
 agent/workflows/_shared/         → Phases, work-depth, change-management, git-workflow, state-management
 ```

@@ -6,6 +6,23 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [2.7.0] — 2026-10-06
+
+### Added — Perf Tester: Performance & Load Testing as Code
+
+New agent (**21 agents total**) that executes performance & load tests and tracks them against SLA — Reliability keeps ownership of review & root-cause fixes.
+
+- **`perf-tester` agent** (`agent/workflows/perf-tester.md`) — builds a workload model (critical user journeys, traffic mix, think time, varied test data), writes tests as code in `tests/performance/`, runs smoke → load → stress/spike/soak/breakpoint per Work Depth, compares p50/p95/p99, RPS and error rate with SLA thresholds and `tests/performance/baseline.json`, and reports PERF-xx findings with suspected bottlenecks.
+- **Tooling** — **k6** by default (JavaScript scripts, thresholds as SLA gates with non-zero exit code, CLI-first); **JMeter** in non-GUI mode when the project already has `.jmx` plans, needs protocols like JDBC/JMS/LDAP/SOAP, or `tool=jmeter` is passed.
+- **`/load-test "[target]" [type=] [tool=]` command** — Claude, OpenCode, Antigravity (`.agents/workflows/`), and Codex (`$vasvibe-load-test`); Copilot via `perf-tester.prompt.md`.
+- **Safety rules** — never load-tests production or third-party services without explicit human approval; credentials only via env vars; `abortOnFail` on error rate.
+- **Hardening integration** — `reliability.md`, `orchestrator.md`, `phases.md`, and `/harden-release` now delegate load test execution to Perf Tester and add Performance to the hardening checkpoint.
+
+### Fixed
+- **Template no longer ships the repo's own project state** — `sync-template` now copies only the `state/` skeleton (directories, `.gitkeep`, `workspace-manifest.json`), so local `context.json`, knowledge-base docs, and `pipeline_log.md` are never published.
+
+---
+
 ## [2.3.0] — 2026-07-09
 
 ### Added — Manual Tester: Headful UAT with Scenario Matrix & Defect Triage

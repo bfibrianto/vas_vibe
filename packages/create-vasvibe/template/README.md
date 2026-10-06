@@ -6,6 +6,7 @@ Selamat datang di ekosistem **Vibe Coding**.
 Ini adalah standar alur kerja pengembangan software berbasis **AI Agent** yang mengutamakan struktur, dokumentasi otomatis, dan validasi berjenjang. 
 Template ini telah berevolusi dan secara *native* mendukung integrasi untuk berbagai AI agent environment mutakhir:
 - **Google Antigravity** (`.agents/`)
+- **OpenAI Codex** (`AGENTS.md`, `.codex/agents/`, `.agents/skills/`)
 - **Claude Code** (`.claude/`)
 - **OpenCode** (`.opencode/`)
 - **GitHub Copilot Workspace** (`.github/prompts/`)
@@ -36,9 +37,12 @@ cd my-new-project
 | `-y, --yes` | Skip semua pertanyaan (gunakan setting default) |
 | `--no-git` | Jangan jalankan `git init` secara otomatis |
 | `--no-opencode` | Abaikan folder `.opencode/` |
-| `--no-claude` | Abaikan folder `.claude/` dan `.agents/` |
+| `--no-claude` | Abaikan folder `.claude/` dan wrapper agen Antigravity |
+| `--no-codex` | Abaikan custom agent dan skill Codex {{projectName}} |
 | `--no-github` | Abaikan folder `.github/prompts/` |
-| `--no-workflows` | Abaikan folder `agent/workflows/` |
+| `--no-workflows` | Abaikan folder `agent/workflows/` jika Codex tidak dipilih |
+| `--depth=<level>` | Atur work depth: `fast`, `standard`, atau `deep` |
+| `--dry-run` | Pratinjau upgrade tanpa menulis file |
 
 
 ## 🤖 Tentang AI Agent
@@ -51,7 +55,7 @@ cd my-new-project
 - 🧠 **Mengambil keputusan** berdasarkan context dan error feedback
 - 📝 **Membuat dokumentasi** otomatis dari perubahan yang dilakukan
 
-Dalam workflow ini, kita menggunakan **20 AI Agent persona** yang bekerja secara terspesialisasi (mirip tim development sesungguhnya) di dalam **4-fase model**: Perencanaan → Pengerjaan → Testing → Hardening.
+Dalam workflow ini, kita menggunakan **21 AI Agent persona** yang bekerja secara terspesialisasi (mirip tim development sesungguhnya) di dalam **4-fase model**: Perencanaan → Pengerjaan → Testing → Hardening.
 
 ---
 
@@ -61,7 +65,7 @@ Dalam workflow ini, kita menggunakan **20 AI Agent persona** yang bekerja secara
 2. **No Silent Changes:** Setiap perubahan yang diminta harus **ditulis ke dokumen acuan** (spec, requirement, ADR) dan di-propagate ke agen terkait. Result: rework minimal, audit trail jelas.
 3. **Context is King:** AI tidak bisa bekerja tanpa konteks. `project_overview.md` + specifications/ adalah otak proyek.
 4. **Work Depth Flexibility:** 3 level kedalaman (`fast`/`standard`/`deep`). Mulai fast untuk validate ide, naik standard saat serius, deep hanya untuk area sensitif.
-5. **Tool-Agnostic Workflow:** Agent berjalan di Claude Code, OpenCode, GitHub Copilot, Antigravity. Source of truth di `agent/workflows/`, propagate ke tool-specific folders.
+5. **Tool-Agnostic Workflow:** Agent berjalan di Codex, Claude Code, OpenCode, GitHub Copilot, dan Antigravity. Source of truth di `agent/workflows/`, propagate ke tool-specific folders.
 6. **Desired-State Architecture (Toolsmith):** `state/workspace-manifest.json` adalah manifest platform-agnostic. Toolsmith: install skills + MCP sesuai tech stack, re-applicable saat ganti tool.
 7. **Role Segregation:** 19 agen specialized dengan tanggung jawab clear. Backend ≠ Frontend ≠ Security ≠ DevOps.
 8. **Log Everything:** Setiap sesi coding, testing, fixing tercatat untuk kontinuitas AI memori.
@@ -440,9 +444,9 @@ Frontend Agent (10:00) baca context.json
 
 ---
 
-## 🤖 20 AI Agent Personas & Capabilities
+## 🤖 21 AI Agent Personas & Capabilities
 
-{{projectName}} v2.3 menggunakan **20 agent terspesialisasi** di 4 fase:
+{{projectName}} v2.3 menggunakan **21 agent terspesialisasi** di 4 fase:
 
 **Fase 1 — Perencanaan (Discovery & Blueprint):**
 - **Discovery Agent** — Wawancara kebutuhan → requirements.md
@@ -465,7 +469,8 @@ Frontend Agent (10:00) baca context.json
 
 **Fase 4 — Hardening (Release Readiness):**
 - **Security Expert** — Threat modeling & OWASP audit
-- **Reliability Engineer** — Performance & load testing
+- **Reliability Engineer** — Performance & resilience review/fix
+- **Perf Tester** ⭐ NEW — Load test as code (k6 default, JMeter opsional): smoke/load/stress/spike/soak/breakpoint, SLA thresholds, baseline antar-release (`/load-test`)
 
 **Cross-Phase (Coordination & Documentation):**
 - **Orchestrator** — Pipeline coordinator (/plan-project, /build-feature, /test-feature, /release, dll)
@@ -498,7 +503,8 @@ Agen baru (ke-19) yang mengotomatisasi setup AI tool. Membedakan:
 
 ### **3. Multi-Tool Support Sync** ⭐ v2.2
 - **GitHub Copilot prompt files** → `.github/prompts/*.prompt.md` (19 agents synced)
-- **Source of truth** → `agent/workflows/` (auto-propagate ke `.claude/`, `.opencode/`, `.agents/`, `.github/prompts/`)
+- **Codex** → project rules di `AGENTS.md`, custom agents di `.codex/agents/`, dan skills yang dapat dipanggil dengan `${{projectName}}-<command>` di `.agents/skills/`
+- **Source of truth** → `agent/workflows/` (auto-propagate ke `.codex/`, `.claude/`, `.opencode/`, `.agents/`, `.github/prompts/`)
 - **Template sync** → `npm run sync-template` (create-vasvibe template always up-to-date)
 
 ### **4. Git Workflow Audit** ⭐ v2.2
@@ -980,6 +986,28 @@ Selain `/tester` (scripted E2E), tersedia `/manual-test` untuk pengujian bergaya
 
 ---
 
+### **Step 2.1c: Performance & Load Testing (Perf Tester)** ⭐ NEW — Opsional / Hardening
+
+Load test bisa dijalankan ad-hoc per fitur/endpoint, dan otomatis dipakai Reliability saat `/harden-release`:
+
+```bash
+/load-test "POST /api/bookings type=load"
+```
+
+**Kenapa k6 (default), bukan JMeter?** Script k6 berupa JavaScript (mudah ditulis/di-review AI & manusia, tinggal di repo), thresholds langsung menjadi SLA gate dengan exit code (cocok CI), dan ringan dijalankan dari CLI. **JMeter** tetap didukung (non-GUI) bila project sudah punya `.jmx` atau butuh protokol seperti JDBC/JMS/LDAP/SOAP — pakai `tool=jmeter`.
+
+**🤖 Perf Tester Agent akan:**
+1. Konfirmasi target environment, SLA, dan puncak beban ke human (tidak pernah ke production tanpa izin)
+2. Susun workload model (user journey kritis + mix trafik) & tulis script di `tests/performance/`
+3. Smoke test → load (standard) → stress/spike/soak/breakpoint (deep)
+4. Tulis `performance_report.md`: p50/p95/p99, RPS, error rate, SLA Pass/Fail, delta vs baseline, temuan PERF-xx + dugaan bottleneck
+
+**👤 Human:**
+- Temuan SLA gagal → Reliability/Backend memperbaiki → `/load-test` lagi untuk verifikasi
+- Approve pembaruan `tests/performance/baseline.json`
+
+---
+
 ### **Step 3: Hardening** 👤🤖 (Per-Release)
 
 Setelah 3-5 fitur selesai & siap rilis, jalankan hardening:
@@ -990,7 +1018,8 @@ Setelah 3-5 fitur selesai & siap rilis, jalankan hardening:
 
 **Agents yang jalan:**
 - **Security Agent** — OWASP audit, threat modeling, vulnerability scan
-- **Reliability Agent** — Load testing, performance optimization
+- **Reliability Agent** — Performance & resilience review, optimization
+- **Perf Tester Agent** — Load test k6/JMeter terhadap SLA → `task/[versi]/performance_report.md`
 - **Document Agent** — CHANGELOG generation
 
 **Output:**

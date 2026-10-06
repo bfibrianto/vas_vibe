@@ -83,6 +83,14 @@
       "skillsDir": ".agents/skills/",
       "note": "Antigravity uses an mcpServers-shaped config. Confirm the exact path your Antigravity build reads (workspace vs global) with the human; .agents/mcp.json is the project-local default."
     },
+    "codex": {
+      "detect": [".codex/", "AGENTS.md"],
+      "file": ".codex/config.toml",
+      "topLevelKey": "mcp_servers",
+      "entryShape": { "command": "<command>", "args": ["<args>"], "env": {} },
+      "skillsDir": ".agents/skills/",
+      "note": "Codex uses TOML tables `[mcp_servers.<id>]` in project-local `.codex/config.toml`. For streamable HTTP use `url`; preserve existing settings when merging. Project-scoped config is loaded only for trusted projects."
+    },
     "github-copilot": {
       "detect": [".github/prompts/", ".vscode/"],
       "file": ".vscode/mcp.json",

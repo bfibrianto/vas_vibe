@@ -58,8 +58,8 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 > **Per-release only.** Jalankan setelah sekumpulan fitur lulus testing.
 1. Invoke Security (Mode A) → Threat Modeling
 2. Invoke Security (Mode B) → Vulnerability Scan + verifikasi `security-standards.md`
-3. Invoke Reliability → performance, resilience, load test
-4. CHECKPOINT: Human review temuan Security + Reliability
+3. Invoke Reliability → performance & resilience review; Reliability mendelegasikan load test ke **Perf Tester** (k6 default) → `performance_report.md`
+4. CHECKPOINT: Human review temuan Security + Reliability + Performance
 5. Invoke Security (Mode C) + Fixer → remediasi CRITICAL & HIGH
 6. Invoke Tester → regression test (pastikan fix tidak break)
 7. **GATE — Siap produksi:** Human sign-off
@@ -105,6 +105,13 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 4. Security Mode C → fix CRITICAL & HIGH
 5. Tester → regression test
 6. CHECKPOINT: Human sign-off
+
+#### `/load-test "[release/fitur/endpoint]" [type=smoke|load|stress|spike|soak|breakpoint] [tool=k6|jmeter]`
+> Performance & load test ad-hoc di luar siklus release (juga dipanggil otomatis oleh Reliability di `/harden-release`). Tool default **k6**; JMeter hanya bila project sudah memakainya / butuh protokol khusus.
+1. CHECKPOINT: Konfirmasi target environment, SLA/threshold, dan pola beban ke human (**jangan pernah** load test production tanpa izin eksplisit)
+2. Invoke Perf Tester → workload model + script (`tests/performance/`) → smoke test → test sesuai `type`/Work Depth → `performance_report.md`
+3. Jika SLA gagal → Invoke Reliability (atau Backend di luar hardening) → perbaiki bottleneck → Perf Tester re-run
+4. **GATE — SLA terpenuhi:** semua threshold Pass, atau risiko tersisa diterima human; update baseline atas persetujuan human
 
 #### `/daily-standup`
 1. Read `task/task_list.md` + log terbaru di `task/`
