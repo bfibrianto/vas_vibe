@@ -1,0 +1,62 @@
+{
+  "project": "Labuan Bajo Boat Booking",
+  "taskId": "TASK-012",
+  "sheetName": "UAT-R1",
+  "phase": "UAT",
+  "round": 1,
+  "startDate": "2026-11-03",
+  "endDate": "2026-11-03",
+  "environment": "http://localhost:3000 (build a1b2c3d)",
+  "testCases": [
+    {
+      "id": "TC1",
+      "feature": "Booking - Create",
+      "caseType": "Normal",
+      "description": "Membuat booking baru dengan data valid",
+      "precondition": "- User sudah login\n- Berada di halaman Booking",
+      "createdAt": "2026-11-03",
+      "createdBy": "Manual Tester Agent",
+      "steps": [
+        { "procedure": "1. Klik tombol Buat Booking", "expected": "Ditampilkan form booking", "actual": "Ditampilkan form booking" },
+        { "procedure": "2. Isi semua field valid lalu klik Simpan", "expected": "- Booking tersimpan\n- Muncul notifikasi sukses", "actual": "Sesuai expected" }
+      ],
+      "result": "Pass",
+      "screenshot": { "label": "TC1", "link": "screenshots/UAT-R1/TC1.png" },
+      "executedAt": "2026-11-03 10:00",
+      "executedBy": "Manual Tester Agent",
+      "note": ""
+    },
+    {
+      "id": "TC2",
+      "feature": "Booking - Create",
+      "caseType": "Abnormal",
+      "description": "Simpan booking dengan tanggal keberangkatan kosong",
+      "precondition": "- Berada di form booking",
+      "createdAt": "2026-11-03",
+      "createdBy": "Manual Tester Agent",
+      "steps": [
+        { "procedure": "1. Kosongkan Tanggal Keberangkatan lalu klik Simpan", "expected": "Muncul pesan \"Tanggal Keberangkatan is required\"", "actual": "Booking tersimpan tanpa tanggal" }
+      ],
+      "result": "Fail",
+      "screenshot": { "label": "TC2", "link": "screenshots/UAT-R1/TC2.png" },
+      "executedAt": "2026-11-03 10:05",
+      "executedBy": "Manual Tester Agent",
+      "note": "DEF-1 (Major)"
+    }
+  ],
+  "defects": [
+    {
+      "id": "DEF-1",
+      "tcId": "TC2",
+      "platform": "Web",
+      "feature": "Booking - Create",
+      "createdAt": "2026-11-03 10:05",
+      "description": "Expected: muncul validasi required pada Tanggal Keberangkatan\nActual: booking tersimpan tanpa tanggal",
+      "capture": { "label": "Screenshot", "link": "screenshots/UAT-R1/TC2.png" },
+      "level": "Major",
+      "status": "New",
+      "qaPic": "Manual Tester Agent",
+      "comment": "Found: UAT-R1"
+    }
+  ]
+}

@@ -58,7 +58,7 @@ Lalu **QA** review kode.
 
 > 💡 Gabung langkah 2+3 sekaligus: `/deliver-feature "Login..."`
 
-> 🖼️ **Opsional — mau laporan ala manual QA dengan bukti screenshot?** Jalankan `/manual-test "Login..."` berdampingan (independen dari `/test-feature`, tidak mengubah gate). **Manual Tester** akan bikin scenario matrix (Normal+Abnormal), eksekusi headful Playwright, screenshot tiap skenario, dan triase temuan gagal sebagai Major/Minor.
+> 🖼️ **Opsional — mau laporan ala manual QA dengan bukti screenshot?** Jalankan `/manual-test "Login..."` berdampingan (independen dari `/test-feature`, tidak mengubah gate). **Manual Tester** akan bikin scenario matrix (Normal+Abnormal), eksekusi headful Playwright, screenshot tiap skenario, dan triase temuan gagal sebagai Major/Minor. Butuh laporan di template spreadsheet Vascomm (Google Sheets/Excel)? Pakai `/manual-test-vascomm "Login..."`.
 
 ### Langkah 4 — 🟧 Hardening + Rilis (per-release)
 Setelah beberapa fitur selesai:
@@ -83,6 +83,7 @@ Di Codex, command pipeline tersedia sebagai skills eksplisit: `$vasvibe-plan-pro
 | `/build-feature "[fitur]" [depth=]` | 🟩 Pengerjaan | Implementasi satu fitur |
 | `/test-feature "[fitur]"` | 🟨 Testing | E2E test fungsional |
 | `/manual-test "[fitur]"` | 🟨 Testing (opsional) | UAT headful: scenario matrix, screenshot, Major/Minor triage |
+| `/manual-test-vascomm "[fitur]" [storage=gdrive\|local] [phase=]` | 🟨 Testing (opsional) | UAT headful ke template spreadsheet Vascomm (Google Sheets + Drive, atau Excel lokal), 1 sheet per putaran |
 | `/harden-release "[versi]"` | 🟧 Hardening | Security + reliability audit (+ load test via Perf Tester) |
 | `/load-test "[target]" [type=] [tool=]` | 🟧 Hardening / ad-hoc | Load test as code (k6 default, JMeter opsional) terhadap SLA |
 | `/deliver-feature "[fitur]"` | 🟩→🟨 | Build + test sekaligus |

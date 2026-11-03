@@ -982,6 +982,16 @@ Selain `/tester` (scripted E2E), tersedia `/manual-test` untuk pengujian bergaya
 - Review temuan Major → kirim ke `/fixer`
 - Setelah fix, jalankan ulang `/manual-test` untuk retest — iterasi baru otomatis tercatat, histori iterasi sebelumnya tetap tersimpan di laporan yang sama
 
+**Varian Vascomm — laporan ke spreadsheet:** `/manual-test-vascomm` menguji dengan cara yang sama, tetapi test case + hasilnya ditulis ke template spreadsheet Vascomm (`state/templates/manual-test-vascomm/test-case-template.xlsx`) — **satu sheet per putaran test** (`UAT-R1`, `UAT-R2`, `SIT-R1`, …) plus `Summary` dan `Defect List`:
+
+```bash
+/manual-test-vascomm "Booking Management" storage=gdrive phase=UAT
+```
+
+- `storage=gdrive` → Google Sheet + folder screenshot di Google Drive yang terkoneksi; kolom Screenshot berisi link ke file di Drive
+- `storage=local` (atau otomatis bila koneksi Google tidak tersedia) → file `.xlsx` + folder screenshot di `tests/manual-test-vascomm/[slug]/`
+- Tanpa argumen `storage=`, agent menanyakan pilihannya
+
 ---
 
 ### **Step 2.1c: Performance & Load Testing (Perf Tester)** ⭐ NEW — Opsional / Hardening

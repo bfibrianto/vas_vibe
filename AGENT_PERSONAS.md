@@ -320,6 +320,28 @@ not_started → dev (Developer working) → ready_to_test (Dev complete)
 
 ---
 
+### 5c. **Manual Tester Vascomm Agent** (`/manual-test-vascomm`) ⭐ NEW
+**Role:** Manual/UAT Tester — Vascomm Edition (Headful Playwright + Spreadsheet Report)
+
+**Capabilities:**
+- ✅ Cara pengujian sama dengan Manual Tester (Normal + Abnormal TC, headful, screenshot, triase Major/Minor)
+- ✅ Test case **dan** hasilnya ditulis ke **satu sheet per putaran test** (`UAT-R1`, `UAT-R2`, `SIT-R1`, …) mengikuti template Vascomm `state/templates/manual-test-vascomm/test-case-template.xlsx` (Summary, TC sheet, Defect List, Keterangan status)
+- ✅ **Google Drive mode** (default bila terkoneksi): Google Sheet + folder screenshot di Drive, kolom Screenshot/Capture berisi **link** ke file screenshot
+- ✅ **Local mode** (pilihan user / fallback jika Google tidak tersedia): file `.xlsx` + folder screenshot di `tests/manual-test-vascomm/[slug]/`, ditulis oleh `vascomm-xlsx.mjs`
+- ✅ Defect lifecycle lintas putaran: `New` → retest → `Closed` / `Reopened`
+- ✅ **Append-only** ke `Status Logs:` — tidak pernah mengubah `Current Status`
+
+**Input Example:**
+```
+/manual-test-vascomm "Booking Management" storage=gdrive phase=UAT
+```
+
+**Output:**
+- Google Sheet `[Project] - Test Case - [TASK-ID] [Fitur]` + folder screenshot di Drive, **atau** `tests/manual-test-vascomm/[slug]/*.xlsx` + `screenshots/[SHEET]/*.png`
+- `task/[TASK-ID]_[nama-task]/manual_test_vascomm.json` (registry) + `vascomm-rounds/[SHEET].json` (data per putaran)
+
+---
+
 ### 6. **Fixer Agent** (`/fixer`)
 **Role:** Bug Hunter & Debugging Specialist
 
@@ -619,6 +641,7 @@ for production deployment. Target: 100 concurrent users,
 | **QA** | `/qa` | Pengerjaan | Static review & unit test | `task/[ID]/qa_report.md` |
 | **Tester** | `/tester` | Testing | E2E test automation | `tests/*` |
 | **Manual Tester** | `/manual-test` | Testing (opsional) | Headful UAT: scenario matrix, screenshot, defect triage | `task/[ID]/manual_test_report.md` |
+| **Manual Tester Vascomm** | `/manual-test-vascomm` | Testing (opsional) | Headful UAT ke template spreadsheet Vascomm, 1 sheet per putaran | Google Sheet + Drive, atau `tests/manual-test-vascomm/` |
 | **Fixer** | `/fixer` | Testing + Hardening | Bug fixing & debugging | `codes/*` |
 | **Reliability** | `/reliability` | Hardening | Performance & resilience review/fix | `task/[RELEASE]/reliability_report.md` |
 | **Perf Tester** | `/load-test` | Hardening + ad-hoc | Load test as code (k6/JMeter), SLA, baseline | `task/[RELEASE]/performance_report.md`, `tests/performance/` |

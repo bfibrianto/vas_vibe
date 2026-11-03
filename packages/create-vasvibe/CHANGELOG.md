@@ -6,6 +6,21 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [2.8.0] — 2026-11-03
+
+### Added — Manual Tester Vascomm: UAT Report to Spreadsheet Template
+
+New `manual-tester-vascomm` agent and `/manual-test-vascomm "[fitur]" [storage=gdrive|local] [phase=UAT|SIT]` command — an extension of `/manual-test` that keeps the same test approach but changes where and how test cases and results are stored.
+
+- **Vascomm spreadsheet template** (`state/templates/manual-test-vascomm/test-case-template.xlsx`) — `Summary` (schedule, defect result, one row per test round via `INDIRECT` formulas), `TC Template` (test case + test result in one sheet: steps per row, per-TC columns merged), `Defect List` (Major/Minor, status lifecycle with colors), and the defect status legend.
+- **One sheet per test round** — `UAT-R1`, `UAT-R2`, `SIT-R1`, …; earlier rounds are never overwritten, defects move `New` → `Closed`/`Reopened` on retest.
+- **Google Drive mode** — the spreadsheet is created from the template in a named Drive folder, screenshots go to `Screenshots/[SHEET]/` in the same folder, and the Screenshot/Capture columns link to them.
+- **Local mode** — user's choice, or automatic fallback when the Google Drive/Sheets connection is unavailable: `.xlsx` + screenshot folder in `tests/manual-test-vascomm/[slug]/`, written by `state/templates/manual-test-vascomm/vascomm-xlsx.mjs` (exceljs).
+- **Registry & round data** — `task/[TASK-ID]_[nama-task]/manual_test_vascomm.json` and `vascomm-rounds/[SHEET].json`; Fixer reads them for defect context.
+- **Template sync** — `sync-template` now ships `state/templates/` with the scaffold.
+
+---
+
 ## [2.7.0] — 2026-10-06
 
 ### Added — Perf Tester: Performance & Load Testing as Code

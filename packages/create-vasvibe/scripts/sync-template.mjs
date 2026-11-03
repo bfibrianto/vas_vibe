@@ -45,11 +45,14 @@ function opencodeFilter(srcPath) {
 
 // state/ in the repo root holds this repo's own working project state (context,
 // knowledge base docs, pipeline log). Ship only the skeleton: directories,
-// .gitkeep placeholders, and the workspace manifest.
+// .gitkeep placeholders, the workspace manifest, and the reusable workflow
+// templates under state/templates/ (e.g. the manual-test-vascomm spreadsheet).
 const STATE_SKELETON_FILES = new Set(['.gitkeep', 'workspace-manifest.json']);
+const STATE_TEMPLATES_DIR = path.join(REPO_ROOT, 'state', 'templates') + path.sep;
 function stateFilter(srcPath) {
   if (!noNodeModules(srcPath)) return false;
   if (statSync(srcPath).isDirectory()) return true;
+  if (srcPath.startsWith(STATE_TEMPLATES_DIR)) return true;
   return STATE_SKELETON_FILES.has(path.basename(srcPath));
 }
 
