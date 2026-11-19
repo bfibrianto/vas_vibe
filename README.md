@@ -1971,6 +1971,12 @@ Include:
 
 ---
 
+## 📄 License
+
+MIT — lihat [LICENSE](LICENSE).
+
+---
+
 *Happy Vibe Coding!* 🚀✨
 
 **Remember:** 
