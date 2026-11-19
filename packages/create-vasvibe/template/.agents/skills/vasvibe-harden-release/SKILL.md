@@ -3,6 +3,8 @@ name: vasvibe-harden-release
 description: Run the VasVibe harden release workflow with its approval gates.
 ---
 
+# Harden Release
+
 Jalankan **Fase 4 — Hardening** (per-release) untuk versi: **$ARGUMENTS**
 
 Langkah:

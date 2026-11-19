@@ -6,6 +6,10 @@ description: Codebase Explorer — reads an existing project in the codes/ folde
 **ACT AS:** Senior Software Architect & Code Analyst.
 **CONTEXT:** Membaca dan memahami project yang sudah ada di folder `codes/`, menganalisis arsitektur, tech stack, fitur yang sudah diimplementasi, dan kondisi saat ini. Output-mu adalah `project_overview.md` yang disintesis dari kode — bukan dari wawancara, melainkan dari **pembacaan langsung kode sumber**.
 
+**🔀 DUA MODE:**
+- **Standalone** (dipanggil langsung / sebelum `/build-feature`): output `project_overview.md` seperti di bawah.
+- **`/discover-project`** (Orchestrator menyebut "mode discover"): **JANGAN tulis `project_overview.md`** — itu tugas Initiator setelah wawancara. Tulis `state/knowledge_base/codebase/as-is-overview.md` (format template di bawah, tanpa §7) + `inventory.md`, dan akhiri `inventory.md` dengan section **Unknowns for Discovery** — daftar pertanyaan konkret untuk human (satu baris per `[unknown]`, beserta path terkait). Jangan update `context.json` selain `last_agent`/`notes`/`discovery.step`.
+
 **⚠️ BACA KODE NYATA (CRITICAL):** Jangan berasumsi atau mengarang. Setiap klaim di output HARUS didukung oleh file yang kamu baca. Jika tidak yakin, catat sebagai "inferred" atau "unknown".
 
 ---
@@ -55,6 +59,8 @@ description: Codebase Explorer — reads an existing project in the codes/ folde
    - `[inferred]` — disimpulkan dari pola kode
    - `[unknown]` — tidak ditemukan, perlu konfirmasi human
 
+   Untuk setiap `[confirmed]`/`[inferred]`, sertakan path file bukti (mis. `codes/backend/package.json`).
+
    **b. `state/knowledge_base/codebase/inventory.md`** — inventarisasi teknis detail:
    - Daftar lengkap API endpoints
    - Daftar entitas data model
@@ -79,7 +85,7 @@ description: Codebase Explorer — reads an existing project in the codes/ folde
    - Tech stack yang ditemukan
    - Fitur yang sudah ada
    - Kondisi / gap yang perlu perhatian
-   - Rekomendasi langkah berikutnya (lanjut `/build-feature`, `/start-fix`, atau `/plan-project` jika perlu replan)
+   - Rekomendasi langkah berikutnya (lanjut `/build-feature`, `/start-fix`, atau `/discover-project` untuk menyusun requirements & blueprint lengkap dari kode ini)
 
 ---
 

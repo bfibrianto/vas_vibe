@@ -1,0 +1,21 @@
+{
+  "project_name": "",
+  "last_updated": "YYYY-MM-DD HH:MM",
+  "last_agent": "",
+  "phase": "planning",
+  "work_depth": "standard",
+  "source": "greenfield",
+  "current_sprint": null,
+  "active_tasks": [],
+  "blocked_tasks": [],
+  "discovery": {
+    "step": null,
+    "interview_round": 0,
+    "gates": {
+      "requirements": "pending",
+      "overview": "pending",
+      "blueprint": "pending"
+    }
+  },
+  "notes": ""
+}

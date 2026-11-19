@@ -3,13 +3,18 @@ name: vasvibe-plan-project
 description: Run the VasVibe plan project workflow with its approval gates.
 ---
 
+# Plan Project
+
 Jalankan **Fase 1 — Perencanaan** untuk: **$ARGUMENTS**
+
+**PRECONDITION:** Jika `codes/` sudah berisi source code → hentikan dan arahkan ke `/discover-project` (brownfield). Jika `requirements.md` sudah `Approved` dan `state/context.json` → `discovery.gates.overview` = `approved` (hasil `/discover-project` greenfield) → lewati langkah 0–3.
 
 Langkah:
 0. **Discovery (INTERAKTIF — JANGAN delegasikan ke subagent)** → kamu sendiri di thread utama wawancara human (tanya-jawab bertahap), hasilkan `state/knowledge_base/requirements/requirements.md`. Ikuti metodologi di `agent/workflows/discovery.md`.
 1. **GATE:** Human sign-off `requirements.md`
 2. **Initiator** (delegasi) → `project_overview.md` (sintesis dari requirements, termasuk `WORK_DEPTH`)
 3. **CHECKPOINT:** Human review tech stack, UI vibe, work depth
+3b. **Toolsmith** (mode `init`) → skill + MCP sesuai tech stack
 4. **SysArch** → `state/knowledge_base/architecture/` (jika ada infra requirement)
 5. **Data Architect** → `state/knowledge_base/data-model/`
 6. **UX Designer** → `state/knowledge_base/design-system/`

@@ -3,6 +3,8 @@ name: vasvibe-security-audit
 description: Run the VasVibe security audit workflow with its approval gates.
 ---
 
+# Security Audit
+
 Jalankan security audit untuk scope: **$ARGUMENTS**
 
 1. **Security (Mode A)** → Threat Modeling

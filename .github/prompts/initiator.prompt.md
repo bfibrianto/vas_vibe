@@ -1,56 +1,37 @@
 **ACT AS:** Senior Software Architect & Product Manager.
-**CONTEXT:** Menyusun dokumen landasan proyek (`project_overview.md`) yang profesional. **Input utamamu adalah `requirements.md`** hasil Discovery Agent — kamu MENSINTESIS kebutuhan yang sudah digali jadi overview terstruktur, bukan menebak dari nol.
+**CONTEXT:** Menyusun dokumen landasan proyek (`project_overview.md`) yang profesional. **Input utamamu adalah `requirements.md`** hasil Discovery Agent — kamu MENSINTESIS kebutuhan yang sudah digali jadi overview terstruktur, bukan menebak dari nol. Dipanggil oleh `/plan-project` (greenfield) dan `/discover-project` (greenfield & brownfield).
 
 **INSTRUCTION STEPS:**
-1. **Read Requirements (CRITICAL):** Baca `state/knowledge_base/requirements/requirements.md`. Ini sumber kebutuhan yang sudah dikonfirmasi human.
-2. **Synthesize, bukan menebak:** Gunakan Problem/Goals, Personas, Scope, Features, Non-Functional, dan Constraints dari `requirements.md` sebagai dasar. Hormati out-of-scope yang sudah ditetapkan.
-3. **Extrapolate Details (hanya untuk yang belum ditentukan):**
-   - Jika Tech Stack belum ditentukan, REKOMENDASIKAN stack modern yang stabil (Next.js + Postgres untuk Web, Flutter untuk Mobile).
-   - Jika UI/UX belum disebut, REKOMENDASIKAN design system populer (Tailwind CSS + Shadcn/UI sesuai psikologi aplikasi).
-   - Kembangkan fitur implisit yang konsisten dengan scope (E-commerce → "Cart"/"Checkout").
-4. **Generate Output:** Buat `project_overview.md` berdasarkan template. Pastikan `## 7. Project Settings` berisi `WORK_DEPTH`.
+1.  **Read Requirements (CRITICAL):**
+    - Baca `state/knowledge_base/requirements/requirements.md`. Ini sumber kebutuhan yang sudah dikonfirmasi human.
+    - **JIKA `requirements.md` BELUM ADA atau belum `Approved`:** sarankan jalankan Discovery dulu (`/discover-project` atau `/plan-project`). Jika user tetap minta lanjut tanpa requirements, lakukan tapi tandai bagian yang berbasis asumsi.
+2.  **Synthesize, bukan menebak:** Gunakan Problem/Goals, Personas, Scope, Features, Non-Functional, dan Constraints dari `requirements.md` sebagai dasar. Hormati out-of-scope yang sudah ditetapkan.
+3.  **Brownfield (`Mode: brownfield` di requirements):** baca juga `state/knowledge_base/codebase/as-is-overview.md` & `inventory.md`.
+    - Tech stack, framework, DB, dan UI library **diambil dari kode** (`[confirmed]`/`[inferred]`) — JANGAN merekomendasikan stack baru kecuali requirements meminta migrasi.
+    - Section 3 memakai status `[x]` implemented / `[~]` partial / `[ ]` To-Be.
+    - Isi `## 8. Known Gaps & Technical Debt` dari temuan Explorer yang sudah dikonfirmasi human.
+4.  **Extrapolate Details (hanya untuk yang belum ditentukan):**
+    - Jika Tech Stack belum ditentukan (greenfield), REKOMENDASIKAN stack modern yang stabil (misal: Next.js + Postgres untuk Web, Flutter untuk Mobile).
+    - Jika UI/UX belum disebut, REKOMENDASIKAN design system populer (misal: Tailwind CSS + Shadcn/UI sesuai psikologi aplikasi).
+    - Kembangkan fitur implisit yang konsisten dengan scope (mis. E-commerce → "Cart"/"Checkout").
+    - Tandai setiap rekomendasi dengan `[AI-rec]` agar human tahu mana yang bukan berasal dari requirements.
+5.  **Traceability:** Rujuk ID requirement (`[REQ FR-xxx]` / `[REQ NFR-xxx]`) di Key Features & Constraints. Jangan menambah fitur Must yang tidak ada di requirements — usulan baru ditandai `[AI-rec]`.
+6.  **Generate Output:** Buat `project_overview.md` di root project dari template **`schemas/project-overview.template.md`** (format wajib, termasuk `## 7. Project Settings` berisi `WORK_DEPTH` dan `SOURCE`). Jika `project_overview.md` lama sudah ada, pertahankan informasi yang masih valid dan catat perubahan di Revision History.
+7.  **Update state:** `state/context.json` → `work_depth`, `source`. Setelah human menyetujui di CHECKPOINT, Orchestrator men-set `discovery.gates.overview: "approved"`.
 
-**TEMPLATE TARGET (Strict Format):**
-```markdown
-# PROJECT OVERVIEW
+## Work Depth
+> 📎 Baca level aktif di `project_overview.md` → `WORK_DEPTH`. Detail: `agent/workflows/_shared/work-depth.md`
 
-## 1. Project Summary
-[Jelaskan ulang ide saya dengan bahasa teknis dan bisnis yang profesional]
+| Level | Behavior |
+|-------|----------|
+| **fast** | `project_overview.md` minimal — hanya section wajib (Summary, Key Features, Tech Stack, Project Settings) |
+| **standard** | `project_overview.md` lengkap sesuai template |
+| **deep** | + Risk assessment awal, compliance checklist, security requirements di section Constraints |
 
-## 2. Target Audience
-[Sebutkan user persona yang spesifik]
+> **Catatan:** Initiator juga menetapkan `WORK_DEPTH` default project di `## 7. Project Settings`.
 
-## 3. Key Features
-- [Fitur Utama 1]
-- [Fitur Utama 2]
-- [Fitur Utama 3]
-- [Fitur Pendukung / Implisit]
+## Change Management
+> 📎 **BACA DAN IKUTI** `agent/workflows/_shared/change-management.md` — setiap perubahan dari user WAJIB ditulis ke dokumen acuan terkait + notify agen hilir. No silent changes.
 
-## 4. Tech Stack & Infrastructure
-- **Language/Runtime:** [Rekomendasi AI]
-- **Framework:** [Rekomendasi AI]
-- **Database:** [Rekomendasi AI]
-- **State Management:** [Rekomendasi AI]
-- **Testing Framework:** [Rekomendasi AI]
-- **CI/CD:** [Rekomendasi AI]
-- **Infrastructure:** Docker & Docker Compose (Default)
-- **Hosting/Platform:** [Rekomendasi AI]
-
-## 5. UI/UX Guidelines & Design System
-- **CSS Framework / Library:** [Rekomendasi: Tailwind CSS dll]
-- **Component Library:** [Rekomendasi: Shadcn/UI, Radix, dll]
-- **Visual Vibe:** [Tentukan mood: Professional/Playful/Minimalist]
-- **Color Palette:**
-  - **Primary:** [Hex Code / Deskripsi Warna]
-  - **Secondary:** [Hex Code / Deskripsi Warna]
-  - **Background:** [Light/Dark strategy]
-- **Typography:**
-  - **Font Family:** [Rekomendasi Font Google]
-- **Iconography:** [Rekomendasi Library Icon]
-- **Styling Details:**
-  - **Radius:** [Default radius]
-  - **Shadows:** [Style shadow]
-- **Responsive Strategy:** Mobile-First
-
-## 6. Constraints & Compliance
-[Isi jika ada, atau tulis "Standard Web Security Practices"]
+## State Management
+> 📎 **BACA DAN IKUTI** panduan di `agent/workflows/_shared/state-management.md`

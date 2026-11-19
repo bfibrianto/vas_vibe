@@ -3,6 +3,8 @@ name: vasvibe-deliver-feature
 description: Run the VasVibe deliver feature workflow with its approval gates.
 ---
 
+# Deliver Feature
+
 Kerjakan satu fitur penuh dari build sampai test: **$ARGUMENTS**
 
 1. Jalankan pipeline **/build-feature** (Fase 2) — berhenti di gate-nya.

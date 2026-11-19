@@ -1,7 +1,7 @@
 {
   "name": "create-vasvibe",
-  "version": "2.7.0",
-  "description": "Scaffold a new project with VasVibe agents, prompts, skills, and workflows preconfigured (Codex, Claude, OpenCode, GitHub Copilot).",
+  "version": "2.9.0",
+  "description": "Scaffold a new project with VasVibe agents, prompts, skills, and workflows preconfigured (Antigravity, Codex, Claude, OpenCode, GitHub Copilot).",
   "type": "module",
   "bin": {
     "create-vasvibe": "./bin/cli.mjs"
@@ -30,6 +30,8 @@
     "create",
     "vasvibe",
     "agents",
+    "skills",
+    "antigravity",
     "opencode",
     "codex",
     "claude",

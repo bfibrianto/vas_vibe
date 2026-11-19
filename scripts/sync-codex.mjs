@@ -24,14 +24,26 @@ for (const name of names) {
 }
 
 const commandNames = new Set([
-  'build-feature', 'build-prototype', 'daily-standup', 'deliver-feature',
-  'harden-release', 'load-test', 'plan-feature', 'plan-project', 'release',
+  'build-feature', 'build-prototype', 'daily-standup', 'deliver-feature', 'discover-project',
+  'harden-release', 'load-test', 'manual-test-vascomm', 'plan-feature', 'plan-project', 'release',
   'security-audit', 'setup-workspace', 'start-fix', 'test-feature',
 ]);
 
 for (const command of commandNames) {
-  const sourcePath = path.join(commandDir, `${command}.md`);
-  let source = await fs.readFile(sourcePath, 'utf8');
+  let source;
+  const skillSourcePath = path.join(skillsDir, command, 'SKILL.md');
+  const legacyWorkflowPath = path.join(commandDir, `${command}.md`);
+  const bakWorkflowPath = path.join(commandDir, `${command}.md.bak`);
+
+  try {
+    source = await fs.readFile(skillSourcePath, 'utf8');
+  } catch {
+    try {
+      source = await fs.readFile(legacyWorkflowPath, 'utf8');
+    } catch {
+      source = await fs.readFile(bakWorkflowPath, 'utf8');
+    }
+  }
   source = source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
   source = source.replace(/using Task tool \(Claude Code\) \/ agent invocation \(OpenCode\)/gi,
     'by invoking the configured Codex custom subagent named vasvibe_<persona> (for example, PM → vasvibe_pm)');

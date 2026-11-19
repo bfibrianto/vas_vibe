@@ -3,6 +3,8 @@ name: vasvibe-build-prototype
 description: Run the VasVibe build prototype workflow with its approval gates.
 ---
 
+# Build Prototype
+
 Jalankan **Build Prototype** — prototipe UI/UX cepat untuk: **$ARGUMENTS**
 
 > **Tujuan:** menampilkan tampilan aplikasi secepatnya untuk presentasi ke klien / menyepakati UI-UX — BUKAN produk jadi. **Frontend saja: tanpa backend, tanpa API nyata, tanpa database.** Data di-mock/fixture. Ini artefak demo (throwaway) yang bisa diganti; jangan diperlakukan sebagai implementasi final.

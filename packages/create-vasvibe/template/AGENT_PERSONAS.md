@@ -27,7 +27,9 @@ Pengerjaan proyek dibagi ke **4 fase** dengan gerbang human di tiap transisi. De
 **Role:** Product Discovery Lead & Business Analyst
 
 - ✅ **Mewawancarai human** secara interaktif (tanya-jawab bertahap) untuk menggali kebutuhan
-- ✅ Menggali: masalah & metrik sukses, persona, scope (must/nice/out), non-functional, constraint, data & integrasi, risiko & asumsi
+- ✅ Menggali: masalah & metrik sukses, persona & stakeholder, scope MoSCoW (Must/Should/Could/Won't), non-functional, constraint, data & integrasi, risiko & asumsi — dengan ID stabil `FR-`/`NFR-`
+- ✅ **Dua mode:** greenfield (dari nol) & **brownfield** via `/discover-project` — mulai dari temuan Explorer, hanya menanyakan yang tidak bisa dibaca dari kode (As-Is vs To-Be)
+- ✅ Progres disimpan tiap ronde (bisa dilanjutkan lintas sesi); sign-off memakai checklist **Definition of Ready**
 - ✅ Reflect-back untuk validasi; berhenti saat cukup; sign-off human
 - **Output:** `state/knowledge_base/requirements/requirements.md` · **Acuan untuk:** Initiator
 - ⚠️ Berjalan di **thread utama** (interaktif), bukan subagent. Tidak membuat `project_overview.md`.
@@ -627,7 +629,7 @@ for production deployment. Target: 100 concurrent users,
 | --- | --- | --- | --- | --- |
 | Agen | Command | Fase | Primary Function | Output |
 | --- | --- | --- | --- | --- |
-| **Discovery** | `/discovery` | Perencanaan | Requirement gathering (wawancara human) | `state/knowledge_base/requirements/` |
+| **Discovery** | `/discovery`, `/discover-project` | Perencanaan | Requirement gathering (wawancara human; greenfield & brownfield) | `state/knowledge_base/requirements/` |
 | **Initiator** | `/initiator` | Perencanaan | Project overview (sintesis requirements) | `project_overview.md` |
 | **SysArch** | `/sysarch` | Perencanaan | Infrastructure & deployment planning | `state/knowledge_base/architecture/` |
 | **Data Architect** | `/data-architect` | Perencanaan | Data model & governance | `state/knowledge_base/data-model/` |
@@ -647,6 +649,6 @@ for production deployment. Target: 100 concurrent users,
 | **Perf Tester** | `/load-test` | Hardening + ad-hoc | Load test as code (k6/JMeter), SLA, baseline | `task/[RELEASE]/performance_report.md`, `tests/performance/` |
 | **DevOps** | `/devops` | Lintas fase | Docker, CI/CD, deployment | `Dockerfile`, `.github/workflows/` |
 | **Document** | `/document` | Lintas fase | Final documentation | `documentation/*.md` |
-| **Orchestrator** | `/plan-project`, `/build-feature`, dll | Lintas fase | Pipeline & phase gates | `state/pipeline_log.md` |
+| **Orchestrator** | `/plan-project`, `/discover-project`, `/build-feature`, dll | Lintas fase | Pipeline & phase gates | `state/pipeline_log.md` |
 
 ---

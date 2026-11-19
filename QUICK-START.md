@@ -40,6 +40,12 @@ Mau cepat dulu? Pakai `fast`. Mau matang? `deep`. Bisa diubah kapan saja, atau d
 Setelah kamu sign-off, barulah Initiator menyusun `project_overview.md`, lalu arsitektur, data model, design system, security standards, dan **spesifikasi + API Contract**.
 👉 **Review & setujui di tiap gate.** API Contract harus final sebelum lanjut.
 
+**Sudah punya source code?** Taruh kodenya di `codes/` lalu pakai `/discover-project` sebagai pengganti `/plan-project`:
+```
+/discover-project "tambah modul pembayaran & rapikan auth" docs=docs/PRD.pdf
+```
+Explorer membaca kode dulu, lalu Discovery hanya menanyakan yang tidak bisa dibaca dari kode (konteks bisnis, pain point, tujuan berikutnya). Hasilnya blueprint yang sama — requirements, overview, arsitektur, data model, design system, security standards, spec & API Contract — tapi berbasis kondisi kode saat ini (As-Is) plus gap-nya. Bisa dilanjutkan di sesi lain kalau terputus.
+
 ### Langkah 2 — 🟩 Pengerjaan
 ```
 /build-feature "Login dengan email & password"
@@ -79,6 +85,7 @@ Di Codex, command pipeline tersedia sebagai skills eksplisit: `$vasvibe-plan-pro
 | Command | Fase | Fungsi |
 |---------|------|--------|
 | `/plan-project "[ide]"` | 🟦 Perencanaan | Buat semua blueprint/acuan |
+| `/discover-project "[tujuan]" [docs=] [depth=]` | 🟦 Perencanaan (proyek existing) | Pengganti `/plan-project` bila `codes/` sudah berisi kode: state, KB, requirements, overview & blueprint dari kode + wawancara |
 | `/setup-workspace [init\|switch\|sync]` | lintas fase | Install skill + MCP untuk tool AI (re-callable saat pindah tool) |
 | `/build-feature "[fitur]" [depth=]` | 🟩 Pengerjaan | Implementasi satu fitur |
 | `/test-feature "[fitur]"` | 🟨 Testing | E2E test fungsional |
@@ -132,7 +139,7 @@ Jangan ganti tool atau sesuaikan skill/MCP tanpa update manifest terlebih dahulu
 
 ## 6. Tips
 
-- **Selalu mulai dari `/plan-project`.** Coding tanpa blueprint = utang.
+- **Selalu mulai dari `/plan-project`** (atau `/discover-project` untuk proyek yang sudah punya kode). Coding tanpa blueprint = utang.
 - **Hormati gate.** Approval-mu di tiap fase yang menjaga kualitas.
 - **Minta perubahan kapan saja** — agen wajib mencatatnya ke acuan (No Silent Changes), jadi spec & dokumen tidak akan basi.
 - **Mulai `fast`, naik ke `standard`/`deep`** saat fitur makin serius.

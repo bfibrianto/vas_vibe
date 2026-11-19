@@ -3,6 +3,8 @@ name: vasvibe-daily-standup
 description: Run the VasVibe daily standup workflow with its approval gates.
 ---
 
+# Daily Standup
+
 Buat ringkasan standup:
 1. Baca `task/task_list.md` + log terbaru di `task/`
 2. Generate progress summary **per fase** (Perencanaan/Pengerjaan/Testing/Hardening)

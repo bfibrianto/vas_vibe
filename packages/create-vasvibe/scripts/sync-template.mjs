@@ -26,7 +26,8 @@ function noNodeModules(srcPath) {
   // Strip Python build artifacts that ship inside some skills.
   if (srcPath.includes(`${path.sep}__pycache__${path.sep}`) || srcPath.endsWith(`${path.sep}__pycache__`)) return false;
   if (srcPath.endsWith('.pyc') || srcPath.endsWith('.pyo')) return false;
-  // Strip macOS metadata.
+  // Strip backup files and macOS metadata.
+  if (srcPath.endsWith('.bak')) return false;
   if (path.basename(srcPath) === '.DS_Store') return false;
   return true;
 }

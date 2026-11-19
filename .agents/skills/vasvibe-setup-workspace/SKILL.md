@@ -3,6 +3,8 @@ name: vasvibe-setup-workspace
 description: Run the VasVibe setup workspace workflow with its approval gates.
 ---
 
+# Setup Workspace
+
 Jalankan **Toolsmith** (Agentic Workspace Provisioner) untuk: **$ARGUMENTS**
 
 Tujuan: menyiapkan perkakas si AI agent (skills + MCP) agar bekerja optimal — **bukan** infra produk (itu DevOps).

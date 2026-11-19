@@ -473,7 +473,7 @@ Frontend Agent (10:00) baca context.json
 - **Perf Tester** ⭐ NEW — Load test as code (k6 default, JMeter opsional): smoke/load/stress/spike/soak/breakpoint, SLA thresholds, baseline antar-release (`/load-test`)
 
 **Cross-Phase (Coordination & Documentation):**
-- **Orchestrator** — Pipeline coordinator (/plan-project, /build-feature, /test-feature, /release, dll)
+- **Orchestrator** — Pipeline coordinator (/plan-project, /discover-project untuk proyek existing, /build-feature, /test-feature, /release, dll)
 - **PM Agent** — Task management & progress tracking
 - **DevOps Agent** — Infrastructure & CI/CD setup
 - **Document Agent** — Technical documentation

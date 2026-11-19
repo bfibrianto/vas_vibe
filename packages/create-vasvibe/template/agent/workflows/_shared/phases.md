@@ -21,6 +21,10 @@ Project VasVibe dikerjakan dalam **4 fase** dengan gerbang (gate) human di tiap 
 
 **Discovery dulu:** Sebelum dokumen apapun, Discovery mewawancarai human (tanya-jawab) untuk menggali kebutuhan. Karena interaktif, **Discovery berjalan di thread utama**, bukan sebagai subagent. Outputnya (`requirements.md`) di-sign-off human, lalu jadi input Initiator.
 
+**Dua pintu masuk Fase 1:**
+- **`/plan-project`** — greenfield (`codes/` kosong): Discovery → Initiator → desain acuan dari nol.
+- **`/discover-project`** — brownfield (`codes/` sudah berisi kode): bootstrap state → Explorer (`state/knowledge_base/codebase/`) → Discovery mode brownfield → Initiator → acuan di-*reverse-engineer* dari kode (As-Is vs Target/Gap) → Analyst. Menghasilkan blueprint yang sama sehingga Fase 2–4 berjalan tanpa perbedaan.
+
 **Gate:** Human menyetujui blueprint. **API Contract wajib final** — ini seam antara Backend & Frontend.
 
 ---
