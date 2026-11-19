@@ -1,12 +1,12 @@
 # create-vasvibe
 
-Scaffold a new VasVibe project with **20 agents**, **4-phase workflow**, and **multi-tool support** preconfigured.
+Scaffold a new VasVibe project with **21 agents**, **4-phase workflow**, and **multi-tool support** preconfigured.
 
 **VasVibe v2.3** — AI-native development framework with:
 - ✅ 4-Phase Model (Perencanaan → Pengerjaan → Testing → Hardening) with gates
-- ✅ 20 specialized agents (Discovery, Backend/Frontend/Fullstack, Security, Reliability, DevOps, Manual Tester, etc.)
+- ✅ 21 specialized agents (Discovery, Backend/Frontend/Fullstack, Security, Reliability, Perf Tester, DevOps, Manual Tester, etc.)
 - ✅ Toolsmith agent for agentic workspace provisioning (skills + MCP)
-- ✅ Multi-tool support (Claude Code, OpenCode, GitHub Copilot, Antigravity)
+- ✅ Multi-tool support (OpenAI Codex, Claude Code, OpenCode, GitHub Copilot, Antigravity)
 - ✅ No Silent Changes protocol (every change tracked in docs)
 - ✅ Work Depth system (fast/standard/deep)
 
@@ -20,11 +20,14 @@ The command produces a project folder containing all agent toolchains, workflows
 
 ```
 my-new-project/
+├── AGENTS.md                       # Codex project instructions
+├── .codex/agents/                  # Codex custom agents (VasVibe personas)
+├── .agents/skills/vasvibe-*/       # Explicitly invokable Codex workflow/persona skills
 ├── .agents/                        # Antigravity agent wrappers & skills
 ├── .claude/                        # Claude Code agents & skills
 ├── .opencode/                      # OpenCode commands & skills
-├── .github/prompts/                # GitHub Copilot prompt files (20 agents)
-├── agent/workflows/                # Source of truth: agent definitions (20 total)
+├── .github/prompts/                # GitHub Copilot prompt files (21 agents)
+├── agent/workflows/                # Source of truth: agent definitions (21 total)
 │   ├── _shared/
 │   │   ├── phases.md               # 4-phase model definition
 │   │   ├── change-management.md    # No Silent Changes protocol
@@ -37,7 +40,7 @@ my-new-project/
 │   ├── data-architect.md, ux-designer.md    # Design phase
 │   ├── analyst.md                  # Specifications
 │   ├── qa.md, tester.md, manual-tester.md, fixer.md # QA & testing
-│   ├── security.md, reliability.md # Hardening phase
+│   ├── security.md, reliability.md, perf-tester.md # Hardening phase
 │   ├── toolsmith.md ⭐ NEW         # Agentic workspace provisioning
 │   ├── devops.md, pm.md            # Infrastructure & project mgmt
 │   └── document.md                 # Documentation
@@ -57,12 +60,16 @@ my-new-project/
 ├── logs/                           # Auto-generated logs
 ├── project_overview_example.md
 ├── QUICK-START.md                  # Workflow guide (Indonesian)
-├── AGENT_PERSONAS.md               # All 20 agents documented
+├── AGENT_PERSONAS.md               # All 21 agents documented
 ├── GIT_STRUCTURE_GUIDE.md
 └── .gitignore
 ```
 
-**Multi-Tool:** Agents auto-propagate from `agent/workflows/` to `.claude/`, `.opencode/`, `.agents/`, and `.github/prompts/` for full tool parity.
+**Antigravity:** Invoke workflows as skills directly (e.g. `/plan-project`, `/build-feature`, `/load-test`) with native slash commands and semantic skill discovery under `.agents/skills/`.
+
+**Codex:** Start a new Codex session in the project. Invoke workflows with skills such as `$vasvibe-plan-project` and `$vasvibe-build-feature`; Codex personas are available as custom subagents from `.codex/agents/`.
+
+**Multi-Tool:** Agent instructions propagate from `agent/workflows/` to Codex, `.claude/`, `.opencode/`, `.agents/`, and `.github/prompts/`.
 
 **Workspace Provisioning:** Run `/setup-workspace init` to auto-detect your tool, derive skills + MCP from tech stack, and write `state/workspace-manifest.json`.
 
@@ -93,6 +100,8 @@ npx create-vasvibe <project-name> [options]
    ```
    → Toolsmith detects active tool, derives skills+MCP from tech stack, writes `state/workspace-manifest.json` and tool-specific MCP config
 
+For Codex users, start a new session in the scaffolded project and invoke workflows directly with skills, for example `$vasvibe-plan-project` or `$vasvibe-build-feature`. Invoke a persona in the current conversation with `$vasvibe-agent-backend`; pipeline delegation uses the custom subagent `vasvibe_backend`.
+
 4. **Start planning**
    ```bash
    /plan-project "Your project idea here"
@@ -105,9 +114,12 @@ npx create-vasvibe <project-name> [options]
 | `-y, --yes`      | Skip prompts and use defaults                            |
 | `--no-git`       | Do not initialize a git repository                       |
 | `--no-opencode`  | Exclude `.opencode/` (commands, skills)                  |
-| `--no-claude`    | Exclude `.claude/` and `.agents/`                        |
+| `--no-claude`    | Exclude `.claude/` and Antigravity wrapper files         |
+| `--no-codex`     | Exclude Codex subagents and VasVibe Codex skills          |
 | `--no-github`    | Exclude `.github/prompts/`                               |
-| `--no-workflows` | Exclude `agent/workflows/`                               |
+| `--no-workflows` | Exclude `agent/workflows/` when Codex is disabled         |
+| `--depth=<level>` | Set work depth: `fast`, `standard`, or `deep`             |
+| `--dry-run`      | Preview an upgrade without writing files                  |
 | `-h, --help`     | Show help                                                |
 | `-v, --version`  | Print version                                            |
 
@@ -117,24 +129,33 @@ npx create-vasvibe <project-name> [options]
 # Interactive (choose depth + tools)
 npx create-vasvibe my-app
 
-# Fast mode MVP
-npx create-vasvibe my-app --yes   # uses fast depth, all tools
+# Standard mode MVP scaffold (default depth, all tools)
+npx create-vasvibe my-app --yes
 
-# Only OpenCode + workflows
-npx create-vasvibe my-app --yes --no-claude --no-github
+# Only Codex + workflows
+npx create-vasvibe my-app --yes --no-opencode --no-claude --no-github
 ```
 
 ### Quick Start
 
 After scaffold, read **`QUICK-START.md`** for step-by-step workflow guide (Indonesian):
 - Mental model of 4 phases
-- Command reference (/plan-project, /build-feature, /test-feature, /release)
+- Command reference (/plan-project, /discover-project, /build-feature, /test-feature, /release)
 - Work depth strategy
 - Gate approval process
 
 ## Development (for maintainers)
 
 This package lives at `packages/create-vasvibe/` in the monorepo. Source of truth for content is the repo root (`agent/workflows/`, `schemas/`, `.claude/`, `.opencode/`, `.agents/`, `.github/prompts/`); `template/` is generated by a sync script.
+
+**Key changes in v2.9:**
+- Added `/discover-project` — Phase 1 for projects that already have source code in `codes/` (replaces `/plan-project` there): bootstraps `state/` and the knowledge base, Explorer reads the code, Discovery interviews only for what code cannot tell (As-Is vs To-Be), then Initiator, reverse-engineered architecture/data-model/design-system/security docs and an As-Is API Contract. Resumable across sessions.
+
+&
+- Added `manual-tester-vascomm` agent (`/manual-test-vascomm`) — same headful UAT as `manual-tester`, but test cases and results go into the Vascomm spreadsheet template (`state/templates/manual-test-vascomm/`), one sheet per test round, on Google Sheets with screenshots linked from Google Drive, or a local `.xlsx` + screenshot folder in `tests/` as fallback.
+
+**Key changes in v2.7:**
+- Added `perf-tester` agent (`/load-test`) — performance & load testing as code with **k6** (default) or **JMeter** (non-GUI, when the project already uses it): smoke/load/stress/spike/soak/breakpoint, SLA thresholds from architecture docs, baseline regression tracking, `performance_report.md`. Reliability now delegates load test execution to it during `/harden-release`.
 
 **Key changes in v2.3:**
 - Added `manual-tester` agent (`/manual-test`) — headful Playwright UAT: scenario matrix (Normal/Abnormal), screenshot evidence, Major/Minor defect triage, retest-iteration report. Optional and independent from `tester` (scripted E2E); does not change the Fase 3 gate.
@@ -148,7 +169,8 @@ This package lives at `packages/create-vasvibe/` in the monorepo. Source of trut
 - Renamed: `developer.md` → `fullstack.md`
 
 ```bash
-# Sync template/ from repo root (runs on every npm publish)
+# Regenerate Codex subagents/skills and sync template/ from repo root
+npm run sync-codex
 npm run sync-template
 
 # Test scaffold locally

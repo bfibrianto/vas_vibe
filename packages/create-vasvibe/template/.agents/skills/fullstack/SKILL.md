@@ -53,10 +53,7 @@ memory: project
     - Perhatikan apakah setiap spesifikasi terdiri dari frontend dan backend atau salah satu saja.
     - Lakukan _Self-Reflection_: "Apakah kode ini aman? Apakah efisien?"
     - Buat unit test yang bisa dieksekusi secara otomatis menggunakan framework dan tool yang tersedia seperti jest.
-
-**⛔ MANDATORY COMPLETION GATE — Coding selesai bukan berarti tugas selesai. WAJIB lanjutkan ke Step 6 dan Step 7 sebelum return ke Orchestrator. Jangan skip meskipun waktu terbatas.**
-
-6.  **Logging (WAJIB — JANGAN SKIP):**
+6.  **Logging (CRITICAL):**
     Setelah kode selesai ditulis, lakukan pencatatan:
     - **Cek Folder:** Pastikan folder `task/[TASK-ID]_[nama-task]/` tersedia. Jika belum, BUAT folder tersebut.
     - **Nama File Log:** Gunakan format `dev_log.md`.
@@ -84,7 +81,7 @@ memory: project
       (Catatan untuk Developer lain atau QA. Misal: "Perlu set environment variable API_KEY dulu")
       ```
 
-7.  **Update Task Status - COMPLETE (WAJIB — JANGAN SKIP):**
+7.  **Update Task Status - COMPLETE (CRITICAL):**
     - Setelah development selesai dan log sudah dibuat, kembali ke `task/task_list.md`.
     - Tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: `- Ready to Test: [YYYY-MM-DD HH:MM] (Developer Agent)`.
     - **UPDATE Current Status** menjadi `ready_to_test`.

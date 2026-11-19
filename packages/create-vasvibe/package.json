@@ -1,7 +1,7 @@
 {
   "name": "create-vasvibe",
-  "version": "2.5.1",
-  "description": "Scaffold a new project with VasVibe agents, prompts, and workflows preconfigured (Claude, OpenCode, GitHub Copilot).",
+  "version": "2.9.0",
+  "description": "Scaffold a new project with VasVibe agents, prompts, skills, and workflows preconfigured (Antigravity, Codex, Claude, OpenCode, GitHub Copilot).",
   "type": "module",
   "bin": {
     "create-vasvibe": "./bin/cli.mjs"
@@ -16,8 +16,9 @@
     "node": ">=18"
   },
   "scripts": {
-    "sync-template": "node scripts/sync-template.mjs",
-    "prepublishOnly": "node scripts/sync-template.mjs",
+    "sync-codex": "node ../../scripts/sync-codex.mjs",
+    "sync-template": "node ../../scripts/sync-codex.mjs && node scripts/sync-template.mjs",
+    "prepublishOnly": "npm run sync-template",
     "test:scaffold": "node bin/cli.mjs /tmp/test-vasvibe-scaffold --yes"
   },
   "dependencies": {
@@ -29,7 +30,10 @@
     "create",
     "vasvibe",
     "agents",
+    "skills",
+    "antigravity",
     "opencode",
+    "codex",
     "claude",
     "ai",
     "starter",

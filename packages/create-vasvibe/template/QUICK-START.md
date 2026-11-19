@@ -2,7 +2,7 @@
 
 Panduan singkat memulai proyek dengan workflow agen VasVibe setelah scaffold selesai.
 
-> **Sudah install?** Kamu menjalankan `npx create-vasvibe my-app`. Folder `my-app/` sudah berisi semua agen & command. Buka folder itu di **Claude Code** atau **OpenCode**, lalu ikuti langkah di bawah.
+> **Sudah install?** Kamu menjalankan `npx create-vasvibe my-app`. Folder `my-app/` sudah berisi agen & workflow yang dipilih. Untuk Codex, mulai sesi baru di folder project; panggil workflow dengan `$vasvibe-plan-project`, `$vasvibe-build-feature`, atau skill lain dari daftar `$`.
 
 ---
 
@@ -40,6 +40,12 @@ Mau cepat dulu? Pakai `fast`. Mau matang? `deep`. Bisa diubah kapan saja, atau d
 Setelah kamu sign-off, barulah Initiator menyusun `project_overview.md`, lalu arsitektur, data model, design system, security standards, dan **spesifikasi + API Contract**.
 👉 **Review & setujui di tiap gate.** API Contract harus final sebelum lanjut.
 
+**Sudah punya source code?** Taruh kodenya di `codes/` lalu pakai `/discover-project` sebagai pengganti `/plan-project`:
+```
+/discover-project "tambah modul pembayaran & rapikan auth" docs=docs/PRD.pdf
+```
+Explorer membaca kode dulu, lalu Discovery hanya menanyakan yang tidak bisa dibaca dari kode (konteks bisnis, pain point, tujuan berikutnya). Hasilnya blueprint yang sama — requirements, overview, arsitektur, data model, design system, security standards, spec & API Contract — tapi berbasis kondisi kode saat ini (As-Is) plus gap-nya. Bisa dilanjutkan di sesi lain kalau terputus.
+
 ### Langkah 2 — 🟩 Pengerjaan
 ```
 /build-feature "Login dengan email & password"
@@ -58,7 +64,7 @@ Lalu **QA** review kode.
 
 > 💡 Gabung langkah 2+3 sekaligus: `/deliver-feature "Login..."`
 
-> 🖼️ **Opsional — mau laporan ala manual QA dengan bukti screenshot?** Jalankan `/manual-test "Login..."` berdampingan (independen dari `/test-feature`, tidak mengubah gate). **Manual Tester** akan bikin scenario matrix (Normal+Abnormal), eksekusi headful Playwright, screenshot tiap skenario, dan triase temuan gagal sebagai Major/Minor.
+> 🖼️ **Opsional — mau laporan ala manual QA dengan bukti screenshot?** Jalankan `/manual-test "Login..."` berdampingan (independen dari `/test-feature`, tidak mengubah gate). **Manual Tester** akan bikin scenario matrix (Normal+Abnormal), eksekusi headful Playwright, screenshot tiap skenario, dan triase temuan gagal sebagai Major/Minor. Butuh laporan di template spreadsheet Vascomm (Google Sheets/Excel)? Pakai `/manual-test-vascomm "Login..."`.
 
 ### Langkah 4 — 🟧 Hardening + Rilis (per-release)
 Setelah beberapa fitur selesai:
@@ -66,20 +72,27 @@ Setelah beberapa fitur selesai:
 /release "2.0.0"
 ```
 Menjalankan hardening (security audit + reliability/load test), update CHANGELOG, dan bikin git tag.
+
+> ⚡ **Load test kapan saja:** `/load-test "POST /api/bookings type=load"` — **Perf Tester** menulis script k6 di `tests/performance/`, menjalankannya ke staging (setelah kamu konfirmasi target & SLA), dan melaporkan p95/p99, RPS, error rate vs SLA. Pakai `tool=jmeter` bila project sudah memakai JMeter.
 👉 **Sign-off siap produksi.**
 
 ---
 
 ## 3. Daftar Command
 
+Di Codex, command pipeline tersedia sebagai skills eksplisit: `$vasvibe-plan-project`, `$vasvibe-build-feature`, `$vasvibe-test-feature`, dan skill lain yang tampil saat mengetik `$`. Persona bisa dipanggil di percakapan saat ini melalui `$vasvibe-agent-backend`; untuk delegasi pipeline Codex menyediakan custom subagent seperti `vasvibe_backend`.
+
 | Command | Fase | Fungsi |
 |---------|------|--------|
 | `/plan-project "[ide]"` | 🟦 Perencanaan | Buat semua blueprint/acuan |
+| `/discover-project "[tujuan]" [docs=] [depth=]` | 🟦 Perencanaan (proyek existing) | Pengganti `/plan-project` bila `codes/` sudah berisi kode: state, KB, requirements, overview & blueprint dari kode + wawancara |
 | `/setup-workspace [init\|switch\|sync]` | lintas fase | Install skill + MCP untuk tool AI (re-callable saat pindah tool) |
 | `/build-feature "[fitur]" [depth=]` | 🟩 Pengerjaan | Implementasi satu fitur |
 | `/test-feature "[fitur]"` | 🟨 Testing | E2E test fungsional |
 | `/manual-test "[fitur]"` | 🟨 Testing (opsional) | UAT headful: scenario matrix, screenshot, Major/Minor triage |
-| `/harden-release "[versi]"` | 🟧 Hardening | Security + reliability audit |
+| `/manual-test-vascomm "[fitur]" [storage=gdrive\|local] [phase=]` | 🟨 Testing (opsional) | UAT headful ke template spreadsheet Vascomm (Google Sheets + Drive, atau Excel lokal), 1 sheet per putaran |
+| `/harden-release "[versi]"` | 🟧 Hardening | Security + reliability audit (+ load test via Perf Tester) |
+| `/load-test "[target]" [type=] [tool=]` | 🟧 Hardening / ad-hoc | Load test as code (k6 default, JMeter opsional) terhadap SLA |
 | `/deliver-feature "[fitur]"` | 🟩→🟨 | Build + test sekaligus |
 | `/release "[versi]"` | — | Hardening → changelog → tag |
 | `/start-fix "[bug]"` | — | Perbaikan bug terarah |
@@ -111,8 +124,8 @@ state/                           → Workspace state & knowledge base
   ├── agent_handoff.json             → Handoff terakhir antar-agen
   └── knowledge_base/                → Acuan: architecture, data-model, design-system, security, ADR
 codes/                           → Source code (Backend/Frontend/Fullstack)
-tests/                           → E2E test (Tester) + tests/screenshots/ (Manual Tester)
-task/                            → Task list + log per task (termasuk manual_test_report.md)
+tests/                           → E2E test (Tester) + tests/screenshots/ (Manual Tester) + tests/performance/ (Perf Tester)
+task/                            → Task list + log per task (termasuk manual_test_report.md, performance_report.md)
 agent/workflows/                 → Definisi agen (source of truth)
 agent/workflows/_shared/         → Phases, work-depth, change-management, git-workflow, state-management
 ```
@@ -126,7 +139,7 @@ Jangan ganti tool atau sesuaikan skill/MCP tanpa update manifest terlebih dahulu
 
 ## 6. Tips
 
-- **Selalu mulai dari `/plan-project`.** Coding tanpa blueprint = utang.
+- **Selalu mulai dari `/plan-project`** (atau `/discover-project` untuk proyek yang sudah punya kode). Coding tanpa blueprint = utang.
 - **Hormati gate.** Approval-mu di tiap fase yang menjaga kualitas.
 - **Minta perubahan kapan saja** — agen wajib mencatatnya ke acuan (No Silent Changes), jadi spec & dokumen tidak akan basi.
 - **Mulai `fast`, naik ke `standard`/`deep`** saat fitur makin serius.

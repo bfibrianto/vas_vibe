@@ -14,6 +14,7 @@
     - **BACA file `task/task_list.md`** untuk menemukan task yang akan diperbaiki.
     - Temukan file detail task di `task/[TASK-ID]_[nama-task]/[TASK-ID]_[nama-task].md` yang sesuai.
     - **Jika ada `task/[TASK-ID]_[nama-task]/manual_test_report.md`**, baca juga temuan UAT dari Manual Tester Agent (deskripsi, Severity Major/Minor, path screenshot) sebelum mendiagnosis root cause.
+    - **Jika ada `task/[TASK-ID]_[nama-task]/manual_test_vascomm.json`**, baca putaran terakhir (`rounds[-1].data` → `vascomm-rounds/[SHEET].json`) untuk defect dari Manual Tester Vascomm Agent (Defect ID, Level Error Major/Minor, Expected vs Actual, link screenshot). Status defect di spreadsheet dikelola QA/Manual Tester Vascomm — jangan diubah.
 
 2.  **Update Task Status - START (CRITICAL):**
     - Di `task/task_list.md`, tambahkan baris log baru di bawah 'Status Logs:' pada task yang sesuai: '- Fixing Issues: [YYYY-MM-DD HH:MM] (Fixer Agent)'. Update juga 'Current Status'.

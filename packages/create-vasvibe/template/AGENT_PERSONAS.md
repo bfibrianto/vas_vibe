@@ -2,7 +2,7 @@
 
 Setiap Agent memiliki **system instruction** dan dapat dipanggil via slash command.
 
-**Total: 20 Specialized Agents**
+**Total: 21 Specialized Agents**
 
 ---
 
@@ -15,7 +15,7 @@ Pengerjaan proyek dibagi ke **4 fase** dengan gerbang human di tiap transisi. De
 | **1 · Perencanaan** | **Discovery** (wawancara human), Initiator, **Toolsmith**, SysArch, Data Architect, UX Designer, Security (Mode S), Analyst | requirements, overview, **workspace-manifest**, architecture, data-model, design-system, security-standards, **API Contract** | requirements sign-off → Blueprint disetujui |
 | **2 · Pengerjaan** | Analyst (spec-lock), Backend Engineer ∥ Frontend Engineer (atau Developer @ `fast`), QA | kode + unit test + review | Code review lulus |
 | **3 · Testing** | Tester, **Manual Tester** (opsional), Fixer | E2E hijau | Fungsional hijau |
-| **4 · Hardening** (per-release) | Security (A/B/C/D), Reliability, Fixer | security & reliability report | Siap produksi |
+| **4 · Hardening** (per-release) | Security (A/B/C/D), Reliability, **Perf Tester**, Fixer | security, reliability & performance report | Siap produksi |
 
 **Lintas fase:** PM (koordinasi), Orchestrator (gerbang fase), **Toolsmith (provisioning workspace agentik)**, DevOps (CI/CD), Document (dokumentasi).
 
@@ -27,7 +27,9 @@ Pengerjaan proyek dibagi ke **4 fase** dengan gerbang human di tiap transisi. De
 **Role:** Product Discovery Lead & Business Analyst
 
 - ✅ **Mewawancarai human** secara interaktif (tanya-jawab bertahap) untuk menggali kebutuhan
-- ✅ Menggali: masalah & metrik sukses, persona, scope (must/nice/out), non-functional, constraint, data & integrasi, risiko & asumsi
+- ✅ Menggali: masalah & metrik sukses, persona & stakeholder, scope MoSCoW (Must/Should/Could/Won't), non-functional, constraint, data & integrasi, risiko & asumsi — dengan ID stabil `FR-`/`NFR-`
+- ✅ **Dua mode:** greenfield (dari nol) & **brownfield** via `/discover-project` — mulai dari temuan Explorer, hanya menanyakan yang tidak bisa dibaca dari kode (As-Is vs To-Be)
+- ✅ Progres disimpan tiap ronde (bisa dilanjutkan lintas sesi); sign-off memakai checklist **Definition of Ready**
 - ✅ Reflect-back untuk validasi; berhenti saat cukup; sign-off human
 - **Output:** `state/knowledge_base/requirements/requirements.md` · **Acuan untuk:** Initiator
 - ⚠️ Berjalan di **thread utama** (interaktif), bukan subagent. Tidak membuat `project_overview.md`.
@@ -320,6 +322,28 @@ not_started → dev (Developer working) → ready_to_test (Dev complete)
 
 ---
 
+### 5c. **Manual Tester Vascomm Agent** (`/manual-test-vascomm`) ⭐ NEW
+**Role:** Manual/UAT Tester — Vascomm Edition (Headful Playwright + Spreadsheet Report)
+
+**Capabilities:**
+- ✅ Cara pengujian sama dengan Manual Tester (Normal + Abnormal TC, headful, screenshot, triase Major/Minor)
+- ✅ Test case **dan** hasilnya ditulis ke **satu sheet per putaran test** (`UAT-R1`, `UAT-R2`, `SIT-R1`, …) mengikuti template Vascomm `state/templates/manual-test-vascomm/test-case-template.xlsx` (Summary, TC sheet, Defect List, Keterangan status)
+- ✅ **Google Drive mode** (default bila terkoneksi): Google Sheet + folder screenshot di Drive, kolom Screenshot/Capture berisi **link** ke file screenshot
+- ✅ **Local mode** (pilihan user / fallback jika Google tidak tersedia): file `.xlsx` + folder screenshot di `tests/manual-test-vascomm/[slug]/`, ditulis oleh `vascomm-xlsx.mjs`
+- ✅ Defect lifecycle lintas putaran: `New` → retest → `Closed` / `Reopened`
+- ✅ **Append-only** ke `Status Logs:` — tidak pernah mengubah `Current Status`
+
+**Input Example:**
+```
+/manual-test-vascomm "Booking Management" storage=gdrive phase=UAT
+```
+
+**Output:**
+- Google Sheet `[Project] - Test Case - [TASK-ID] [Fitur]` + folder screenshot di Drive, **atau** `tests/manual-test-vascomm/[slug]/*.xlsx` + `screenshots/[SHEET]/*.png`
+- `task/[TASK-ID]_[nama-task]/manual_test_vascomm.json` (registry) + `vascomm-rounds/[SHEET].json` (data per putaran)
+
+---
+
 ### 6. **Fixer Agent** (`/fixer`)
 **Role:** Bug Hunter & Debugging Specialist
 
@@ -537,6 +561,39 @@ for production deployment. Target: 100 concurrent users,
 - ✅ Resilience: error handling, timeout/retry, graceful degradation
 - ✅ Load test + observability audit
 - **Output:** `task/[RELEASE]/reliability_report.md`
+- Load test dieksekusi oleh **Perf Tester** (§13b); Reliability fokus review & perbaikan akar masalah.
+
+---
+
+### 13b. **Perf Tester Agent** (`/load-test`) ⭐ NEW — Hardening + Ad-hoc
+**Role:** Performance & Load Test Engineer
+
+**Tool:** **k6** (default) — script JavaScript yang mudah ditulis & di-review AI, thresholds = SLA assertion dengan exit code (cocok gate/CI), ringan & CLI-first. **JMeter** (non-GUI) dipakai hanya jika project sudah punya `.jmx`, butuh protokol khusus (JDBC/JMS/LDAP/SOAP), atau diminta `tool=jmeter`.
+
+**Capabilities:**
+- ✅ Workload model realistis: user journey kritis, mix trafik, think time, data uji bervariasi; open model (arrival-rate) vs closed model (VU)
+- ✅ Load test **sebagai kode** di `tests/performance/` (k6 `scenarios/`, `lib/`, `data/`; atau `jmeter/*.jmx`)
+- ✅ Tipe test: **smoke, load, stress, spike, soak, breakpoint** — dipilih sesuai Work Depth
+- ✅ Thresholds diturunkan dari SLA di `state/knowledge_base/architecture/` (p95/p99, error rate, throughput)
+- ✅ Baseline antar-release (`tests/performance/baseline.json`) → deteksi regresi performa
+- ✅ Temuan PERF-xx (CRITICAL/HIGH/MEDIUM/LOW) dengan bukti metric & dugaan bottleneck → handoff ke Reliability/Backend
+- ✅ **Safety:** tidak pernah load test production / layanan pihak ketiga tanpa izin eksplisit human; credential via env var
+- ✅ **Append-only** ke `Status Logs:` — tidak mengubah `Current Status`
+
+**Input Example:**
+```
+/load-test "release 1.2.0 type=load"
+/load-test "POST /api/bookings type=stress tool=jmeter"
+```
+
+**Output:**
+- `tests/performance/` (script, data uji, `results/[run]/summary.json`, `baseline.json`)
+- `task/[RELEASE]/performance_report.md` atau `task/[TASK-ID]_[nama-task]/performance_report.md`
+
+**👤 Human Task:**
+- Konfirmasi target environment, SLA, dan puncak beban sebelum test berjalan
+- Review temuan & putuskan apakah risiko tersisa diterima
+- Approve pembaruan baseline
 
 ---
 
@@ -572,7 +629,7 @@ for production deployment. Target: 100 concurrent users,
 | --- | --- | --- | --- | --- |
 | Agen | Command | Fase | Primary Function | Output |
 | --- | --- | --- | --- | --- |
-| **Discovery** | `/discovery` | Perencanaan | Requirement gathering (wawancara human) | `state/knowledge_base/requirements/` |
+| **Discovery** | `/discovery`, `/discover-project` | Perencanaan | Requirement gathering (wawancara human; greenfield & brownfield) | `state/knowledge_base/requirements/` |
 | **Initiator** | `/initiator` | Perencanaan | Project overview (sintesis requirements) | `project_overview.md` |
 | **SysArch** | `/sysarch` | Perencanaan | Infrastructure & deployment planning | `state/knowledge_base/architecture/` |
 | **Data Architect** | `/data-architect` | Perencanaan | Data model & governance | `state/knowledge_base/data-model/` |
@@ -586,10 +643,12 @@ for production deployment. Target: 100 concurrent users,
 | **QA** | `/qa` | Pengerjaan | Static review & unit test | `task/[ID]/qa_report.md` |
 | **Tester** | `/tester` | Testing | E2E test automation | `tests/*` |
 | **Manual Tester** | `/manual-test` | Testing (opsional) | Headful UAT: scenario matrix, screenshot, defect triage | `task/[ID]/manual_test_report.md` |
+| **Manual Tester Vascomm** | `/manual-test-vascomm` | Testing (opsional) | Headful UAT ke template spreadsheet Vascomm, 1 sheet per putaran | Google Sheet + Drive, atau `tests/manual-test-vascomm/` |
 | **Fixer** | `/fixer` | Testing + Hardening | Bug fixing & debugging | `codes/*` |
-| **Reliability** | `/reliability` | Hardening | Performance, resilience, load | `task/[RELEASE]/reliability_report.md` |
+| **Reliability** | `/reliability` | Hardening | Performance & resilience review/fix | `task/[RELEASE]/reliability_report.md` |
+| **Perf Tester** | `/load-test` | Hardening + ad-hoc | Load test as code (k6/JMeter), SLA, baseline | `task/[RELEASE]/performance_report.md`, `tests/performance/` |
 | **DevOps** | `/devops` | Lintas fase | Docker, CI/CD, deployment | `Dockerfile`, `.github/workflows/` |
 | **Document** | `/document` | Lintas fase | Final documentation | `documentation/*.md` |
-| **Orchestrator** | `/plan-project`, `/build-feature`, dll | Lintas fase | Pipeline & phase gates | `state/pipeline_log.md` |
+| **Orchestrator** | `/plan-project`, `/discover-project`, `/build-feature`, dll | Lintas fase | Pipeline & phase gates | `state/pipeline_log.md` |
 
 ---

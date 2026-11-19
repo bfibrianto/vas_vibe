@@ -9,7 +9,7 @@ Jalankan **Perencanaan Fitur** (sub-set Fase 1, ruang lingkup satu fitur) untuk:
 **PRECONDITION CHECK (langkah 0):**
 - Pastikan `project_overview.md` ada dan "Tech Stack" + "UI Guidelines" terisi.
 - Pastikan `specifications/000_spec_environment_setup.md` sudah ada.
-- **Jika salah satu belum ada:** proyek belum direncanakan. **BERHENTI** dan arahkan human menjalankan `/plan-project` dulu. Jangan menambal blueprint proyek di sini.
+- **Jika salah satu belum ada:** proyek belum direncanakan. **BERHENTI** dan arahkan human menjalankan `/plan-project` (greenfield) atau `/discover-project` (proyek sudah punya kode) dulu. Jangan menambal blueprint proyek di sini.
 
 Langkah:
 1. **Feature Discovery (INTERAKTIF — JANGAN delegasikan ke subagent)** → kamu sendiri di thread utama mewawancarai human, khusus untuk fitur ini: tujuan & nilai, aktor/role, ruang lingkup, **apa yang di luar ruang lingkup (Non-Goals)**, aturan bisnis, dan kriteria sukses. Ringkas, fokus fitur — bukan wawancara proyek penuh. Ikuti gaya tanya-jawab `agent/workflows/discovery.md` namun terbatas pada fitur.

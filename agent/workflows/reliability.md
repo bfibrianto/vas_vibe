@@ -18,14 +18,15 @@
     - Timeout & retry pada external calls. Circuit breaker jika relevan.
     - Graceful degradation saat dependency down.
 5.  **Load & Capacity:**
-    - Jalankan/scriptkan load test dasar (k6, autocannon, locust sesuai stack) terhadap endpoint kritis.
-    - Bandingkan dengan target SLA di architecture docs.
+    - Delegasikan eksekusi load test ke **Perf Tester** (`agent/workflows/perf-tester.md`, tool default **k6**, JMeter bila project sudah memakainya). Berikan daftar area hot dari Step 2–3 sebagai input skenario.
+    - Baca `task/[RELEASE-VERSION]/performance_report.md` dan bandingkan dengan target SLA di architecture docs.
+    - Tindak lanjuti temuan PERF-xx yang di-handoff (bottleneck kode/query/config), lalu minta Perf Tester re-run skenario terkait untuk verifikasi.
 6.  **Observability Check:**
     - Apakah ada logging, metrics, health check endpoint? Rekomendasikan jika kurang.
 7.  **Fix or Delegate:** Perbaiki masalah keandalan yang jelas. Untuk bug fungsional, delegasikan ke Fixer.
 8.  **Report:** Tulis `task/[RELEASE-VERSION]/reliability_report.md`:
     - Findings (severity: CRITICAL/HIGH/MEDIUM/LOW)
-    - Hasil load test (latency p50/p95/p99, throughput, error rate)
+    - Ringkasan hasil load test (latency p50/p95/p99, throughput, error rate) — rujuk `performance_report.md`
     - Fixes applied & remaining risks
 9.  **Sign-off:** Beri rekomendasi `Production-Ready` / `Conditional` / `Not Ready` ke human.
 

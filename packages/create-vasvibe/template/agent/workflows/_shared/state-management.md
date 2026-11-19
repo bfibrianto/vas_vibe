@@ -20,9 +20,20 @@ Baca file ini di **awal setiap session**. Update di **akhir session** jika ada p
   "current_sprint": "string atau null — nama sprint aktif jika ada",
   "active_tasks": ["TASK-XXX", "TASK-YYY"],
   "blocked_tasks": ["TASK-ZZZ"],
-  "notes": "string — catatan penting untuk agent berikutnya, atau kosong"
+  "notes": "string — catatan penting untuk agent berikutnya, atau kosong",
+
+  "phase": "planning | planning-approved | implementation | testing | hardening — opsional",
+  "work_depth": "fast | standard | deep — cermin dari project_overview.md, opsional",
+  "source": "greenfield | brownfield — opsional",
+  "discovery": {
+    "step": "nomor langkah /discover-project terakhir yang selesai, 'done', atau null",
+    "interview_round": "angka — ronde wawancara Discovery terakhir yang disimpan",
+    "gates": { "requirements": "pending|approved", "overview": "pending|approved", "blueprint": "pending|approved" }
+  }
 }
 ```
+
+> Field `phase`, `work_depth`, `source`, dan `discovery` ditambahkan oleh `/discover-project` (template: `schemas/context.template.json`). Agent lain cukup mempertahankannya — **jangan hapus field yang tidak kamu kenal** saat menulis ulang `context.json`.
 
 ### Contoh
 

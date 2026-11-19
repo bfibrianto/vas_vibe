@@ -54,4 +54,4 @@ for src in "$WORKFLOWS_DIR"/*.md; do
 done
 
 echo ""
-echo "Synced $synced platform copies. Run 'npm run sync-template' in packages/create-vasvibe to update the scaffold template."
+echo "Synced $synced platform copies. Then run 'node scripts/sync-codex.mjs' and 'npm run sync-template' in packages/create-vasvibe to update Codex assets and the scaffold template."

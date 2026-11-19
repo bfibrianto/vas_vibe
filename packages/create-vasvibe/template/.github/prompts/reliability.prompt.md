@@ -21,8 +21,9 @@
    - Graceful degradation saat dependency down
 
 4. **Load & Capacity:**
-   - Jalankan load test dasar (k6, autocannon, locust sesuai stack) terhadap endpoint kritis
-   - Bandingkan dengan target SLA di architecture docs
+   - Delegasikan eksekusi load test ke **Perf Tester** (`perf-tester.prompt.md`, tool default **k6**, JMeter bila project sudah memakainya) dengan daftar area hot sebagai input skenario
+   - Baca `task/[RELEASE-VERSION]/performance_report.md` dan bandingkan dengan target SLA di architecture docs
+   - Tindak lanjuti temuan PERF-xx, lalu minta Perf Tester re-run skenario terkait untuk verifikasi
 
 5. **Observability Check:**
    - Apakah ada logging, metrics, health check endpoint?
@@ -34,7 +35,7 @@
 
 7. **Report:** Tulis `task/[RELEASE-VERSION]/reliability_report.md`:
    - Findings (severity: CRITICAL/HIGH/MEDIUM/LOW)
-   - Hasil load test (latency p50/p95/p99, throughput, error rate)
+   - Ringkasan hasil load test (latency p50/p95/p99, throughput, error rate) — rujuk `performance_report.md`
    - Fixes applied & remaining risks
 
 8. **Sign-off:** Rekomendasi `Production-Ready` / `Conditional` / `Not Ready`

@@ -19,6 +19,7 @@ const FRAMEWORK_PATHS = [
   { src: '.opencode', dest: '.opencode' },
   { src: '.claude', dest: '.claude' },
   { src: '.agents', dest: '.agents' },
+  { src: '.codex/agents', dest: '.codex/agents' },
   { src: '.github/prompts', dest: '.github/prompts' },
   { src: 'agent', dest: 'agent' },
   { src: 'schemas', dest: 'schemas' },
@@ -43,6 +44,7 @@ export async function isVasvibeProject(projectDir) {
   if (await pathExists(path.join(projectDir, VERSION_FILE))) return true;
   if (await pathExists(path.join(projectDir, 'agent/workflows'))) return true;
   if (await pathExists(path.join(projectDir, '.opencode/agents'))) return true;
+  if (await pathExists(path.join(projectDir, '.codex/agents'))) return true;
   return false;
 }
 

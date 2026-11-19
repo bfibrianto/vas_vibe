@@ -1,5 +1,5 @@
 ---
-description: Pipeline Coordinator — runs phase-gated multi-agent pipelines: /plan-project (planning), /build-feature (implementation), /test-feature (testing), /harden-release (hardening), plus /deliver-feature, /release, /start-fix, /security-audit, /daily-standup. Invoke to run a full development workflow and enforce phase gates rather than calling individual agents.
+description: Pipeline Coordinator — runs phase-gated multi-agent pipelines: /plan-project (planning), /discover-project (brownfield planning from existing code), /build-feature (implementation), /test-feature (testing), /harden-release (hardening), plus /deliver-feature, /release, /start-fix, /security-audit, /daily-standup. Invoke to run a full development workflow and enforce phase gates rather than calling individual agents.
 ---
 
 # Orchestrator Agent
@@ -12,7 +12,8 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 ## Pipelines
 
 ### 🟦 Fase 1 — `/plan-project "[Project Idea]"`
-> Hasilkan semua blueprint (acuan) sebelum coding apapun.
+> Hasilkan semua blueprint (acuan) sebelum coding apapun. **Untuk proyek greenfield.**
+- **PRECONDITION:** Jika `codes/` sudah berisi source code → arahkan ke `/discover-project` (brownfield), JANGAN lanjut. Jika `requirements.md` sudah `Approved` dan `state/context.json` → `discovery.gates.overview: "approved"` (hasil `/discover-project` mode greenfield) → lewati langkah 0–3, mulai dari 3b.
 0. **Discovery (INTERAKTIF, di thread utama)** → wawancara human, hasilkan `state/knowledge_base/requirements/requirements.md`. **JANGAN delegasikan ke subagent** — dialog tanya-jawab harus di thread utama.
 1. GATE: Human sign-off `requirements.md`
 2. Invoke Initiator → `project_overview.md` (sintesis dari requirements, termasuk `WORK_DEPTH`)
@@ -26,9 +27,24 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 9. Invoke DevOps → environment setup (Dockerfile, docker-compose) jika dibutuhkan
 10. **GATE — Blueprint disetujui:** Human approve semua acuan. **API Contract wajib final.**
 
+### 🟦 Fase 1 (brownfield) — `/discover-project "[konteks/tujuan]" [docs=...] [depth=fast|standard|deep]`
+> **Pengganti `/plan-project` untuk proyek yang sudah punya source code di `codes/`.** Menyiapkan state, knowledge base, requirements, overview, dan blueprint dari pembacaan kode + wawancara. Read-only terhadap `codes/`. Bisa dilanjutkan lintas sesi lewat `state/context.json` → `discovery`.
+0. **Bootstrap & deteksi (thread utama):** buat struktur `state/` yang belum ada dari `schemas/context.template.json` (jangan timpa yang ada); deteksi greenfield/brownfield; tawarkan resume bila `discovery.step` terisi; tetapkan `WORK_DEPTH`. Greenfield → jalankan langkah 2, 4–7 lalu serahkan ke `/plan-project` (mulai 3b).
+1. Invoke **Explorer** (mode discover) → `state/knowledge_base/codebase/inventory.md` (+ Unknowns for Discovery) & `as-is-overview.md`. Tidak menulis `project_overview.md`.
+2. **Ingest dokumen (thread utama):** PRD/notulen/brief/README/OpenAPI dari `docs=` atau human; Google Docs/Drive bila connector tersedia.
+3. CHECKPOINT: Human koreksi temuan codebase (stack, fitur, gap, `[unknown]`).
+4. **Discovery mode brownfield (INTERAKTIF, di thread utama)** → `requirements.md` (As-Is + To-Be, ID `FR-`/`NFR-`), disimpan tiap ronde. **JANGAN delegasikan ke subagent.**
+5. GATE: Definition of Ready terpenuhi + human sign-off `requirements.md`.
+6. Invoke **Initiator** → `project_overview.md` dari `schemas/project-overview.template.md` (`SOURCE: brownfield`, stack dari kode, Known Gaps).
+7. CHECKPOINT: Human review overview.
+8. Invoke **Toolsmith** (mode `init`) → skill + MCP untuk stack existing (skip bila sudah ter-apply).
+9. **Reverse-engineer acuan As-Is** (paralel bila bisa; tiap dokumen memisahkan As-Is dengan path bukti vs Target/Gap): **SysArch** → `architecture/` ∥ **Data Architect** → `data-model/` ∥ **UX Designer** → `design-system/` (ekstrak dari theme/komponen) ∥ **Security (Mode S)** → `security-standards.md` (baseline + gap; wajib di deep). Lewati yang tidak relevan (mis. tanpa UI).
+10. Invoke **Analyst** → `specifications/000_spec_environment_setup.md` (cara menjalankan kode existing) + **API Contract As-Is** dari endpoint/OpenAPI existing + backlog user story untuk To-Be & gap (rujuk ID `FR-`/`NFR-`).
+11. **GATE — Blueprint disetujui:** Human approve. Update `state/context.json` (`phase: planning-approved`, `discovery.step: done`, semua gate `approved`), log ke `state/pipeline_log.md`, tulis `state/agent_handoff.json`. Lanjut ke `/plan-feature` atau `/build-feature`.
+
 ### 🟦 Fase 1 (terfokus) — `/plan-feature "[Feature Description]" [depth=fast|standard|deep]`
 > Perencanaan **satu fitur** saja — mengasumsikan blueprint proyek sudah ada. Output: spesifikasi fitur lengkap di `specifications/`. Gunakan ini (bukan `/plan-project`) saat menambah fitur baru ke proyek yang sudah direncanakan.
-0. **PRECONDITION:** `project_overview.md` terisi & `specifications/000_spec_environment_setup.md` ada. Jika belum → arahkan human ke `/plan-project`, JANGAN lanjut.
+0. **PRECONDITION:** `project_overview.md` terisi & `specifications/000_spec_environment_setup.md` ada. Jika belum → arahkan human ke `/plan-project` (greenfield) atau `/discover-project` (sudah ada kode), JANGAN lanjut.
 1. **Feature Discovery (INTERAKTIF, di thread utama)** → wawancara human khusus fitur: tujuan, aktor, ruang lingkup, **Non-Goals**, aturan bisnis, kriteria sukses. **JANGAN delegasikan ke subagent.**
 2. GATE: Human sign-off ruang lingkup & Non-Goals fitur.
 3. **Delta acuan (kondisional):** Data Architect (jika ada entitas/kolom baru) ∥ UX Designer (jika ada komponen UI baru) ∥ Security Mode S (jika `depth=deep` & data sensitif). Lewati bila tidak ada kebutuhan baru.
@@ -57,8 +73,8 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 > **Per-release only.** Jalankan setelah sekumpulan fitur lulus testing.
 1. Invoke Security (Mode A) → Threat Modeling
 2. Invoke Security (Mode B) → Vulnerability Scan + verifikasi `security-standards.md`
-3. Invoke Reliability → performance, resilience, load test
-4. CHECKPOINT: Human review temuan Security + Reliability
+3. Invoke Reliability → performance & resilience review; Reliability mendelegasikan load test ke **Perf Tester** (k6 default) → `performance_report.md`
+4. CHECKPOINT: Human review temuan Security + Reliability + Performance
 5. Invoke Security (Mode C) + Fixer → remediasi CRITICAL & HIGH
 6. Invoke Tester → regression test (pastikan fix tidak break)
 7. **GATE — Siap produksi:** Human sign-off
@@ -104,6 +120,13 @@ Pipeline Coordinator — menerima high-level command, menjalankan agent pipeline
 4. Security Mode C → fix CRITICAL & HIGH
 5. Tester → regression test
 6. CHECKPOINT: Human sign-off
+
+#### `/load-test "[release/fitur/endpoint]" [type=smoke|load|stress|spike|soak|breakpoint] [tool=k6|jmeter]`
+> Performance & load test ad-hoc di luar siklus release (juga dipanggil otomatis oleh Reliability di `/harden-release`). Tool default **k6**; JMeter hanya bila project sudah memakainya / butuh protokol khusus.
+1. CHECKPOINT: Konfirmasi target environment, SLA/threshold, dan pola beban ke human (**jangan pernah** load test production tanpa izin eksplisit)
+2. Invoke Perf Tester → workload model + script (`tests/performance/`) → smoke test → test sesuai `type`/Work Depth → `performance_report.md`
+3. Jika SLA gagal → Invoke Reliability (atau Backend di luar hardening) → perbaiki bottleneck → Perf Tester re-run
+4. **GATE — SLA terpenuhi:** semua threshold Pass, atau risiko tersisa diterima human; update baseline atas persetujuan human
 
 #### `/daily-standup`
 1. Read `task/task_list.md` + log terbaru di `task/`

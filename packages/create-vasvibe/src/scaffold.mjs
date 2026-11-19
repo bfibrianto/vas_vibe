@@ -14,7 +14,8 @@ const TEMPLATE_DIR = path.resolve(__dirname, '..', 'template');
 
 const TOOLCHAIN_PATHS = {
   opencode: ['.opencode'],
-  claude: ['.claude', '.agents'],
+  claude: ['.claude', '.agents/agents', '.agents/workflows'],
+  codex: ['.codex'],
   github: ['.github'],
   workflows: ['agent'],
 };
@@ -26,6 +27,7 @@ export async function scaffold({
   workDepth = 'standard',
   includeOpencode,
   includeClaude,
+  includeCodex = true,
   includeGithub,
   includeWorkflows,
 }) {
@@ -44,8 +46,16 @@ export async function scaffold({
   // 2. Apply toolchain filters (delete excluded folders).
   if (!includeOpencode) await removeAll(targetDir, TOOLCHAIN_PATHS.opencode);
   if (!includeClaude) await removeAll(targetDir, TOOLCHAIN_PATHS.claude);
+  if (!includeCodex) {
+    await removeAll(targetDir, TOOLCHAIN_PATHS.codex);
+    await removeCodexSkills(targetDir);
+  }
+  if (!includeClaude && !includeCodex) {
+    await removeAll(targetDir, ['.agents']);
+  }
   if (!includeGithub) await removeAll(targetDir, TOOLCHAIN_PATHS.github);
-  if (!includeWorkflows) await removeAll(targetDir, TOOLCHAIN_PATHS.workflows);
+  // Codex subagents load their canonical persona instructions from agent/workflows/.
+  if (!includeWorkflows && !includeCodex) await removeAll(targetDir, TOOLCHAIN_PATHS.workflows);
 
   // 3. Rename _gitignore -> .gitignore (npm strips real .gitignore from packages).
   const gi = path.join(targetDir, '_gitignore');
@@ -70,5 +80,16 @@ export async function scaffold({
 async function removeAll(targetDir, relPaths) {
   for (const rel of relPaths) {
     await removePath(path.join(targetDir, rel));
+  }
+}
+
+async function removeCodexSkills(targetDir) {
+  const skillsDir = path.join(targetDir, '.agents', 'skills');
+  if (!(await pathExists(skillsDir))) return;
+  const entries = await fs.readdir(skillsDir, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isDirectory() && entry.name.startsWith('vasvibe-')) {
+      await removePath(path.join(skillsDir, entry.name));
+    }
   }
 }
